@@ -13,11 +13,11 @@ let copy2 = structuredClone(obj);
 copy1.y.z = 50;
 copy2.y.z = 100;
 
-console.log(obj.y.z); 
+console.log(obj.y.z); https://github.com/abmishra-1119/MERN-Learning
 // Predict the output?
 ```
 ```js
-50 // because spread operator do a shallow copy and it the refrence of inner object and change in obj1 will refelect to the original one.
+50 // because spread operator do a shallow copy and it take refrence of inner object and change in obj1 will refelect to the original one.
 ```
 
 ---
@@ -33,7 +33,7 @@ console.log(a, b, c);
 5 2 3 // it take the default value when it does not in a array
 ```
 
----
+---https://github.com/abmishra-1119/MERN-Learning
 
 ### 3. Object Destructuring
 ```js
@@ -50,7 +50,7 @@ A // it take the default value
 
 ### 4. String Reverse
 - Implement a function that reverses `"JavaScript"` using the custom `.reverse()` method.  
-```js
+```jshttps://github.com/abmishra-1119/MERN-Learning
 const str = "JavaScript";
 
 String.prototype.reverse = () =>{
@@ -71,7 +71,7 @@ console.log("  hello world  ".trim().toUpperCase().slice(0,5));
 ```
 
 ```js
-HELL // because trim will remove the extra spcaes from it and toUpperCase will convert it into uppercase
+HELLO // because trim will remove the extra spcaes from it and toUpperCase will convert it into uppercase
 ```
 
 ---
@@ -85,7 +85,7 @@ function Animal(type) {
 }
 Animal.prototype.speak = function() {
   console.log(this.type + " makes a sound");
-};
+};https://github.com/abmishra-1119/MERN-Learning
 
 const dog = new Animal("Dog");
 dog.speak();
@@ -101,7 +101,7 @@ function Animal(type) {
   this.type = type;
 }
 Animal.prototype.speak = function() {
-  console.log(this.type + " makes a sound");
+  console.log(this.type + " makes a sound"https://github.com/abmishra-1119/MERN-Learning);
 };
 
 Animal.protoype.eat = function(){
@@ -122,7 +122,7 @@ const person = {
   greet: function() {
     console.log("Hello " + this.name);
   }
-};
+};https://github.com/abmishra-1119/MERN-Learning
 
 const greetFn = person.greet;
 greetFn(); 
@@ -151,7 +151,7 @@ class Book {
         this.author = author
     }
     
-    getDetails (){
+    getDetails (){https://github.com/abmishra-1119/MERN-Learning
         console.log(`${this.title} Written by ${this.author}`)
     }
 }
@@ -170,7 +170,7 @@ obj2.getDetails()
   - `map()` → multiply every element in `[1,2,3,4]` by 3.  
   - `filter()` → keep only even numbers.  
   - `reduce()` → find sum of all elements. 
-```js
+```jshttps://github.com/abmishra-1119/MERN-Learning
 const arr = [1,2,3,4];
 
 console.log(arr.map(i => i*3)
