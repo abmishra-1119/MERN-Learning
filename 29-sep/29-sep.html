@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .btn {
+            padding: 10px;
+            margin: 5px;
+            background-color: beige;
+            cursor: pointer;
+        }
+        
+        .list {
+            padding: 10px;
+            margin: 10px;
+            width: 60px;
+            background: rgb(120, 120, 189);
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .box {
+            padding: 20px;
+            background: lightblue;
+            margin: 10px;
+        }
+        
+        .inner-box {
+            padding: 20px;
+            background: lightcoral;
+            cursor: pointer;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>29 Sep Class</title>
+</head>
+
+<body>
+    <h1>DOM Manipulation Examples</h1>
+
+    <!-- Counter Example -->
+    <h3>Counter: <span id="count">0</span></h3>
+    <p>Click the buttons to update the counter</p>
+    <button class="btn" id="inc">Increase by 1</button>
+    <button class="btn" id="dec">Decrease by 1</button>
+
+    <h3>Timer: <span id="timer">0</span></h3>
+    <p>Click the buttons to start the timer</p>
+    <button class="btn" id="timerStart">Increase by 1 every second</button>
+    <button class="btn" id="timerRemove">Stop timer and remove listener</button>
+
+    <hr>
+
+    <!-- Event Delegation Example -->
+    <h3>Event Delegation</h3>
+    <ul id="parent-list">
+        <li class="list">1</li>
+        <li class="list">2</li>
+        <li class="list">3</li>
+        <li class="list">4</li>
+        <li class="list">5</li>
+        <li class="list">6</li>
+    </ul>
+
+    <hr>
+
+    <!-- Form preventDefault Example -->
+    <h3>Form Example (preventDefault)</h3>
+    <form id="myForm">
+        <input name="input" type="text" placeholder="Enter your name" required>
+        <button type="submit" class="btn">Submit</button>
+    </form>
+    <p id="form-msg"></p>
+
+    <hr>
+
+    <!-- Stop Propagation Example -->
+    <h3>Stop Propagation</h3>
+    <div class="box" id="outer-box">
+        Outer Box (click me)
+        <div class="inner-box" id="inner-box">
+            Inner Box (click me - stop propagation)
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Toggle Example -->
+    <h3>Toggle Example</h3>
+    <button class="btn" id="toggle-btn">Toggle Paragraph</button>
+    <p id="toggle-text">This paragraph can be shown/hidden.</p>
+
+    <script src="./29-sep.js"></script>
+</body>
+
+</html>
