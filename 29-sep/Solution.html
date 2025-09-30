@@ -5,34 +5,33 @@
     <title>Solutions</title>
     <style>
         /* Button styling */
-        
         .inc {
             background-color: rgb(89, 196, 89);
         }
-        
+
         .dec {
             background-color: rgb(192, 47, 47);
         }
-        
+
         .res {
             background-color: lightblue;
         }
-        
+
         .stop {
             background-color: gold;
         }
+
         /* Headings for each section */
-        
         .heading {
             font-size: large;
             font-weight: 700;
         }
+
         /* Styling for unordered lists and list items */
-        
         ul {
             list-style-type: none;
         }
-        
+
         ul li {
             text-align: center;
             border: 2px solid black;
@@ -41,17 +40,17 @@
             padding: 10px;
             width: 40px;
         }
+
         /* Ensure toggle paragraphs are visible initially */
-        
         #para {
             display: block;
         }
-        
+
         #para2 {
             display: block;
         }
+
         /* Nested boxes for event propagation example */
-        
         .outer-box {
             background-color: red;
             width: 160px;
@@ -59,14 +58,14 @@
             padding: 80px;
             margin: 50px;
         }
-        
+
         .inner-box {
             background-color: yellow;
             width: 100px;
             height: 100px;
             padding: 25px;
         }
-        
+
         .inner-inner-box {
             width: 80px;
             height: 80px;
@@ -74,33 +73,106 @@
             color: aliceblue;
             padding: 5px;
         }
+
         /* Dataset button colors */
-        
         #btn-green {
             background-color: forestgreen;
         }
-        
+
         #btn-red {
             background-color: red;
         }
-        
+
         #btn-blue {
             background-color: rgb(0, 0, 248);
             color: antiquewhite;
         }
-        
+
+        /* Default paragraph font size */
         #para-tag {
             font-size: 16px;
         }
-        
+
         #wh-box-click {
             height: 10px;
+        }
+
+        #lists-container {
+            display: flex;
+            justify-content: center;
+            /* center the whole list */
+            margin-top: 20px;
+        }
+
+        #lists {
+            display: flex;
+            flex-wrap: wrap;
+            /* allow multiple rows */
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            /* keeps them centered with 4 per row */
+            justify-content: center;
+        }
+
+        #lists li {
+            flex: 1 1 calc(25% - 10px);
+            /* 4 items per row */
+            max-width: calc(25% - 10px);
+            min-width: 100px;
+            height: 100px;
+            background: lightblue;
+            border: 2px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Container centers the whole list */
+        #listx-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Flexbox list */
+        #listx {
+            display: flex;
+            flex-wrap: wrap;
+            /* multiple rows */
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            justify-content: center;
+        }
+
+        /* Each list item styled as a box */
+        #listx li {
+            flex: 1 1 calc(25% - 10px);
+            /* 4 per row */
+            max-width: calc(25% - 10px);
+            min-width: 100px;
+            height: 100px;
+            background: lightcoral;
+            border: 2px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
     <h1>Dom Manipulation Solution</h1>
+
     <!-- Counter Example -->
     <div>
         <div class="heading">
@@ -132,19 +204,20 @@
 
     <!-- Event Delegation Example -->
     <div>
-        <div class="heading">
-            Event Delegation
+        <!-- Event Delegation Example -->
+        <div class="heading">Event Delegation</div>
+        <div id="lists-container">
+            <ul id="lists">
+                <li class="li">1</li>
+                <li class="li">2</li>
+                <li class="li">3</li>
+                <li class="li">4</li>
+                <li class="li">5</li>
+            </ul>
         </div>
-        <br>
+        <button id="addInList">Add List Item</button>
         <div id="wh-box-click"></div>
-        <ul id="lists">
-            <li class="li">1</li>
-            <li class="li">2</li>
-            <li class="li">3</li>
-            <li class="li">4</li>
-            <li class="li">5</li>
-        </ul>
-        <button id="addInList">Add</button>
+
     </div>
 
     <br>
@@ -167,9 +240,7 @@
     <div>
         <div class="heading">Toggle Button</div>
         <button id="toggle-botton">Hide</button>
-        <div style="min-height: 20px;">
-            <div id="para" style="min-height: 100%;">This is paragraph</div>
-        </div>
+        <p id="para">This is paragraph</p>
     </div>
 
     <br>
@@ -208,9 +279,12 @@
         <div class="heading"> setTimeout vs setInterval</div>
         <div class="inner-box" id="color-change">Change color in 2 sec</div>
         <br>
-        <button class="color-change-btn"> Stop</button>
+        <button id="start-color-btn">Start Color Change</button>
+        <button id="stop-color-btn">Stop Color Change</button>
+        <button id="start-timeout-btn">Start Timeout</button>
+        <button id="cancel-timeout-btn">Cancel Timeout</button>
+        <div id="interval-timeout-log"></div>
     </div>
-
     <br>
     <hr>
 
@@ -259,17 +333,19 @@
 
     <br>
     <hr>
+
     <!-- Add List Item Example -->
     <div>
         <div class="heading">Add List Item</div>
-        <br>
-        <ul id="listx">
-            <li class="list">Item 1</li>
-            <li class="list">Item 2</li>
-            <li class="list">Item 3</li>
-            <li class="list">Item 4</li>
-            <li class="list">Item 5</li>
-        </ul>
+        <div id="listx-container">
+            <ul id="listx">
+                <li class="list">Item 1</li>
+                <li class="list">Item 2</li>
+                <li class="list">Item 3</li>
+                <li class="list">Item 4</li>
+                <li class="list">Item 5</li>
+            </ul>
+        </div>
         <button id="addInListX">Add</button>
     </div>
 
