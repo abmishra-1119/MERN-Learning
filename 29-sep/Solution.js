@@ -6,19 +6,19 @@ const Reset = document.querySelector("#reset");
 
 // Increment counter by 2
 Increment.addEventListener("click", () => {
-    const { innerText = "" } = Counter;
-    Counter.innerText = +innerText + 2;
+  const { innerText = "" } = Counter;
+  Counter.innerText = +innerText + 2;
 });
 
 // Decrement counter by 2
 Decrement.addEventListener("click", () => {
-    const { innerText = "" } = Counter;
-    Counter.innerText = +innerText - 2;
+  const { innerText = "" } = Counter;
+  Counter.innerText = +innerText - 2;
 });
 
 // Reset counter to 0
 Reset.addEventListener("click", () => {
-    Counter.innerText = 0;
+  Counter.innerText = 0;
 });
 
 // =================== Timer ===================
@@ -31,20 +31,20 @@ let TimerId;
 
 // Start increasing timer every 1 second
 const TimeInc = () => {
-    if (TimerId) clearInterval(TimerId);
-    TimerId = setInterval(() => {
-        const { innerText } = Timer;
-        Timer.innerText = +innerText + 1;
-    }, 1000);
+  if (TimerId) clearInterval(TimerId);
+  TimerId = setInterval(() => {
+    const { innerText } = Timer;
+    Timer.innerText = +innerText + 1;
+  }, 1000);
 };
 
 // Start decreasing timer every 1 second
 const TimeDec = () => {
-    if (TimerId) clearInterval(TimerId);
-    TimerId = setInterval(() => {
-        const { innerText } = Timer;
-        Timer.innerText = +innerText - 1;
-    }, 1000);
+  if (TimerId) clearInterval(TimerId);
+  TimerId = setInterval(() => {
+    const { innerText } = Timer;
+    Timer.innerText = +innerText - 1;
+  }, 1000);
 };
 
 // Bind timer buttons
@@ -53,35 +53,36 @@ TimerDecrement.addEventListener("click", TimeDec);
 
 // Reset timer to 0
 TimerReset.addEventListener("click", () => {
-    if (TimerId) clearInterval(TimerId);
-    Timer.innerText = 0;
+  if (TimerId) clearInterval(TimerId);
+  Timer.innerText = 0;
 });
 
 // Stop timer without resetting
 TimerStop.addEventListener("click", () => {
-    if (TimerId) clearInterval(TimerId);
+  if (TimerId) clearInterval(TimerId);
 });
 
 // =================== Event Delegation ===================
-const Lists = document.querySelector("#lists");
+let Lists = document.querySelector("#lists");
 const AddInList = document.querySelector("#addInList");
-const whBoxClick = document.querySelector('#wh-box-click')
+const whBoxClick = document.querySelector("#wh-box-click");
 
-// Add new <li> dynamically
+// Add new list item
 AddInList.addEventListener("click", () => {
-    const AllLi = document.querySelectorAll(".li");
-    const newLi = document.createElement("li");
-    newLi.className = "li";
-    newLi.innerText = AllLi.length + 1;
-    Lists.appendChild(newLi);
+  const AllLi = document.querySelectorAll("#lists li");
+  const newLi = document.createElement("li");
+  newLi.innerText = AllLi.length + 1;
+  Lists.appendChild(newLi);
+  logMsg(`New list item added: ${newLi.innerText}`);
 });
 
-// Event delegation -> click on any li prints its text
+// Event delegation to detect which box clicked
 Lists.addEventListener("click", (e) => {
-    if (e.target.tagName === "LI") {
-        whBoxClick.innerText = e.target.innerText
-        console.log(e.target.innerText);
-    }
+  if (e.target.tagName === "LI") {
+    whBoxClick.innerText = `You clicked Box ${e.target.innerText}`;
+    logMsg(`Clicked on list box ${e.target.innerText}`);
+    e.stopPropagation();
+  }
 });
 
 // =================== Form preventDefault ===================
@@ -90,10 +91,10 @@ const FromMsg = document.querySelector("#form-msg");
 
 // Prevent form reload, display input value
 InputForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    FromMsg.innerText = e.target.input.value;
-    console.log(e.target.input.value);
-    e.target.input.value = "";
+  e.preventDefault();
+  FromMsg.innerText = e.target.input.value;
+  console.log(e.target.input.value);
+  e.target.input.value = "";
 });
 
 // =================== Toggle Button ===================
@@ -102,13 +103,13 @@ const Para = document.querySelector("#para");
 
 // Toggle show/hide paragraph
 ToggleButton.addEventListener("click", () => {
-    if (Para.style.display !== "none") {
-        Para.style.display = "none";
-        ToggleButton.innerText = "Show";
-    } else {
-        Para.style.display = "block";
-        ToggleButton.innerText = "Hide";
-    }
+  if (Para.style.display !== "none") {
+    Para.style.display = "none";
+    ToggleButton.innerText = "Show";
+  } else {
+    Para.style.display = "block";
+    ToggleButton.innerText = "Hide";
+  }
 });
 
 // =================== Stop Propagation ===================
@@ -116,20 +117,33 @@ const OuterBox = document.querySelector(".outer-box");
 const InnerBox = document.querySelector(".inner-box");
 const InnerInerBox = document.querySelector(".inner-inner-box");
 
+// Create a log container for stop propagation
+const propagationLog = document.createElement("div");
+propagationLog.id = "propagation-log";
+OuterBox.parentElement.appendChild(propagationLog);
+
+const logPropagation = (msg) => {
+  let p = document.createElement("p");
+  p.innerText = msg;
+  propagationLog.appendChild(p);
+};
+
 // Parent box click
 OuterBox.addEventListener("click", () => {
-    console.log("outer box");
+  logPropagation("Outer Box clicked (propagation reached here).");
 });
 
 // Child box click (stops bubbling to parent)
 InnerBox.addEventListener("click", (e) => {
-    e.stopPropagation();
-    console.log("inner box");
+  e.stopPropagation();
+  logPropagation("Inner Box clicked (propagation STOPPED here).");
 });
 
-// Inner-most box click (no stopPropagation here)
-InnerInerBox.addEventListener("click", (e) => {
-    console.log("inner inner box");
+// Inner-most box click
+InnerInerBox.addEventListener("click", () => {
+  logPropagation(
+    "Inner Inner Box clicked (event handled here, will bubble unless stopped)."
+  );
 });
 
 // =================== Create & Remove DOM Elements ===================
@@ -137,50 +151,112 @@ const ParaLists = document.querySelector("#para-lists");
 const AddParaBtn = document.querySelector("#add-para-btn");
 const RemoveParaBtn = document.querySelector("#remove-para-btn");
 
-// Add new <p>
+// Helper to re-number all paragraphs
+function renumberParas() {
+  const allParas = ParaLists.querySelectorAll("p");
+  allParas.forEach((p, index) => {
+    // keep only text (remove old button text)
+    const btn = p.querySelector("button");
+    p.firstChild.textContent = `Hello World ${index + 1} `;
+    if (!btn) {
+      const delBtn = document.createElement("button");
+      delBtn.innerText = "Delete";
+      delBtn.style.marginLeft = "10px";
+      delBtn.addEventListener("click", () => {
+        p.remove();
+        // renumberParas(); // re-number after deletion
+      });
+      p.appendChild(delBtn);
+    }
+  });
+}
+
+// Add new <p> with delete button
 AddParaBtn.addEventListener("click", () => {
-    let newPara = document.createElement("p");
-    newPara.innerText = "Hello World";
-    ParaLists.appendChild(newPara);
+  let newPara = document.createElement("p");
+  newPara.innerText = `Hello World`; // number added later
+  ParaLists.appendChild(newPara);
+  renumberParas();
 });
 
 // Remove last <p>
 RemoveParaBtn.addEventListener("click", () => {
+  if (ParaLists.lastElementChild) {
     ParaLists.removeChild(ParaLists.lastElementChild);
+    renumberParas();
+  }
 });
+
+// Initial renumber for the first <p>
+renumberParas();
 
 // =================== setTimeout vs setInterval ===================
 const ChangeColor = document.querySelector("#color-change");
-const ChangeColorBtn = document.querySelector(".color-change-btn");
+const StartColorBtn = document.querySelector("#start-color-btn");
+const StopColorBtn = document.querySelector("#stop-color-btn");
+const StartTimeoutBtn = document.querySelector("#start-timeout-btn");
+const CancelTimeoutBtn = document.querySelector("#cancel-timeout-btn");
 const ShowAfter = document.querySelector("#show-p-in-5-sec");
+const IntervalTimeoutLog = document.querySelector("#interval-timeout-log");
 
 // Array of colors to cycle through
-const colors = ["yellow", "red", "green", "blue", "purple", "orange"];
+const colors = ["red", "green", "blue", "purple", "orange", "yellow"];
 let colorIndex = 0;
+let ChangeIntervelId = null;
+let TimeoutId = null;
 
-// Change color every 2 seconds
-const ChangeIntervelId = setInterval(() => {
-    ChangeColor.style.backgroundColor = colors[colorIndex];
-    console.log("Color-Change:", colors[colorIndex]);
+// Helper to log messages
+const logMsg = (msg) => {
+  let p = document.createElement("p");
+  p.innerText = msg;
+  IntervalTimeoutLog.appendChild(p);
+};
 
-    // Move to next color (loop back to start when done)
-    colorIndex = (colorIndex + 1) % colors.length;
-}, 2000);
-
-// Stop color change
-ChangeColorBtn.addEventListener("click", () => {
+// Start color change
+StartColorBtn.addEventListener("click", () => {
+  if (ChangeIntervelId) {
     clearInterval(ChangeIntervelId);
-    console.log("Color-Change-Stop");
+  }
+  ChangeIntervelId = setInterval(() => {
+    ChangeColor.style.backgroundColor = colors[colorIndex];
+    logMsg(`Color changed to: ${colors[colorIndex]}`);
+    colorIndex = (colorIndex + 1) % colors.length;
+  }, 2000);
+  logMsg("Started color change interval");
 });
 
-// Show <p> after 5 seconds
-setTimeout(() => {
+// Stop color change
+StopColorBtn.addEventListener("click", () => {
+  if (ChangeIntervelId) {
+    clearInterval(ChangeIntervelId);
+    ChangeIntervelId = null;
+    logMsg("Stopped color change interval");
+  }
+});
+
+// Start timeout
+StartTimeoutBtn.addEventListener("click", () => {
+  if (TimeoutId) {
+    clearTimeout(TimeoutId); // reset if already running
+  }
+  TimeoutId = setTimeout(() => {
     let newp = document.createElement("p");
     newp.innerText = "Hello after 5 sec";
     ShowAfter.appendChild(newp);
-    console.log("Hello after 5 sec");
-}, 5000);
+    logMsg("Timeout executed: Added 'Hello after 5 sec'");
+    TimeoutId = null;
+  }, 5000);
+  logMsg("Timeout started (5 sec countdown)");
+});
 
+// Cancel timeout
+CancelTimeoutBtn.addEventListener("click", () => {
+  if (TimeoutId) {
+    clearTimeout(TimeoutId);
+    logMsg("Timeout cancelled before execution");
+    TimeoutId = null;
+  }
+});
 
 // =================== Dataset Attributes ===================
 const BtnGreen = document.querySelector("#btn-green");
@@ -190,11 +266,11 @@ const BtnWhite = document.querySelector("#btn-white");
 
 // Change body background based on dataset color
 const BgColorChange = (element) => {
-    // let color = element.getAttribute("data-color");
-    let color = element.dataset.color;
-    console.log(color);
+  // let color = element.getAttribute("data-color");
+  let color = element.dataset.color;
+  console.log(color);
 
-    document.body.style.backgroundColor = color;
+  document.body.style.backgroundColor = color;
 };
 
 BtnGreen.addEventListener("click", () => BgColorChange(BtnGreen));
@@ -209,16 +285,16 @@ const ParaTag = document.querySelector("#para-tag");
 
 // Increase font size
 IncreaseSize.addEventListener("click", () => {
-    const computedStyle = window.getComputedStyle(ParaTag);
-    const fontSize = computedStyle.getPropertyValue("font-size");
-    ParaTag.style.fontSize = `${parseInt(fontSize) + 2}px`;
+  const computedStyle = window.getComputedStyle(ParaTag);
+  const fontSize = computedStyle.getPropertyValue("font-size");
+  ParaTag.style.fontSize = `${parseInt(fontSize) + 2}px`;
 });
 
 // Decrease font size
 DecreaseSize.addEventListener("click", () => {
-    const computedStyle = window.getComputedStyle(ParaTag);
-    const fontSize = computedStyle.getPropertyValue("font-size");
-    ParaTag.style.fontSize = `${parseInt(fontSize) - 2}px`;
+  const computedStyle = window.getComputedStyle(ParaTag);
+  const fontSize = computedStyle.getPropertyValue("font-size");
+  ParaTag.style.fontSize = `${parseInt(fontSize) - 2}px`;
 });
 
 // =================== Input Validation ===================
@@ -227,17 +303,17 @@ const AgeMsg = document.querySelector("#age-msg");
 
 // Validate age between 1 and 100
 AgeForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (
-        parseInt(e.target.input.value) > 1 &&
-        parseInt(e.target.input.value) < 100
-    ) {
-        AgeMsg.innerText = `${e.target.input.value} is valid age`;
-    } else {
-        AgeMsg.innerText = `${e.target.input.value} is Invalid age`;
-    }
-    console.log(parseInt(e.target.input.value));
-    e.target.input.value = "";
+  e.preventDefault();
+  if (
+    parseInt(e.target.input.value) > 1 &&
+    parseInt(e.target.input.value) < 100
+  ) {
+    AgeMsg.innerText = `${e.target.input.value} is valid age`;
+  } else {
+    AgeMsg.innerText = `${e.target.input.value} is Invalid age`;
+  }
+  console.log(parseInt(e.target.input.value));
+  e.target.input.value = "";
 });
 
 // =================== Change Text Content ===================
@@ -245,19 +321,19 @@ const PTag = document.querySelector("#p-tag");
 const NewParaBtn = document.querySelector("#new-para");
 
 const paraArray = [
-    "This is the first new paragraph.",
-    "Here comes the second one with some extra text.",
-    "Now showing the third paragraph for testing.",
-    "Another paragraph appears here.",
-    "Final one in the list — after this it will restart.",
+  "This is the first new paragraph.",
+  "Here comes the second one with some extra text.",
+  "Now showing the third paragraph for testing.",
+  "Another paragraph appears here.",
+  "Final one in the list — after this it will restart.",
 ];
 
 let currentIndex = 0;
 
 // Change existing paragraph text
 NewParaBtn.addEventListener("click", () => {
-    PTag.innerText = paraArray[currentIndex];
-    currentIndex = (currentIndex + 1) % paraArray.length;
+  PTag.innerText = paraArray[currentIndex];
+  currentIndex = (currentIndex + 1) % paraArray.length;
 });
 
 // =================== Add List Item ===================
@@ -266,11 +342,11 @@ const AddInListX = document.querySelector("#addInListX");
 
 // Add new list item dynamically
 AddInListX.addEventListener("click", () => {
-    let AllLix = document.getElementsByClassName("list");
-    let newLix = document.createElement("li");
-    newLix.className = "list";
-    newLix.innerText = `Item ${AllLix.length + 1}`;
-    Listx.appendChild(newLix);
+  let AllLix = document.getElementsByClassName("list");
+  let newLix = document.createElement("li");
+  newLix.className = "list";
+  newLix.innerText = `Item ${AllLix.length + 1}`;
+  Listx.appendChild(newLix);
 });
 
 // =================== Hide/Show Element ===================
@@ -279,13 +355,13 @@ const Para2 = document.querySelector("#para2");
 
 // Toggle paragraph visibility
 ToggleButton2.addEventListener("click", () => {
-    if (Para2.style.visibility === "hidden") {
-        Para2.style.visibility = "visible";
-        ToggleButton2.innerText = "Show";
-    } else {
-        Para2.style.visibility = "hidden";
-        ToggleButton2.innerText = "Hide";
-    }
+  if (Para2.style.visibility === "hidden") {
+    Para2.style.visibility = "visible";
+    ToggleButton2.innerText = "Show";
+  } else {
+    Para2.style.visibility = "hidden";
+    ToggleButton2.innerText = "Hide";
+  }
 });
 
 // =================== Background Color Switcher ===================
@@ -296,8 +372,17 @@ const BtnWhite2 = document.querySelector("#btn-white2");
 
 // Change body background with direct colors
 BtnGreen2.addEventListener("click", () => {
-    document.body.style.backgroundColor = "green";
+  document.body.style.backgroundColor = "green";
 });
-BtnRed2.addEventListener("click", () => (document.body.style.backgroundColor = "red"));
-BtnBlue2.addEventListener("click", () => (document.body.style.backgroundColor = "blue"));
-BtnWhite2.addEventListener("click", () => (document.body.style.backgroundColor = "white"));
+BtnRed2.addEventListener(
+  "click",
+  () => (document.body.style.backgroundColor = "red")
+);
+BtnBlue2.addEventListener(
+  "click",
+  () => (document.body.style.backgroundColor = "blue")
+);
+BtnWhite2.addEventListener(
+  "click",
+  () => (document.body.style.backgroundColor = "white")
+);
