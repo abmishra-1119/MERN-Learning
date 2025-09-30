@@ -4,6 +4,8 @@
 <head>
     <title>Solutions</title>
     <style>
+        /* Button styling */
+        
         .inc {
             background-color: rgb(89, 196, 89);
         }
@@ -19,11 +21,13 @@
         .stop {
             background-color: gold;
         }
+        /* Headings for each section */
         
         .heading {
             font-size: large;
             font-weight: 700;
         }
+        /* Styling for unordered lists and list items */
         
         ul {
             list-style-type: none;
@@ -37,6 +41,7 @@
             padding: 10px;
             width: 40px;
         }
+        /* Ensure toggle paragraphs are visible initially */
         
         #para {
             display: block;
@@ -45,6 +50,7 @@
         #para2 {
             display: block;
         }
+        /* Nested boxes for event propagation example */
         
         .outer-box {
             background-color: red;
@@ -68,6 +74,7 @@
             color: aliceblue;
             padding: 5px;
         }
+        /* Dataset button colors */
         
         #btn-green {
             background-color: forestgreen;
@@ -85,12 +92,16 @@
         #para-tag {
             font-size: 16px;
         }
+        
+        #wh-box-click {
+            height: 10px;
+        }
     </style>
 </head>
 
 <body>
     <h1>Dom Manipulation Solution</h1>
-
+    <!-- Counter Example -->
     <div>
         <div class="heading">
             <span>Counter: </span><span id="counter">0</span>
@@ -104,6 +115,7 @@
     <br>
     <hr>
 
+    <!-- Timer Example (Increment, Decrement, Reset, Stop) -->
     <div>
         <div class="heading">
             <span>Timer: </span><span id="timer">0</span>
@@ -118,11 +130,13 @@
     <br>
     <hr>
 
+    <!-- Event Delegation Example -->
     <div>
         <div class="heading">
             Event Delegation
         </div>
         <br>
+        <div id="wh-box-click"></div>
         <ul id="lists">
             <li class="li">1</li>
             <li class="li">2</li>
@@ -130,29 +144,38 @@
             <li class="li">4</li>
             <li class="li">5</li>
         </ul>
-
         <button id="addInList">Add</button>
     </div>
+
     <br>
     <hr>
+
+    <!-- Form preventDefault Example -->
     <div>
         <div class="heading">Form preventDefault</div>
         <form id="input-form">
             <input name="input" type="text" placeholder="Enter" required>
-            <button>sumbit</button>
+            <button>submit</button>
             <p id="form-msg"></p>
         </form>
     </div>
 
     <br>
     <hr>
+
+    <!-- Toggle Button Example -->
     <div>
         <div class="heading">Toggle Button</div>
         <button id="toggle-botton">Hide</button>
-        <p id="para">This is paragraph</p>
+        <div style="min-height: 20px;">
+            <div id="para" style="min-height: 100%;">This is paragraph</div>
+        </div>
     </div>
+
     <br>
     <hr>
+
+    <!-- Event Propagation Example -->
     <div>
         <div class="heading">Stop Propagation</div>
         <div class="outer-box">
@@ -160,13 +183,14 @@
             <div class="inner-box">
                 Inner Box
                 <div class="inner-inner-box">Inner Inner Box</div>
-
             </div>
         </div>
     </div>
 
     <br>
     <hr>
+
+    <!-- Create & Remove DOM Elements Example -->
     <div>
         <div class="heading">Create & Remove DOM Elements</div>
         <div id="para-lists">
@@ -178,6 +202,8 @@
 
     <br>
     <hr>
+
+    <!-- setTimeout vs setInterval Example -->
     <div id="show-p-in-5-sec">
         <div class="heading"> setTimeout vs setInterval</div>
         <div class="inner-box" id="color-change">Change color in 2 sec</div>
@@ -187,44 +213,53 @@
 
     <br>
     <hr>
+
+    <!-- Dataset Attributes Example -->
     <div>
         <div class="heading">Dataset Attributes</div>
         <button id="btn-green" data-color='green'>Green</button>
         <button id="btn-red" data-color="red">Red</button>
         <button id="btn-blue" data-color="blue">Blue</button>
         <button id="btn-white" data-color="white">White</button>
-
     </div>
 
     <br>
     <hr>
+
+    <!-- Style Manipulation Example -->
     <div>
         <div class="heading">Style Manipulation</div>
-        <p id="para-tag">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita praesentium libero incidunt explicabo nemo voluptate magnam possimus, rem, natus, ut optio alias doloremque suscipit impedit! Corrupti quidem sed placeat explicabo.</p>
-        <button id="inc-size">Increse Font</button>
+        <p id="para-tag">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+        <button id="inc-size">Increase Font</button>
         <button id="dec-size">Decrease Font</button>
     </div>
 
     <br>
     <hr>
+
+    <!-- Input Validation Example -->
     <div>
         <div class="heading"> Input Validation</div>
         <form id="age-form">
             <input name="input" type="number" placeholder="Enter Age" required>
-            <button>sumbit</button>
+            <button>submit</button>
             <p id="age-msg"></p>
         </form>
     </div>
+
     <br>
     <hr>
+
+    <!-- Change Text Content Example -->
     <div>
         <div class="heading">Change Text Content</div>
-        <p id="p-tag">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt incidunt corrupti ducimus aut sed mollitia voluptatum esse eligendi, possimus quam quod quas nam sint optio nesciunt cumque ad nulla qui.</p>
+        <p id="p-tag">Lorem ipsum dolor sit amet consectetur...</p>
         <button id="new-para">New Para</button>
     </div>
 
     <br>
     <hr>
+    <!-- Add List Item Example -->
     <div>
         <div class="heading">Add List Item</div>
         <br>
@@ -235,12 +270,13 @@
             <li class="list">Item 4</li>
             <li class="list">Item 5</li>
         </ul>
-
         <button id="addInListX">Add</button>
     </div>
 
     <br>
     <hr>
+
+    <!-- Hide/Show Element Example -->
     <div>
         <div class="heading">Hide/Show Element</div>
         <p id="para2">This is paragraph</p>
@@ -249,14 +285,17 @@
 
     <br>
     <hr>
+
+    <!-- Background Color Switcher Example -->
     <div>
         <div class="heading">Background Color Switcher</div>
         <button id="btn-green2">Green</button>
         <button id="btn-red2">Red</button>
         <button id="btn-blue2">Blue</button>
         <button id="btn-white2">White</button>
-
     </div>
+
+    <!-- Link to JS File -->
     <script src="./Solution.js"></script>
 </body>
 

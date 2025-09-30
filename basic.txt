@@ -1,0 +1,138 @@
+Question:
+Given the following object, how would you create a deep copy of it so that modifying the nested object in the copy does not affect the original?
+const original = { name: "Alice", address: { city: "Paris", zip: 75000 } };
+
+Answer: We can use a structuredClone or json.parse to create a deep copy 
+const deepCopy = structuredClone(original)
+
+Question:
+Write a function that reverses a string without using the built-in reverse() method.
+function reverseString(str) {
+  your code here
+}
+console.log(reverseString("JavaScript")); // should print "tpircSavaJ"
+
+Answer: 
+const reverseString = (str)=>{
+    let temp = '';
+    for(let char of str){
+        temp = char +temp;
+    }
+    return temp;
+}
+
+
+Question:
+Given an array of numbers, write a function that returns a new array with only even numbers multiplied by 2 using array methods.
+const numbers = [1, 2, 3, 4, 5, 6];
+// expected output: [4, 8, 12]
+
+Answer:
+console.log(arr.filter((el)=> el%2===0).map((fel)=> fel*2))
+
+
+Question:
+How can you create an object with keys dynamically based on an array of strings?
+const keys = ["name", "age", "city"];
+const values = ["Alice", 25, "Paris"];
+// create an object: { name: "Alice", age: 25, city: "Paris" }
+
+Answer:
+let object= { name: "Alice", age: 25, city: "Paris" }
+const keys = Object.keys(object)
+const values = Object.values(object)
+console.log(keys,values)
+
+
+Question:
+What will be the output of the following and why?console.log(5 + "5");
+console.log("5" - 2);
+console.log(true + 1);
+console.log(null == 0);
+console.log(null === 0);
+
+Answer: 
+console.log(5 + "5") // 55 because it will convert the number to string add in the string.
+console.log("5" - 2); // 3 because it will convert the string to number because there is no "-" operator for string 
+console.log(true + 1); // 2 because it take true to truthy value and take as "1"
+console.log(null == 0); // false because null is object and 0 is number
+console.log(null === 0); // false because null is object and 0 is number
+
+
+Question:
+Write a closure that keeps track of a counter. Each time the function is called, it should increment and return the counter.
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
+
+Answer:
+
+function counter (){
+    let count = 0
+    return ()=>{
+       count++
+      return count
+   }
+}
+
+const myCounter = counter()
+
+console.log(myCounter()) // 1
+console.log(myCounter()) // 2
+console.log(myCounter()) // 3
+
+
+Question:
+What will be logged to the console and why?
+const obj1 = { a: 1 };
+const obj2 = obj1;
+obj2.a = 2;
+console.log(obj1.a);
+
+Answer:
+2 // because in obj2 it take the reference of obj1 and when update in obj2 is also update in obj1
+
+Question:
+Given an array of objects, find all objects where the age is greater than 18.
+const users = [
+  { name: "Alice", age: 17 },
+  { name: "Bob", age: 20 },
+  { name: "Charlie", age: 15 },
+  { name: "David", age: 25 }
+];
+// expected output: [{name: "Bob", age: 20}, {name: "David", age: 25}]
+
+Answer: 
+console.log(users.filter((user)=> user.age >18)) // it will filter out the user with greater than 18 age
+
+
+Question:
+Write a function to capitalize the first letter of each word in a string.
+function capitalizeWords(str) {
+  // your code here
+}
+console.log(capitalizeWords("hello world from js")); // "Hello World From Js"
+
+Answer:
+function capitalizeWords (str){
+    const words = str.split(' ');
+    let temp =""
+    for(let word of words){
+        temp += word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() + " "
+    }
+    return temp
+}
+
+console.log(capitalizeWords("hello i am abhishek mishra"))
+
+
+Question:
+What’s the difference between these two approaches? Which one is shallow and which is deep?
+const arr = [[1], [2], [3]];
+const copy1 = arr.slice();
+const copy2 = JSON.parse(JSON.stringify(arr));
+
+Answer:
+copy1 is shallow copy because slice method will return a copy of an array
+copy2 will be a deep copy because JSON.parse is used to create a deep copy of an array
