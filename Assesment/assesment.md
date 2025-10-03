@@ -109,20 +109,83 @@ Write a function `checkNumber(num)` that logs:
 - "Negative" if num < 0  
 - "Zero" otherwise.
 
-2. **Loop & Arrow Function:**  
+Code: 
+```js
+function checkNumber(num) {
+    if (num > 0) {
+        return "Possitive"
+    } else if (num < 0) {
+        return 'Negative'
+    } else {
+        return "zero"
+    }
+}
+
+console.log(checkNumber(0)) // Zero
+console.log(checkNumber(15)) // Possitive
+console.log(checkNumber(-15)) // Negative
+```
+
+1. **Loop & Arrow Function:**  
 Write a function that takes an array of numbers and returns a **new array with each number doubled** using a `forEach` loop and arrow function.
 
-3. **Object Destructuring & Template Literals:**  
+Code:
+```js
+function numberDouble(arr) {
+    let result = []
+    arr.forEach((el) => {
+        result.push(el * 2)
+    })
+    return result
+}
+
+console.log(numberDouble([1, 2, 3, 4, 5]))
+```
+
+1. **Object Destructuring & Template Literals:**  
 ```js
 const user = { name: "John", age: 25 };
 // Use destructuring and template literals to log:
 // "John is 25 years old."
 ```
+Code:
+```js
+const user = { name: "John", age: 25 };
 
-4. **DOM Manipulation:**  
+let { name, age } = user
+
+console.log(`${name} is ${age} years old `)
+```
+
+1. **DOM Manipulation:**  
 Write code to select a button with ID `#btn` and a paragraph with class `.msg`. When the button is clicked, change the paragraph text to **“Button Clicked!”**
 
-5. **Array Methods:**  
+```js
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Assesment</title>
+</head>
+
+<body>
+
+    <p class="msg"> This is p Tag</p>
+    <button id="btn">Click me</button>
+    <script>
+        const Button = document.querySelector('#btn');
+        const ParaTag = document.querySelector('.msg')
+
+        Button.addEventListener('click', () => {
+            ParaTag.innerText = "Button Clicked!"
+        })
+    </script>
+</body>
+
+</html>
+```
+
+1. **Array Methods:**  
 Given:
 ```js
 const numbers = [1, 2, 3, 4, 5];
@@ -131,8 +194,32 @@ const numbers = [1, 2, 3, 4, 5];
 - Use `reduce` to get the sum of numbers.  
 - Log both results.
 
-6. **Async/Await:**  
+Code: 
+```js
+const numbers = [1, 2, 3, 4, 5];
+
+console.log(numbers.filter((el) => el % 2 === 0)) // [2,4]
+
+console.log(numbers.reduce((acc, el) => acc + el)) // 15
+```
+
+1. **Async/Await:**  
 Write a function that fetches data from `https://jsonplaceholder.typicode.com/todos/1` using **async/await** and logs the JSON response.
+
+Code: 
+```js
+async function fethData() {
+    try {
+        let res = await fetch('https://jsonplaceholder.typicode.com/todos/1')
+        return res.json()
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+const fetchedData = await fethData()
+console.log(fetchedData);
+```
 
 ---
 
