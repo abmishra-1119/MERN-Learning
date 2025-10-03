@@ -254,6 +254,44 @@ Write a script that:
 - Correct usage of Promise + setTimeout + async → 5  
 - Fetch usage and error handling → 5
 
+Code:
+```js
+console.log("start");
+
+setTimeout(() => {
+    console.log("TimeOut")
+}, 0)
+
+setTimeout(() => {
+    Promise.resolve(console.log("promise Resolved"))
+}, 0);
+
+// Promise.resolve(console.log("Promise Resolved"))
+
+async function fethData() {
+    try {
+        let res = await fetch('https://jsonplaceholder.typicode.com/todos/1')
+        console.log("Data Fetched")
+        return res.json()
+    } catch (e) {
+        console.error(e)
+    }
+}
+const fetchedData = await fethData()
+console.log(fetchedData);
+
+console.log("End")
+
+Output: 
+start
+TimeOut
+promise
+Data Fetched
+{ userId: 1, id: 1, title: 'delectus aut autem', completed: false }
+End
+
+```
+
 ---
 
 ## 🧾 Mark Distribution
