@@ -8,10 +8,10 @@ const ShowSkeleton = async() => {
         const card = document.createElement('div')
         card.classList.add('output')
         card.innerHTML = `<div class="card">
-            <div class="skeleton" style="width: 80%"></div>
-            <div class="skeleton" style="width: 60%"></div>
-            <div class="skeleton" style="width: 90%"></div>
-        </div>`
+                            <div class="skeleton" style="width: 80%"></div>
+                            <div class="skeleton" style="width: 60%"></div>
+                            <div class="skeleton" style="width: 90%"></div>
+                        </div>`
         Output.appendChild(card)
     }
 }
@@ -47,5 +47,4 @@ ReloadBtn.addEventListener('click', async() => {
     Output.innerHTML = 'Loading....'
     await ShowSkeleton()
     FetchData()
-
 })

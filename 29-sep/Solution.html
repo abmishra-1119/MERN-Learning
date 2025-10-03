@@ -5,33 +5,34 @@
     <title>Solutions</title>
     <style>
         /* Button styling */
+        
         .inc {
             background-color: rgb(89, 196, 89);
         }
-
+        
         .dec {
             background-color: rgb(192, 47, 47);
         }
-
+        
         .res {
             background-color: lightblue;
         }
-
+        
         .stop {
             background-color: gold;
         }
-
         /* Headings for each section */
+        
         .heading {
             font-size: large;
             font-weight: 700;
         }
-
         /* Styling for unordered lists and list items */
+        
         ul {
             list-style-type: none;
         }
-
+        
         ul li {
             text-align: center;
             border: 2px solid black;
@@ -40,17 +41,19 @@
             padding: 10px;
             width: 40px;
         }
-
         /* Ensure toggle paragraphs are visible initially */
+        
         #para {
+            margin: 10px;
+            height: 10px;
             display: block;
         }
-
+        
         #para2 {
             display: block;
         }
-
         /* Nested boxes for event propagation example */
+        
         .outer-box {
             background-color: red;
             width: 160px;
@@ -58,14 +61,14 @@
             padding: 80px;
             margin: 50px;
         }
-
+        
         .inner-box {
             background-color: yellow;
             width: 100px;
             height: 100px;
             padding: 25px;
         }
-
+        
         .inner-inner-box {
             width: 80px;
             height: 80px;
@@ -73,53 +76,48 @@
             color: aliceblue;
             padding: 5px;
         }
-
         /* Dataset button colors */
+        
         #btn-green {
             background-color: forestgreen;
         }
-
+        
         #btn-red {
             background-color: red;
         }
-
+        
         #btn-blue {
             background-color: rgb(0, 0, 248);
             color: antiquewhite;
         }
-
         /* Default paragraph font size */
+        
         #para-tag {
             font-size: 16px;
         }
-
-        #wh-box-click {
+        /* #wh-box-click {
             height: 10px;
-        }
-
+        } */
+        
         #lists-container {
             display: flex;
             justify-content: center;
-            /* center the whole list */
             margin-top: 20px;
         }
-
+        
         #lists {
             display: flex;
             flex-wrap: wrap;
-            /* allow multiple rows */
             gap: 10px;
             list-style: none;
             padding: 0;
             max-width: 600px;
-            /* keeps them centered with 4 per row */
             justify-content: center;
         }
-
+        
         #lists li {
-            flex: 1 1 calc(25% - 10px);
-            /* 4 items per row */
-            max-width: calc(25% - 10px);
+            flex: 1;
+            max-width: 150px;
             min-width: 100px;
             height: 100px;
             background: lightblue;
@@ -131,31 +129,27 @@
             cursor: pointer;
             font-weight: bold;
         }
-
         /* Container centers the whole list */
+        
         #listx-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
-        /* Flexbox list */
+        
         #listx {
             display: flex;
             flex-wrap: wrap;
-            /* multiple rows */
             gap: 10px;
             list-style: none;
             padding: 0;
             max-width: 600px;
             justify-content: center;
         }
-
-        /* Each list item styled as a box */
+        
         #listx li {
-            flex: 1 1 calc(25% - 10px);
-            /* 4 per row */
-            max-width: calc(25% - 10px);
+            flex: 1;
+            max-width: 150px;
             min-width: 100px;
             height: 100px;
             background: lightcoral;
@@ -164,7 +158,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             font-weight: bold;
         }
     </style>
@@ -239,8 +232,11 @@
     <!-- Toggle Button Example -->
     <div>
         <div class="heading">Toggle Button</div>
+        <br>
         <button id="toggle-botton">Hide</button>
-        <p id="para">This is paragraph</p>
+        <div id="para">
+            <p>This is paragraph</p>
+        </div>
     </div>
 
     <br>
