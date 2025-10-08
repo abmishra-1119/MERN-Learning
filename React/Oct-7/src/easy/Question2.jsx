@@ -2,9 +2,9 @@ import React from 'react';
 
 function Welcome({name}){
     return (
-        <>
+        <div className={'p-3'}>
             Hello, {name}
-        </>
+        </div>
     )
 }
 

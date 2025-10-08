@@ -5,12 +5,12 @@ function QuestionM5() {
 
 
     return (
-        <div>
-            <button className={'border p-0.5'} onClick={()=> setVisible(!visible)}>Toggle</button>
+        <div className={'p-3'}>
+            <button className={'border p-0.5 my-1'} onClick={()=> setVisible(!visible)}>Toggle</button>
             {visible?(
                 <p>Hello react</p>
             ):(
-                ""
+                <p></p>
             )}
         </div>
     );

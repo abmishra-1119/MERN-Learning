@@ -7,8 +7,8 @@ function QuestionM4() {
         console.log("Number is Changed",num)
     }, [num]);
     return (
-        <div>
-            <button className={'border p-0.5'} onClick={()=> setNum(num+1)} >Click To log the number</button>
+        <div className={'p-3'}>
+            <button className={'border p-0.5 m-1'} onClick={()=> setNum(num+1)} >Click To log the number</button>
             <p>This is num: {num}</p>
 
         </div>

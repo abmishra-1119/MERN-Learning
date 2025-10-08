@@ -4,10 +4,10 @@ function Question3() {
     const [count, setCount] = useState(0)
 
     return (
-        <div>
-            <button className={"border bg-green-700 w-8"} onClick={()=> setCount(count+1)}>+</button>
+        <div className={'p-3'}>
+            <button className={"border bg-green-700 w-8 m-3 rounded-md"} onClick={()=> setCount(count+1)}>+</button>
             <span>{count}</span>
-            <button className={"border bg-red-700 w-8"} onClick={()=> setCount(count-1)}>-</button>
+            <button className={"border bg-red-700 w-8 m-3 rounded-md"} onClick={()=> setCount(count-1)}>-</button>
         </div>
     );
 }

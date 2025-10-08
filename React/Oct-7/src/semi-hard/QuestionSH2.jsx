@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 
 const Child = ({func, childUpdate}) => {
     return (
-        <>
+        <div className={'p-3'}>
             <p>Child Count: {childUpdate}</p>
             <button className={'border p-0.5'} onClick={() => func()}>Update from child</button>
 
-        </>
+        </div>
     )
 }
 
@@ -23,7 +23,7 @@ function QuestionSh2() {
         setChildCount(prev => prev + 1)
     }
     return (
-        <div>
+        <div className={'m-1'}>
             <p>This is Count: {count}</p>
             <button className={'border p-0.5 mx-1'} onClick={() => childUpdate()}>Update from parent</button>
             <Child func={func} childUpdate={childCount}/>

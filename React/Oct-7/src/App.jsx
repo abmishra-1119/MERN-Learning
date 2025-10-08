@@ -25,6 +25,7 @@ function App() {
                 <Question3/>
                 <br/>
                 <Question4/>
+                <br/>
                 {/*Virtual Dom is lightweight copy of the actual dom. it only take the synthetic events of the actual. It does not have a html element it take the element in object form.*/}
 
                 <h2 className={'font-bold text-3xl'}>Medium Questions</h2>
@@ -38,9 +39,11 @@ function App() {
                 <QuestionM4/>
                 <br/>
                 <QuestionM5/>
+                <br/>
 
                 <h2 className={'font-bold text-3xl'}>Semi-Hard Questions</h2>
                 <br/>
+
                 <QuestionSh1/>
                 <br/>
                 <QuestionSh2/>

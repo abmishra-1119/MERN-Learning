@@ -13,7 +13,7 @@ function QuestionM2() {
 
     return (
         <div>
-            <button className={"border p-0.5"} onClick={()=> setNum(num+1)} >Click to update in child</button>
+            <button className={"border p-0.5 mx-3"} onClick={()=> setNum(num+1)} >Click to update in child</button>
             <Child num = {num} />
         </div>
     );

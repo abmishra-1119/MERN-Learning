@@ -9,9 +9,10 @@ const Button = ({text, Click}) => {
 function QuestionSh3() {
     const Onclick = () => {
         console.log("Button Clicked")
+        confirm('Button Clicked')
     }
     return (
-        <div>
+        <div className={'p-3'}>
             <Button text={"clickMe"} Click={Onclick}/>
         </div>
     );

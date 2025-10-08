@@ -24,10 +24,10 @@ function QuestionM1() {
         <div>
             <div>
                 <input onChange={(e) => setName(e.target.value)} type={'text'} placeholder={"Enter Name"}
-                       className={'border p-1 mx-3'}/>
+                       className={'border p-0.5 mx-3 rounded-md'}/>
                 <input onChange={(e) => setAge(Number(e.target.value))} type={'number'} placeholder={"Enter age"}
-                       className={'border p-1 mx-3'}/>
-                <button className={'border p-1'} onClick={() => DataSet({name, age})}>Click</button>
+                       className={'border p-0.5 mx-3 rounded-md'}/>
+                <button className={'border p-1 rounded-md'} onClick={() => DataSet({name, age})}>Click</button>
                 {
                     data.map((user, id) => {
                         return <UserCard key={id} name={user.name} age={user.age}/>

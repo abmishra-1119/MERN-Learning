@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 const Child = ({NumFun})=>{
     return (
         <>
-            <button className={'border p-0.5'} onClick={()=> NumFun()} >Click to update in Parent</button>
+            <button className={'border p-0.5 mx-3'} onClick={()=> NumFun()} >Click to update in Parent</button>
         </>
     )
 }
@@ -16,7 +16,7 @@ function QuestionM3() {
     }
 
     return (
-        <div>
+        <div className={'p-1'}>
             This is num : {num}
             <Child NumFun = {Func} />
 
