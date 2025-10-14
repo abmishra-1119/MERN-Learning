@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Input from '../components/Input';
 import Age from '../components/Age';
+import UncontrolledInput from '../components/UncontrolledInput';
 
 const Question2 = () => {
     const [age, setAge] = useState('')
@@ -24,7 +25,7 @@ const Question2 = () => {
 
 
 
-    const getValue = (val) => {
+    const getValue = () => {
         setAge(ageRef.current.value)
         setFirstName(frirstNameRef.current.value)
         setLastName(lastNameRef.current.value)
@@ -58,17 +59,23 @@ const Question2 = () => {
     }
 
     return (
-        <div className='container' >
-            <form className='form' onSubmit={OnSubmit} >
-                <Input name={'First Name'} type={'text'} val={frirstNameRef} getvalue={getValue} min={2} />
-                <Input name={'Last Name'} type={'text'} val={lastNameRef} getvalue={getValue} min={2} />
-                <Input name={'Email'} type={'email'} val={emailRef} getvalue={getValue} min={18} />
-                <Input name={'Phone'} type={'number'} val={phoneRef} getvalue={getValue} min={10} />
-                <Age name={'Age'} type={'number'} val={ageRef} getvalue={getValue} />
-                <Input name={'Password'} type={'password'} val={passwordRef} getvalue={getValue} min={6} />
-                <button type='submit'>Submit</button>
-            </form>
-        </div>
+        <>
+            <div className='heading'>
+                <h2>This is form with a Different State and using unControlled Components using ref</h2>
+            </div>
+            <div className='container' >
+                <form className='form' onSubmit={OnSubmit} >
+                    <UncontrolledInput name={'First Name'} type={'text'} val={frirstNameRef} getvalue={getValue} min={2} />
+                    <UncontrolledInput name={'Last Name'} type={'text'} val={lastNameRef} getvalue={getValue} min={2} />
+                    <UncontrolledInput name={'Email'} type={'email'} val={emailRef} getvalue={getValue} />
+                    <UncontrolledInput name={'Phone'} type={'number'} val={phoneRef} getvalue={getValue} min={10} />
+                    <UncontrolledInput name={'Age'} type={'number'} val={ageRef} getvalue={getValue} />
+                    <UncontrolledInput name={'Password'} type={'password'} val={passwordRef} getvalue={getValue} min={6} />
+                    <button type='submit'>Submit</button>
+                </form>
+
+            </div>
+        </>
     );
 }
 

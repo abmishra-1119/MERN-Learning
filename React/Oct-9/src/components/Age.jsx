@@ -10,7 +10,7 @@ const Age = ({ name, type, val, getvalue, min }) => {
     }
 
     return (
-        <div>
+        <div className='input'>
             <label style={{ margin: "5px" }}>{name}</label>
             <input required min={min} type={type} name={name} ref={val} placeholder={`Enter ${name}`} onChange={handleInput} />
         </div>

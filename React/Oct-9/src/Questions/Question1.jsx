@@ -26,17 +26,23 @@ const Question1 = () => {
     }
 
     return (
-        <div className='container' >
-            <form className='form' onSubmit={OnSubmit} >
-                <Input name={'First Name'} type={'text'} getvalue={getValue} />
-                <Input name={'Last Name'} type={'text'} getvalue={getValue} />
-                <Input name={'Email'} type={'email'} getvalue={getValue} />
-                <Input name={'Phone'} type={'tel'} getvalue={getValue} />
-                <Age name={'Age'} type={'number'} val={age} getvalue={getValue} />
-                <Input name={'Password'} type={'password'} getvalue={getValue} />
-                <button type='submit'>Submit</button>
-            </form>
-        </div>
+        <>
+            <div className='heading'>
+                <h2>This is form with a single State and using controlled Components</h2>
+            </div>
+
+            <div className='container' >
+                <form className='form' onSubmit={OnSubmit} >
+                    <Input name={'First Name'} type={'text'} getvalue={getValue} />
+                    <Input name={'Last Name'} type={'text'} getvalue={getValue} />
+                    <Input name={'Email'} type={'email'} getvalue={getValue} />
+                    <Input name={'Phone'} type={'tel'} getvalue={getValue} />
+                    <Age name={'Age'} type={'number'} val={age} getvalue={getValue} />
+                    <Input name={'Password'} type={'password'} getvalue={getValue} />
+                    <button type='submit'>Submit</button>
+                </form>
+            </div>
+        </>
     );
 }
 

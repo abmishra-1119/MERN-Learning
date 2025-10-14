@@ -20,7 +20,7 @@ const Input = ({ name, type, val, getvalue, min }) => {
     // const id = Math.floor(Math.random() * 100000).toString(36)
 
     return (
-        <label>
+        <label className='input'>
             <label style={{ margin: "2px" }} >{name}</label>
             <input required minLength={min} type={type} ref={val} name={name.trim().replace(' ', '')} placeholder={`Enter ${name}`} onChange={handleInput} />
             {/* <p style={{ color: 'red' }}>{message}</p> */}

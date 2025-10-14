@@ -8,11 +8,16 @@ const Todo = ({ todo, idx, removeFunc, EditFunc }) => {
         <div className='container' >
             <div className='todo'>
                 <p>Title: {todo.title}</p>
-                <p>Description: {todo.description}</p>
+                <p>Description:
+                    {todo.description.length > 50 ?
+                        todo.description.slice(0, 40) + "..."
+                        : todo.description
+
+                    }</p>
                 <p>Priority: {todo.priority}</p>
-                <div style={{ display: 'flex', gap: "10px", paddingLeft: "10px" }}>
-                    <button onClick={() => removeFunc(idx)}>remove</button>
-                    <button onClick={() => EditFunc(idx)}>edit</button>
+                <div className='btns'>
+                    <button onClick={() => removeFunc(idx)}>Remove</button>
+                    <button onClick={() => EditFunc(idx)}>Edit</button>
                 </div>
             </div>
         </div>
@@ -35,9 +40,9 @@ const Form = ({ addTodo, newTitle = "", newdDescription = "", newPriority = "Low
     }
 
     return (<>
-        <form onSubmit={sumbitForm} className='form' >
+        <form onSubmit={sumbitForm} className='todo-form' >
             <input required={true} type="text" name='Todo' placeholder='Enter Title' value={title} onChange={(e) => setTitle(e.target.value)} />
-            <textarea required={true} type="text" name='Todo' placeholder='Enter Description' value={description} onChange={(e) => setDescription(e.target.value)} />
+            <textarea rows={5} required={true} type="text" name='Todo' placeholder='Enter Description' value={description} onChange={(e) => setDescription(e.target.value)} />
             <select name="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -100,8 +105,17 @@ const Question3 = () => {
         setEditData(todos[id])
     }
 
+    const closeModel = () => {
+        setEdit(false)
+        setEditId(undefined)
+        setEditData({})
+    }
+
     return (
         <div className='container'>
+            <div className='heading'>
+                <h2>This is Todo with edit and delete functionality</h2>
+            </div>
             {/* <form onSubmit={(e) => addTodo(e, title, description, priority)} className='form' >
                 <input required={true} type="text" name='Todo' placeholder='Enter Title' value={title} onChange={(e) => setTitle(e.target.value)} />
                 <textarea required={true} type="text" name='Todo' placeholder='Enter Description' value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -126,7 +140,12 @@ const Question3 = () => {
             {
                 edit && editData ?
                     <div className='bg-dark' >
-                        <Form addTodo={addTodo} id={editId} newTitle={editData.title} newdDescription={editData.description} newPriority={editData.priority} />
+                        <div>
+                            <div className='header'>
+                                <button onClick={closeModel} >X</button>
+                            </div>
+                            <Form addTodo={addTodo} id={editId} newTitle={editData.title} newdDescription={editData.description} newPriority={editData.priority} />
+                        </div>
                     </div>
                     : ""
             }
@@ -135,7 +154,7 @@ const Question3 = () => {
                 {
                     todos.length > 0 ?
                         todos.map((todo, idx) => <Todo todo={todo} key={`${idx}-${randomValue()}`} idx={idx} removeFunc={removeTodo} EditFunc={EditTodo} />)
-                        : <div>No Todos</div>
+                        : <div style={{ margin: "5px" }}>No Todos</div>
                 }
             </div>
         </div>

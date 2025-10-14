@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+}
+
+.navbar {
+    display: flex;
+    height: 70px;
+    background-color: gray;
+    justify-content: space-between;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.link {
+    display: flex;
+    gap: 20px;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.my-nav-link {
+    text-decoration: none;
+    color: black
+}
+
+.active {
+    color: aqua;
+    text-decoration: none;
+}
+
+.heading {
+    text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+}
+
+.input input {
+    padding: 5px;
+}
+
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid black;
+    padding: 20px;
+    background-color: aliceblue;
+    width: 300px;
+}
+
+.todo-form input {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.todo-form select {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.todo-form textarea {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.todo-form button {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}

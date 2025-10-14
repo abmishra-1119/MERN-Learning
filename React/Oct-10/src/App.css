@@ -1,0 +1,363 @@
+body {
+    background-color: rgba(162, 162, 216, 0.548);
+}
+
+.navbar {
+    display: flex;
+    height: 70px;
+    background-color: gray;
+    justify-content: space-between;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.logout {
+    border: none;
+    background: none;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.link {
+    display: flex;
+    gap: 20px;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.my-nav-link {
+    text-decoration: none;
+    color: black
+}
+
+.active {
+    color: aqua;
+    text-decoration: none;
+}
+
+.home {
+    padding: 25px;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+.card {
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 8px;
+}
+
+.card p {
+    margin: 8px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.userDetails {
+    border: 1px solid black;
+    /* padding: 20px; */
+    border-radius: 10px;
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.prodcutDetail {
+    border: 1px solid black;
+    /* padding: 20px; */
+    border-radius: 10px;
+}
+
+.product-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: blueviolet;
+    height: 20px;
+    border-radius: 10px 10px 0px 0px;
+    color: antiquewhite;
+}
+
+.product-heading button {
+    border-radius: 5px;
+    padding: 5px 8px;
+}
+
+.product-body {
+    padding: 10px;
+    background-color: antiquewhite;
+}
+
+.product-bottom {
+    display: flex;
+    justify-content: space-between;
+    /* gap: 50px; */
+    padding: 10px;
+    background-color: blueviolet;
+    /* height: 20px; */
+    border-radius: 0px 0px 10px 10px;
+}
+
+.product-bottom button {
+    padding: 5px 10px;
+}
+
+.bg-dark {
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: rgba(22, 22, 22, 0.952);
+    color: antiquewhite;
+    overscroll-behavior: contain;
+}
+
+.product-delete-modal {
+    width: 200px;
+    border-radius: 20px;
+    padding: 20px;
+    background-color: white;
+    color: black;
+}
+
+.product-delete-modal-btns {
+    display: flex;
+    justify-content: space-around;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    /* border-radius: 10px; */
+}
+
+.back {
+    padding: 0px 20px 0px 20px;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    border: 1px solid black;
+    border-bottom: 0;
+}
+
+.product-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid black;
+    border-top: 0;
+    padding: 20px;
+    background-color: aliceblue;
+    width: 300px;
+    padding-top: 0;
+}
+
+.product-edit-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-edit-form label input {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.product-edit-form label textarea {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.product-edit-form button {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
+/* Login Page  */
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page form {
+    background-color: aliceblue;
+    margin-top: 150px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-page form label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.login-page form label input {
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.login-page form button {
+    padding: 2px;
+    font-size: medium;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.login-form-heading {
+    text-align: center;
+    font-size: large;
+    font-weight: 600;
+}
+
+.login-error {
+    text-align: center;
+    margin: 0;
+    color: red;
+}
+
+
+/* Register Page */
+
+.register form {
+    margin-top: 100px;
+    width: 220px;
+}
+
+.add-product {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.heading {
+    text-align: center;
+    font-size: larger;
+    font-weight: 500;
+}
+
+.add-product .product-form {
+    background-color: rgb(233, 229, 225);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+
+/* .add-product .product-form .w-50 {
+    display: flex;
+    gap: 20px;
+} */
+
+.add-product .product-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* width: 40%; */
+}
+
+.add-product .product-form label input {
+    padding: 5px;
+}
+
+.profile-page {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-page .profile {
+    margin-top: 50px;
+    background-color: aliceblue;
+    border: 1px solid black;
+    padding: 10px;
+    gap: 5px;
+    border-radius: 10px;
+}
+
+
+/* Dashboard */
+
+.dashboard {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    width: 25%;
+    background-color: rgba(39, 39, 99, 0.623);
+    /* position: relative; */
+    padding: 20px;
+}
+
+.sidebar div {
+    font-size: x-large;
+}
+
+.content {
+    width: 75%;
+}

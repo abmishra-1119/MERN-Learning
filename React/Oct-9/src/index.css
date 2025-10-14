@@ -4,6 +4,7 @@
     padding: 20px;
     justify-content: center;
     align-items: center;
+    /* border-radius: 10px; */
 }
 
 .form {
@@ -13,14 +14,22 @@
     border: 1px solid black;
     padding: 20px;
     background-color: aliceblue;
+    width: 300px;
+}
+
+.form button {
+    padding: 5px;
 }
 
 .todo {
     display: flex;
     flex-direction: column;
-    /* gap: 10px; */
+    gap: 10px;
     border: 1px solid black;
     padding: 20px;
+    border-radius: 8px;
+    width: 250px;
+    min-height: 165px;
 }
 
 p {
@@ -30,6 +39,15 @@ p {
 .wrap {
     display: flex;
     flex-wrap: wrap;
+}
+
+.header {
+    display: flex;
+    justify-content: end;
+}
+
+.header button {
+    padding: 2px 7px
 }
 
 .bg-dark {
@@ -42,8 +60,13 @@ p {
     right: 0;
     overflow: hidden;
     min-height: 100vh;
-    min-width: 99vw;
+    min-width: 100vw;
     background-color: rgba(22, 22, 22, 0.952);
     color: antiquewhite;
     overscroll-behavior: contain;
+}
+
+.btns {
+    display: flex;
+    gap: 10px;
 }

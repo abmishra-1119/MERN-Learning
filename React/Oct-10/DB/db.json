@@ -1,0 +1,381 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "title": "Essence Mascara Lash Princess",
+      "description": "Popular mascara known for its volumizing and lengthening effects.",
+      "price": 9.99,
+      "stock": 99,
+      "category": "beauty",
+      "brand": "Essence"
+    },
+    {
+      "id": "2",
+      "title": "Eyeshadow Palette with Mirror",
+      "description": "Versatile range of eyeshadow shades with a built-in mirror for convenience.",
+      "price": 19.99,
+      "rating": 2.86,
+      "category": "beauty",
+      "brand": "Glamour Beauty",
+      "stock": 34,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp"
+    },
+    {
+      "id": "5",
+      "title": "Calvin Klein CK One",
+      "description": "Classic unisex fragrance with a fresh and clean scent.",
+      "price": "50.99",
+      "stock": 29,
+      "category": "fragrances",
+      "brand": "Calvin Klein"
+    },
+    {
+      "id": "6",
+      "title": "Chanel Coco Noir Eau De",
+      "description": "Elegant and mysterious fragrance with grapefruit, rose, and sandalwood notes.",
+      "price": 129.99,
+      "rating": 4.26,
+      "category": "fragrances",
+      "brand": "Chanel",
+      "stock": 58,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/thumbnail.webp"
+    },
+    {
+      "id": "7",
+      "title": "Dior J'adore",
+      "description": "Luxurious floral fragrance with ylang-ylang, rose, and jasmine.",
+      "price": 89.99,
+      "rating": 3.8,
+      "category": "fragrances",
+      "brand": "Dior",
+      "stock": 98,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/thumbnail.webp"
+    },
+    {
+      "id": "8",
+      "title": "Annibale Colombo Bed",
+      "description": "Luxurious and elegant bed frame crafted with high-quality materials.",
+      "price": 1899.99,
+      "rating": 4.77,
+      "category": "furniture",
+      "brand": "Annibale Colombo",
+      "stock": 88,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp"
+    },
+    {
+      "id": "9",
+      "title": "Knoll Saarinen Executive Chair",
+      "description": "Modern ergonomic office chair with a timeless design.",
+      "price": 499.99,
+      "rating": 4.88,
+      "category": "furniture",
+      "brand": "Knoll",
+      "stock": 26,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/thumbnail.webp"
+    },
+    {
+      "id": "10",
+      "title": "Beef Steak",
+      "description": "High-quality beef steak, perfect for grilling or pan-searing.",
+      "price": 12.99,
+      "rating": 4.47,
+      "category": "groceries",
+      "brand": "FreshFarm",
+      "stock": 86,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/beef-steak/thumbnail.webp"
+    },
+    {
+      "id": "11",
+      "title": "Organic Almonds",
+      "description": "Premium quality raw organic almonds packed with nutrients and freshness.",
+      "price": 15.99,
+      "rating": 4.6,
+      "category": "groceries",
+      "brand": "NutriHarvest",
+      "stock": 120,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/organic-almonds/thumbnail.webp"
+    },
+    {
+      "id": "12",
+      "title": "Apple iPhone 15 Pro",
+      "description": "Apple’s latest flagship smartphone with A17 Bionic chip and titanium design.",
+      "price": 134999,
+      "rating": 4.9,
+      "category": "electronics",
+      "brand": "Apple",
+      "stock": 40,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/apple-iphone-15-pro/thumbnail.webp"
+    },
+    {
+      "id": "13",
+      "title": "Samsung Galaxy S24 Ultra",
+      "description": "High-end Android smartphone featuring a 200MP camera and S Pen support.",
+      "price": 124999,
+      "rating": 4.8,
+      "category": "electronics",
+      "brand": "Samsung",
+      "stock": 55,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/samsung-galaxy-s24-ultra/thumbnail.webp"
+    },
+    {
+      "id": "14",
+      "title": "Mechanical Gaming Keyboard",
+      "description": "RGB-backlit mechanical keyboard with blue switches and ergonomic design.",
+      "price": 5999,
+      "rating": 4.7,
+      "category": "electronics",
+      "brand": "Redragon",
+      "stock": 73,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/mechanical-keyboard/thumbnail.webp"
+    },
+    {
+      "id": "15",
+      "title": "Wireless Gaming Mouse",
+      "description": "Lightweight wireless mouse with 16000 DPI sensor and customizable buttons.",
+      "price": 3499,
+      "rating": 4.5,
+      "category": "electronics",
+      "brand": "Logitech",
+      "stock": 150,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/wireless-gaming-mouse/thumbnail.webp"
+    },
+    {
+      "id": "16",
+      "title": "Smart LED Light Strip",
+      "description": "Color-changing LED light strip compatible with Alexa and Google Assistant.",
+      "price": 1999,
+      "rating": 4.3,
+      "category": "electronics",
+      "brand": "Philips Hue",
+      "stock": 95,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/smart-led-strip/thumbnail.webp"
+    },
+    {
+      "id": "17",
+      "title": "Minimalist Wooden Desk",
+      "description": "Stylish wooden office desk with ample workspace and sturdy frame.",
+      "price": 8999,
+      "rating": 4.6,
+      "category": "furniture",
+      "brand": "UrbanCraft",
+      "stock": 60,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/wooden-desk/thumbnail.webp"
+    },
+    {
+      "id": "18",
+      "title": "Recliner Sofa Chair",
+      "description": "Comfortable reclining chair with soft leather upholstery and smooth mechanism.",
+      "price": 15999,
+      "rating": 4.4,
+      "category": "furniture",
+      "brand": "ComfortLine",
+      "stock": 25,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/recliner-chair/thumbnail.webp"
+    },
+    {
+      "id": "19",
+      "title": "Hydrating Face Serum",
+      "description": "Lightweight face serum infused with hyaluronic acid for deep hydration.",
+      "price": 799,
+      "rating": 4.7,
+      "category": "skincare",
+      "brand": "GlowMist",
+      "stock": 110,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/skincare/hydrating-serum/thumbnail.webp"
+    },
+    {
+      "id": "20",
+      "title": "Sunscreen SPF 50+",
+      "description": "Broad-spectrum lightweight sunscreen for daily protection from UV rays.",
+      "price": 499,
+      "rating": 4.5,
+      "category": "skincare",
+      "brand": "SunSafe",
+      "stock": 85,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/skincare/sunscreen/thumbnail.webp"
+    },
+    {
+      "id": "21",
+      "title": "Noise Cancelling Earbuds",
+      "description": "Compact wireless earbuds with active noise cancellation and 25-hour battery life.",
+      "price": 5499,
+      "rating": 4.6,
+      "category": "electronics",
+      "brand": "Boat",
+      "stock": 120,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/noise-cancelling-earbuds/thumbnail.webp"
+    },
+    {
+      "id": "22",
+      "title": "Portable Bluetooth Speaker",
+      "description": "Waterproof mini Bluetooth speaker with powerful bass and 12-hour playback.",
+      "price": 2999,
+      "rating": 4.4,
+      "category": "electronics",
+      "brand": "JBL",
+      "stock": 95,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/bluetooth-speaker/thumbnail.webp"
+    },
+    {
+      "id": "23",
+      "title": "Smart Ceiling Lamp",
+      "description": "Wi-Fi enabled ceiling lamp with adjustable brightness and color temperature.",
+      "price": 3599,
+      "rating": 4.5,
+      "category": "electronics",
+      "brand": "Syska",
+      "stock": 80,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/electronics/smart-ceiling-lamp/thumbnail.webp"
+    },
+    {
+      "id": "24",
+      "title": "Casual Cotton T-Shirt",
+      "description": "Soft cotton round-neck t-shirt for everyday comfort and style.",
+      "price": 799,
+      "rating": 4.3,
+      "category": "fashion",
+      "brand": "Roadster",
+      "stock": 210,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/fashion/cotton-tshirt/thumbnail.webp"
+    },
+    {
+      "id": "25",
+      "title": "Slim Fit Jeans",
+      "description": "Stretchable slim fit denim jeans with a modern look.",
+      "price": 1599,
+      "rating": 4.4,
+      "category": "fashion",
+      "brand": "Levi's",
+      "stock": 175,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/fashion/slim-fit-jeans/thumbnail.webp"
+    },
+    {
+      "id": "26",
+      "title": "Running Shoes",
+      "description": "Lightweight and durable running shoes designed for comfort and performance.",
+      "price": 2999,
+      "rating": 4.6,
+      "category": "fashion",
+      "brand": "Nike",
+      "stock": 130,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/fashion/running-shoes/thumbnail.webp"
+    },
+    {
+      "id": "27",
+      "title": "Modern Study Lamp",
+      "description": "LED desk lamp with adjustable arm and brightness control.",
+      "price": 1499,
+      "rating": 4.5,
+      "category": "furniture",
+      "brand": "Philips",
+      "stock": 90,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/study-lamp/thumbnail.webp"
+    },
+    {
+      "id": "28",
+      "title": "Wooden Bookshelf",
+      "description": "Minimalist 5-tier bookshelf made of engineered wood.",
+      "price": 7499,
+      "rating": 4.7,
+      "category": "furniture",
+      "brand": "IKEA",
+      "stock": 40,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/wooden-bookshelf/thumbnail.webp"
+    },
+    {
+      "id": "29",
+      "title": "Organic Honey",
+      "description": "100% pure and natural honey sourced from organic farms.",
+      "price": 499,
+      "rating": 4.8,
+      "category": "groceries",
+      "brand": "Nature’s Drop",
+      "stock": 150,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/organic-honey/thumbnail.webp"
+    },
+    {
+      "id": "30",
+      "title": "Basmati Rice 10kg",
+      "description": "Long-grain basmati rice aged for perfect aroma and taste.",
+      "price": "800",
+      "stock": 200,
+      "category": "groceries",
+      "brand": "Daawat"
+    },
+    {
+      "id": "6736",
+      "title": "Praesentium qui iust",
+      "price": "470",
+      "category": "Veniam unde quo qui",
+      "brand": "Sit esse ex quas et ",
+      "stock": "18",
+      "thumnail": "Dolor est sunt esse",
+      "description": "Voluptas illum pari"
+    },
+    {
+      "id": "e208",
+      "title": "Omnis aliquam volupt",
+      "price": "958",
+      "category": "Rerum ex dolore Nam ",
+      "brand": "Deserunt quis suscip",
+      "stock": "84",
+      "thumnail": "Praesentium temporib",
+      "description": "Voluptatem obcaecati"
+    },
+    {
+      "id": "a2e3",
+      "title": "Omnis aliquam volupt",
+      "price": "958",
+      "category": "Rerum ex dolore Nam ",
+      "brand": "Deserunt quis suscip",
+      "stock": "84",
+      "thumnail": "Praesentium temporib",
+      "description": "Voluptatem obcaecati"
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "password": "1234",
+      "email": "admin@gmail.com",
+      "phone": "1234567890"
+    },
+    {
+      "id": "cf35",
+      "username": "napomalofo",
+      "email": "moqa@mailinator.com",
+      "phone": "+1 (582) 472-3033",
+      "password": "Pa$$w0rd!",
+      "confirmPassword": "Pa$$w0rd!"
+    },
+    {
+      "id": "3175",
+      "username": "dahoty",
+      "email": "xutupepom@mailinator.com",
+      "phone": "+1 (828) 402-7194",
+      "password": "Pa$$w0rd!",
+      "confirmPassword": "Pa$$w0rd!"
+    },
+    {
+      "id": "079e",
+      "username": "wapowyqifo",
+      "email": "quqynohece@mailinator.com",
+      "phone": "+1 (769) 796-4868",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "bf6d",
+      "username": "jexicef",
+      "email": "potit@mailinator.com",
+      "phone": "+1 (746) 151-3288",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "888d",
+      "username": "hunyjorawo",
+      "email": "tytamu@mailinator.com",
+      "phone": "+1 (964) 364-5597",
+      "password": "Pa$$w0rd!"
+    }
+  ]
+}
