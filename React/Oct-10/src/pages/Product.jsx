@@ -1,33 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useFetch } from '../hooks/useFetch';
+import { useAppContext } from '../context/AppContext';
 
 const Product = () => {
 
+    const { state, dispatch } = useAppContext()
+    const { isLoading, currentProduct } = state
+
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
-    const [product, setProducts] = useState({})
     const { id } = useParams()
     const [del, setDel] = useState(false);
     const userData = localStorage.getItem("user")
 
 
-    const fetchData = async () => {
-        setLoading(true)
-        // fetch(`http://localhost:3000/products/${id}`)
-        //     .then((res) => res.json())
-        //     .then((data) => {
-        //         setProducts(data)
-        //         setLoading(false)
-        //     })
+    const fetchData = useCallback(async () => {
+        dispatch({ type: 'loading', payload: true })
         const data = await useFetch({ url: `/products/${id}`, method: 'GET' })
-        setProducts(data)
-        setLoading(false)
-    }
+        dispatch({ type: 'currentProduct', payload: data })
+        dispatch({ type: 'loading', payload: false })
+
+    }, [])
+
+    const deleteData = useCallback(async () => {
+        dispatch({ type: 'loading', payload: true })
+        await useFetch({ url: `/products/${id}`, method: 'DELETE' })
+        alert('Delete Succesfully')
+        navigate('/')
+    }, [navigate])
 
     useEffect(() => {
         fetchData()
-
     }, []);
 
 
@@ -51,36 +54,29 @@ const Product = () => {
     }
     const confirmDelete = () => {
         console.log("Delete Product:", id);
-        setLoading(true)
-        fetch(`http://localhost:3000/products/${id}`, {
-            method: 'DELETE'
-        })
-            .then((res) => confirm('Delte Sucessfully'))
-
-        navigate('/')
-
+        deleteData()
     }
 
     return (
         <div className='product'>
             {
-                loading ?
+                isLoading ?
                     <div>Loading...</div>
                     :
                     <div className='prodcutDetail' >
                         <div className='product-heading'>
                             <p>
-                                Product Id: {product.id}
+                                Product Id: {currentProduct.id}
                             </p>
                             <button onClick={() => navigate('/')} >back</button>
                         </div>
                         <div className='product-body'>
-                            <p>Title: {product.title}</p>
-                            <p>Description: {product.description}</p>
-                            <p>Price:  {product.price}</p>
-                            <p>Stock: {product.stock}</p>
-                            <p>Categeory: {product.category}</p>
-                            <p>Brand: {product.brand}</p>
+                            <p>Title: {currentProduct.title}</p>
+                            <p>Description: {currentProduct.description}</p>
+                            <p>Price:  {currentProduct.price}</p>
+                            <p>Stock: {currentProduct.stock}</p>
+                            <p>Categeory: {currentProduct.category}</p>
+                            <p>Brand: {currentProduct.brand}</p>
                         </div>
                         <div className='product-bottom' >
                             <button onClick={deleteProduct}> Delete</button>

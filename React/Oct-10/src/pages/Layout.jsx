@@ -1,18 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
 import { authContext } from '../context/authContext';
+import { useAppContext } from '../context/AppContext';
 
 const Layout = () => {
     const navigate = useNavigate()
 
-    const { user, logout } = useContext(authContext)
-    // // if (userData) {
-    // //     setLogin(true)
-    // // }
-    // console.log(user);
+    const { state, dispatch } = useAppContext()
+    const { user } = state
 
     const Logout = () => {
-        logout()
+        dispatch({ type: 'user', payload: null })
+        localStorage.removeItem('user')
         navigate('/login')
     }
 

@@ -1,23 +1,33 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
+import { useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import { useFetch } from '../hooks/useFetch';
+import { useAppContext } from '../context/AppContext';
 
 const Home = () => {
 
-    const [loading, setLoading] = useState(false)
-    const [products, setProducts] = useState([])
+    const { state, dispatch } = useAppContext()
+    const { products, isLoading } = state
 
-    const fetchData = async () => {
-        setLoading(true)
+    const fetchData = useCallback(async () => {
+        dispatch({ type: 'loading', payload: true })
         const data = await useFetch({ url: `/products`, method: 'GET' })
-        setProducts(data)
-        setLoading(false)
-    }
+        dispatch({ type: 'products', payload: [...data] })
+        dispatch({ type: 'loading', payload: false })
+    }, [])
 
     useEffect(() => {
         fetchData()
     }, []);
+
+
+    if (isLoading) {
+        return (
+            <>
+                Loading..
+            </>
+        )
+    }
 
     return (
         <div className='home'>
@@ -31,7 +41,7 @@ const Home = () => {
                         }
                     </div>
                     :
-                    <div>Loading...</div>
+                    <div>Product Not Found</div>
             }
         </div>
     );

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Outlet, Link } from 'react-router';
-import { authContext } from '../context/authContext';
+import { useAppContext } from '../context/AppContext';
 
 const Dashboard = () => {
 
-    const { user } = useContext(authContext)
+    const { state } = useAppContext()
 
     return (
         <div className='dashboard'>

@@ -338,7 +338,8 @@
       "username": "admin",
       "password": "1234",
       "email": "admin@gmail.com",
-      "phone": "1234567890"
+      "phone": "1234567890",
+      "id": "64bd"
     },
     {
       "id": "cf35",
@@ -375,6 +376,20 @@
       "username": "hunyjorawo",
       "email": "tytamu@mailinator.com",
       "phone": "+1 (964) 364-5597",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "73c1",
+      "username": "cupunat",
+      "email": "vehuwy@mailinator.com",
+      "phone": "+1 (883) 449-5973",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "a7b9",
+      "username": "myvafat",
+      "email": "hiwapaheke@mailinator.com",
+      "phone": "+1 (876) 369-4437",
       "password": "Pa$$w0rd!"
     }
   ]

@@ -1,33 +1,28 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { authContext } from '../context/authContext';
 import CommonInput from '../components/CommonInput';
 import axios from 'axios';
+import { useAppContext } from '../context/AppContext';
 
 
 const Register = () => {
     const navigate = useNavigate()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
     const [form, setForm] = useState({})
-    // const [users, setUsers]
 
+    const { state, dispatch } = useAppContext()
+    const { user, message } = state
 
-    const { setUser } = useContext(authContext)
-
-    async function fetchData(form) {
+    const fetchData = useCallback(async (form) => {
         try {
             const response = await axios.get('http://localhost:3000/users');
-            // console.log(response.data);
             const findUser = response.data.find((user) => user.username === form.username)
             if (findUser) {
-                setMessage("User Already Registered")
+                dispatch({ type: 'message', payload: "User Already Registered" })
             }
             else {
                 const { confirmPassword, ...singlePass } = form
                 await axios.post('http://localhost:3000/users', singlePass)
-                setUser(singlePass)
+                dispatch({ type: 'user', payload: singlePass })
                 localStorage.setItem("user", JSON.stringify(singlePass))
                 confirm('User Registered')
                 navigate('/')
@@ -35,16 +30,16 @@ const Register = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }
+    }, [user, navigate])
 
     const onRegister = (e) => {
         e.preventDefault();
         if (form.password !== form.confirmPassword) {
-            setMessage('Password Does match')
+            dispatch({ type: 'message', payload: "Password Does not match" })
         }
         else {
             fetchData(form)
-            setMessage('')
+            dispatch({ type: 'message', payload: "" })
         }
         console.log(form);
     }

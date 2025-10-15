@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { authContext } from '../context/authContext';
 import CommonInput from '../components/CommonInput';
 import axios from 'axios';
+import { useAppContext } from '../context/AppContext';
 
 const userDetail = {
     "username": "admin",
@@ -11,49 +12,38 @@ const userDetail = {
 
 const Login = () => {
     const navigate = useNavigate()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
     const [form, setForm] = useState({})
 
 
-    const { setUser } = useContext(authContext)
+    const { state, dispatch } = useAppContext()
 
-    async function fetchData(form) {
+    const { message } = state
+
+
+    const fetchData = useCallback(async (form) => {
         try {
             const response = await axios.get('http://localhost:3000/users');
-            // console.log(response.data);
             const findUser = response.data.find((user) => user.username === form.username && user.password === form.password)
 
             if (findUser) {
-                setUser(findUser)
-                setMessage('')
+                dispatch({ type: "user", payload: findUser })
+                dispatch({ type: 'message', payload: '' })
                 localStorage.setItem("user", JSON.stringify(findUser))
                 confirm('Login Succesfully')
                 navigate('/')
             }
             else {
-                setMessage('Login Failed')
+                dispatch({ type: 'message', payload: 'Login Failed' })
             }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }
+    }, [dispatch, navigate])
 
     const onLogin = (e) => {
         e.preventDefault();
 
         fetchData(form)
-        // if (username === userDetail.username && password === userDetail.password) {
-        //     setUser(userDetail)
-        //     setMessage('')
-        //     localStorage.setItem("user", JSON.stringify(userDetail))
-        //     navigate('/')
-        // }
-        // else {
-        //     setMessage('Login Failed')
-        // }
-        // console.log(password, email);
 
     }
     const OnChange = (e) => {

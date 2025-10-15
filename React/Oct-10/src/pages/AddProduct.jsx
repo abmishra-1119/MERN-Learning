@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import CommonInput from '../components/CommonInput';
 import axios from 'axios';
 
@@ -7,7 +7,7 @@ const AddProduct = () => {
     const [product, setProduct] = useState({})
 
 
-    const postProduct = async (data) => {
+    const postProduct = useCallback(async (data) => {
         try {
             await axios.post('http://localhost:3000/products', data)
             confirm("Product Added Succesfully")
@@ -16,7 +16,7 @@ const AddProduct = () => {
         catch (e) {
             console.error('Error posting data:', error);
         }
-    }
+    }, [])
 
     const create = (e) => {
         e.preventDefault()
@@ -27,7 +27,6 @@ const AddProduct = () => {
 
     const OnChange = (e) => {
         const { name, value } = e.target
-        // console.log(name, value);
         setProduct({ ...product, [name]: value })
     }
 
@@ -37,9 +36,6 @@ const AddProduct = () => {
                 Add Product
             </div>
             <form className='product-form' onSubmit={create} >
-                {/* <div className='heading'>
-                    Add Product
-                </div> */}
                 <div className='w-50' >
                     <CommonInput label='Title' name='title' type='text' change={OnChange} />
                     <CommonInput label='Price' name='price' type='number' change={OnChange} />

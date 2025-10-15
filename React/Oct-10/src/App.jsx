@@ -6,62 +6,48 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Profile from './pages/profile'
 import Dashboard from './pages/Dashboard'
-import Navbar from './components/Navbar'
 import Product from './pages/Product'
 import EditProduct from './pages/EditProduct'
 import Register from './pages/Register'
 import Layout from './pages/Layout'
-import { authContext } from './context/authContext'
-import { useEffect, useState } from 'react'
 import AddProduct from './pages/AddProduct'
+import { useAppContext } from './context/AppContext'
+import NotFound from './pages/NotFound'
+
 
 function App() {
-  const [user, setUser] = useState(null)
 
+  const { state } = useAppContext()
+  const { user } = state
 
-  useEffect(() => {
-    try {
-      setUser(JSON.parse(localStorage.getItem("user")))
-    }
-    catch (e) {
-      console.error(e)
-    }
-  }, []);
-
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem("user")
-  }
-
-
+  // console.log(user);
 
   return (
     <>
       <BrowserRouter>
-        <authContext.Provider value={{ user, logout, setUser }}  >
-          <Routes>
-            <Route path='/' element={<Layout />} >
-              <Route path='' element={<Home />} />
-              <Route path='product/:id' element={<Product />} />
-              <Route path='about' element={<About />} />
-              {
-                user ?
-                  <>
-                    <Route path='dashboard' element={<Dashboard />}>
-                      <Route path='' element={<AddProduct />} />
-                      <Route path='profile' element={<Profile />} />
-                    </Route>
-                    <Route path='edit-product/:id' element={<EditProduct />} />
-                  </>
-                  :
-                  <>
-                    <Route path='login' element={<Login />} />
-                    <Route path='register' element={<Register />} />
-                  </>
-              }
-            </Route>
-          </Routes>
-        </authContext.Provider>
+        <Routes>
+          <Route path='/' element={<Layout />} >
+            <Route path='' element={<Home />} />
+            <Route path='product/:id' element={<Product />} />
+            <Route path='about' element={<About />} />
+            {
+              user ?
+                <>
+                  <Route path='dashboard' element={<Dashboard />}>
+                    <Route path='' element={<AddProduct />} />
+                    <Route path='profile' element={<Profile />} />
+                  </Route>
+                  <Route path='edit-product/:id' element={<EditProduct />} />
+                </>
+                :
+                <>
+                  <Route path='login' element={<Login />} />
+                  <Route path='register' element={<Register />} />
+                </>
+            }
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
       </BrowserRouter >
     </>
   )

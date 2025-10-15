@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-
 const initailState = {
     isLoading: false,
     user: {},
