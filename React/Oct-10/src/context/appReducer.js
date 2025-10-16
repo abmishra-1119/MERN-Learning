@@ -1,7 +1,7 @@
 export const initailState = {
     isLoading: false,
     user: null,
-    currentProduct: {},
+    currentProduct: null,
     products: [],
     message: ''
 }

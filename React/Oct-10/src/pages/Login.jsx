@@ -4,6 +4,8 @@ import { authContext } from '../context/authContext';
 import CommonInput from '../components/CommonInput';
 import axios from 'axios';
 import { useAppContext } from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux'
+// import { fetchUsers } from '../features/users/userSlice';
 
 const userDetail = {
     "username": "admin",
@@ -15,6 +17,9 @@ const Login = () => {
     const [form, setForm] = useState({})
 
 
+    // const users = useSelector(state => state.users.users)
+    const appDispatch = useDispatch()
+
     const { state, dispatch } = useAppContext()
 
     const { message } = state
@@ -24,7 +29,6 @@ const Login = () => {
         try {
             const response = await axios.get('http://localhost:3000/users');
             const findUser = response.data.find((user) => user.username === form.username && user.password === form.password)
-
             if (findUser) {
                 dispatch({ type: "user", payload: findUser })
                 dispatch({ type: 'message', payload: '' })
@@ -42,7 +46,6 @@ const Login = () => {
 
     const onLogin = (e) => {
         e.preventDefault();
-
         fetchData(form)
 
     }

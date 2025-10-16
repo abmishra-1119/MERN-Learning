@@ -17,16 +17,14 @@ const CommonFormInput = ({ name = "", type = "", label = "", change, value = '' 
 const EditProduct = () => {
     const navigate = useNavigate()
     const { id } = useParams()
-    const [product, setProduct] = useState({})
 
     const { state, dispatch } = useAppContext()
-    const { isLoading } = state
+    const { isLoading, currentProduct } = state
 
     const fetchData = useCallback(async () => {
         dispatch({ type: 'loading', payload: true })
         const data = await useFetch({ url: `/products/${id}`, method: 'GET' })
-        setProduct(data)
-        // console.log(data.title)
+        dispatch({ type: 'currentProduct', payload: data })
         dispatch({ type: 'loading', payload: false })
     }, [id])
 
@@ -37,13 +35,19 @@ const EditProduct = () => {
         alert("Product Updated")
     }, [])
 
+
+
     useEffect(() => {
-        fetchData()
+        // console.log(currentProduct);
+
+        if (!currentProduct) {
+            fetchData()
+        }
     }, []);
 
     const Product = () => {
         try {
-            putData(product)
+            putData(currentProduct)
         }
         catch (e) {
             console.error(e)
@@ -52,7 +56,8 @@ const EditProduct = () => {
 
     const OnChange = (e) => {
         const { name, value } = e.target
-        setProduct({ ...product, [name]: value })
+        dispatch({ type: 'currentProduct', payload: { ...currentProduct, [name]: value } })
+
     }
 
     return (
@@ -67,15 +72,15 @@ const EditProduct = () => {
                     'Loading...'
                     :
                     <form onSubmit={Product} className='product-edit-form'>
-                        <CommonFormInput label='Title' name='title' value={product.title} type='text' change={OnChange} />
-                        <CommonFormInput label='Price' name='price' value={product.price} type='number' change={OnChange} />
+                        <CommonFormInput label='Title' name='title' value={currentProduct?.title} type='text' change={OnChange} />
+                        <CommonFormInput label='Price' name='price' value={currentProduct?.price} type='number' change={OnChange} />
                         <label >
                             <label>Description</label>
-                            <textarea name='description' rows={5} value={product.description} required={true} type="text" placeholder='Enter Description' onChange={OnChange} />
+                            <textarea name='description' rows={5} value={currentProduct?.description} required={true} type="text" placeholder='Enter Description' onChange={OnChange} />
                         </label>
-                        <CommonFormInput label='Category' name='category' value={product.category} type='text' change={OnChange} />
-                        <CommonFormInput label='Brand' name='brand' type='text' value={product.brand} change={OnChange} />
-                        <CommonFormInput label='Stock' name='stock' type='number' value={product.stock} change={OnChange} />
+                        <CommonFormInput label='Category' name='category' value={currentProduct?.category} type='text' change={OnChange} />
+                        <CommonFormInput label='Brand' name='brand' type='text' value={currentProduct?.brand} change={OnChange} />
+                        <CommonFormInput label='Stock' name='stock' type='number' value={currentProduct?.stock} change={OnChange} />
                         <button type='submit'>Update Product</button>
                     </form>}
 

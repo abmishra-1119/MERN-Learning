@@ -301,36 +301,6 @@
       "stock": 200,
       "category": "groceries",
       "brand": "Daawat"
-    },
-    {
-      "id": "6736",
-      "title": "Praesentium qui iust",
-      "price": "470",
-      "category": "Veniam unde quo qui",
-      "brand": "Sit esse ex quas et ",
-      "stock": "18",
-      "thumnail": "Dolor est sunt esse",
-      "description": "Voluptas illum pari"
-    },
-    {
-      "id": "e208",
-      "title": "Omnis aliquam volupt",
-      "price": "958",
-      "category": "Rerum ex dolore Nam ",
-      "brand": "Deserunt quis suscip",
-      "stock": "84",
-      "thumnail": "Praesentium temporib",
-      "description": "Voluptatem obcaecati"
-    },
-    {
-      "id": "a2e3",
-      "title": "Omnis aliquam volupt",
-      "price": "958",
-      "category": "Rerum ex dolore Nam ",
-      "brand": "Deserunt quis suscip",
-      "stock": "84",
-      "thumnail": "Praesentium temporib",
-      "description": "Voluptatem obcaecati"
     }
   ],
   "users": [

@@ -6,13 +6,11 @@ import { useAppContext } from '../context/AppContext';
 const Product = () => {
 
     const { state, dispatch } = useAppContext()
-    const { isLoading, currentProduct } = state
+    const { isLoading, currentProduct, user } = state
 
     const navigate = useNavigate()
     const { id } = useParams()
     const [del, setDel] = useState(false);
-    const userData = localStorage.getItem("user")
-
 
     const fetchData = useCallback(async () => {
         dispatch({ type: 'loading', payload: true })
@@ -25,6 +23,8 @@ const Product = () => {
     const deleteData = useCallback(async () => {
         dispatch({ type: 'loading', payload: true })
         await useFetch({ url: `/products/${id}`, method: 'DELETE' })
+        dispatch({ type: 'loading', payload: false })
+        dispatch({ type: 'currentProduct', payload: null })
         alert('Delete Succesfully')
         navigate('/')
     }, [navigate])
@@ -35,7 +35,7 @@ const Product = () => {
 
 
     const editProduct = () => {
-        if (userData) {
+        if (user) {
             navigate(`/edit-product/${id}`)
         }
         else {
@@ -44,7 +44,7 @@ const Product = () => {
         }
     }
     const deleteProduct = () => {
-        if (userData) {
+        if (user) {
             setDel(true)
         }
         else {
@@ -66,17 +66,20 @@ const Product = () => {
                     <div className='prodcutDetail' >
                         <div className='product-heading'>
                             <p>
-                                Product Id: {currentProduct.id}
+                                Product Id: {currentProduct?.id}
                             </p>
                             <button onClick={() => navigate('/')} >back</button>
                         </div>
                         <div className='product-body'>
-                            <p>Title: {currentProduct.title}</p>
-                            <p>Description: {currentProduct.description}</p>
-                            <p>Price:  {currentProduct.price}</p>
-                            <p>Stock: {currentProduct.stock}</p>
-                            <p>Categeory: {currentProduct.category}</p>
-                            <p>Brand: {currentProduct.brand}</p>
+                            <div className='image-div'>
+                                <img src={currentProduct?.thumbnail || 'https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg'} alt={currentProduct?.title} height={'300px'} />
+                            </div>
+                            <p>Title: {currentProduct?.title}</p>
+                            <p>Description: {currentProduct?.description}</p>
+                            <p>Price:  {currentProduct?.price}</p>
+                            <p>Stock: {currentProduct?.stock}</p>
+                            <p>Categeory: {currentProduct?.category}</p>
+                            <p>Brand: {currentProduct?.brand}</p>
                         </div>
                         <div className='product-bottom' >
                             <button onClick={deleteProduct}> Delete</button>
