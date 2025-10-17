@@ -1,29 +1,22 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import CommonInput from '../components/CommonInput';
-import axios from 'axios';
-import { useAppContext } from '../context/AppContext';
+import { registerUser } from '../features/users/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const Register = () => {
     const navigate = useNavigate()
     const [form, setForm] = useState({})
 
-    const { state, dispatch } = useAppContext()
-    const { user, message } = state
+
+    const { user, message } = useSelector(state => state.users)
+    const appDispatch = useDispatch()
 
     const fetchData = useCallback(async (form) => {
         try {
-            const response = await axios.get('http://localhost:3000/users');
-            const findUser = response.data.find((user) => user.username === form.username)
-            if (findUser) {
-                dispatch({ type: 'message', payload: "User Already Registered" })
-            }
-            else {
-                const { confirmPassword, ...singlePass } = form
-                await axios.post('http://localhost:3000/users', singlePass)
-                dispatch({ type: 'user', payload: singlePass })
-                localStorage.setItem("user", JSON.stringify(singlePass))
+            const res = await appDispatch(registerUser(form))
+            if (registerUser.fulfilled.match(res)) {
                 confirm('User Registered')
                 navigate('/')
             }
@@ -34,13 +27,7 @@ const Register = () => {
 
     const onRegister = (e) => {
         e.preventDefault();
-        if (form.password !== form.confirmPassword) {
-            dispatch({ type: 'message', payload: "Password Does not match" })
-        }
-        else {
-            fetchData(form)
-            dispatch({ type: 'message', payload: "" })
-        }
+        fetchData(form)
         console.log(form);
     }
 

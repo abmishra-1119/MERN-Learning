@@ -1,48 +1,33 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { authContext } from '../context/authContext';
 import CommonInput from '../components/CommonInput';
-import axios from 'axios';
-import { useAppContext } from '../context/AppContext';
 import { useDispatch, useSelector } from 'react-redux'
-// import { fetchUsers } from '../features/users/userSlice';
+import { loginUser } from '../features/users/userSlice';
 
-const userDetail = {
-    "username": "admin",
-    "password": "1234"
-}
+
 
 const Login = () => {
     const navigate = useNavigate()
     const [form, setForm] = useState({})
 
 
-    // const users = useSelector(state => state.users.users)
+    const { message } = useSelector(state => state.users)
     const appDispatch = useDispatch()
-
-    const { state, dispatch } = useAppContext()
-
-    const { message } = state
 
 
     const fetchData = useCallback(async (form) => {
         try {
-            const response = await axios.get('http://localhost:3000/users');
-            const findUser = response.data.find((user) => user.username === form.username && user.password === form.password)
-            if (findUser) {
-                dispatch({ type: "user", payload: findUser })
-                dispatch({ type: 'message', payload: '' })
-                localStorage.setItem("user", JSON.stringify(findUser))
+            const res = await appDispatch(loginUser(form))
+            // if (res.type === 'user/loginUser/fullfiled')
+            if (loginUser.fulfilled.match(res)) {
                 confirm('Login Succesfully')
                 navigate('/')
             }
-            else {
-                dispatch({ type: 'message', payload: 'Login Failed' })
-            }
+
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }, [dispatch, navigate])
+    }, [appDispatch, navigate])
 
     const onLogin = (e) => {
         e.preventDefault();

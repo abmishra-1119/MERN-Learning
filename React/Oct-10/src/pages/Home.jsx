@@ -1,19 +1,16 @@
 import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-import { useFetch } from '../hooks/useFetch';
-import { useAppContext } from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../features/products/productSlice';
 
 const Home = () => {
 
-    const { state, dispatch } = useAppContext()
-    const { products, isLoading } = state
+    const { products, isLoading } = useSelector(state => state.products)
+    const dispatch = useDispatch()
 
     const fetchData = useCallback(async () => {
-        dispatch({ type: 'loading', payload: true })
-        const data = await useFetch({ url: `/products`, method: 'GET' })
-        dispatch({ type: 'products', payload: [...data] })
-        dispatch({ type: 'loading', payload: false })
+        await dispatch(fetchProducts())
     }, [])
 
     useEffect(() => {

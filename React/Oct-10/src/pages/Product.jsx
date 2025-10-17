@@ -1,30 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useFetch } from '../hooks/useFetch';
-import { useAppContext } from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCurentProduct, deleteCurentProduct } from '../features/products/productSlice';
 
 const Product = () => {
 
-    const { state, dispatch } = useAppContext()
-    const { isLoading, currentProduct, user } = state
+
+    const { currentProduct, isLoading } = useSelector(state => state.products)
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.users)
 
     const navigate = useNavigate()
     const { id } = useParams()
     const [del, setDel] = useState(false);
 
     const fetchData = useCallback(async () => {
-        dispatch({ type: 'loading', payload: true })
-        const data = await useFetch({ url: `/products/${id}`, method: 'GET' })
-        dispatch({ type: 'currentProduct', payload: data })
-        dispatch({ type: 'loading', payload: false })
+        await dispatch(fetchCurentProduct(id))
 
     }, [])
 
     const deleteData = useCallback(async () => {
-        dispatch({ type: 'loading', payload: true })
-        await useFetch({ url: `/products/${id}`, method: 'DELETE' })
-        dispatch({ type: 'loading', payload: false })
-        dispatch({ type: 'currentProduct', payload: null })
+        await dispatch(deleteCurentProduct(id))
         alert('Delete Succesfully')
         navigate('/')
     }, [navigate])

@@ -301,6 +301,16 @@
       "stock": 200,
       "category": "groceries",
       "brand": "Daawat"
+    },
+    {
+      "id": "7bab",
+      "title": "Amet doloribus ut q",
+      "price": "823",
+      "category": "Incididunt quo dolor",
+      "brand": "Quo optio dolores e",
+      "stock": "64",
+      "thumnail": "Sit nihil illo id f",
+      "description": "Quo hic in quis dolo"
     }
   ],
   "users": [
@@ -360,6 +370,20 @@
       "username": "myvafat",
       "email": "hiwapaheke@mailinator.com",
       "phone": "+1 (876) 369-4437",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "437f",
+      "username": "mubydanin",
+      "email": "sihamykicy@mailinator.com",
+      "phone": "+1 (744) 246-2992",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "4802",
+      "username": "hufon",
+      "email": "qanak@mailinator.com",
+      "phone": "+1 (997) 728-6979",
       "password": "Pa$$w0rd!"
     }
   ]

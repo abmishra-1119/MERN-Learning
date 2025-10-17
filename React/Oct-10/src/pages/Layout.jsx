@@ -1,17 +1,16 @@
-import React, { useContext } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
-import { authContext } from '../context/authContext';
-import { useAppContext } from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../features/users/userSlice';
 
 const Layout = () => {
     const navigate = useNavigate()
 
-    const { state, dispatch } = useAppContext()
-    const { user } = state
+    const { user } = useSelector((state) => state.users)
+    const dispatch = useDispatch()
+
 
     const Logout = () => {
-        dispatch({ type: 'user', payload: null })
-        localStorage.removeItem('user')
+        dispatch(logout())
         navigate('/login')
     }
 

@@ -1,10 +1,6 @@
-import React, { useContext } from 'react';
 import { Outlet, Link } from 'react-router';
-import { useAppContext } from '../context/AppContext';
 
 const Dashboard = () => {
-
-    const { state } = useAppContext()
 
     return (
         <div className='dashboard'>

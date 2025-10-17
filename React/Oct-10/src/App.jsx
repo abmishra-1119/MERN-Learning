@@ -11,16 +11,13 @@ import EditProduct from './pages/EditProduct'
 import Register from './pages/Register'
 import Layout from './pages/Layout'
 import AddProduct from './pages/AddProduct'
-import { useAppContext } from './context/AppContext'
 import NotFound from './pages/NotFound'
+import { useSelector } from 'react-redux'
 
 
 function App() {
 
-  const { state } = useAppContext()
-  const { user } = state
-
-  // console.log(user);
+  const { user } = useSelector((state) => state.users)
 
   return (
     <>
