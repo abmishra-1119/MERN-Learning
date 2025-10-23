@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 
 import './App.css'
 import Home from './pages/Home'
-import About from './pages/About'
 import Login from './pages/Login'
 import Profile from './pages/profile'
 import Dashboard from './pages/Dashboard'
@@ -13,6 +12,7 @@ import Layout from './pages/Layout'
 import AddProduct from './pages/AddProduct'
 import NotFound from './pages/NotFound'
 import { useSelector } from 'react-redux'
+import Cart from './pages/Cart'
 
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
           <Route path='/' element={<Layout />} >
             <Route path='' element={<Home />} />
             <Route path='product/:id' element={<Product />} />
-            <Route path='about' element={<About />} />
+            <Route path='cart' element={<Cart />} />
             {
               user ?
                 <>

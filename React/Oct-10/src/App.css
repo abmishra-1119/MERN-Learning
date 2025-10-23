@@ -367,3 +367,30 @@ body {
 .content {
     width: 75%;
 }
+
+
+/* Cart  */
+
+.cart {
+    margin-top: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cart-product-box {
+    display: flex;
+    width: 100%;
+    /* gap: 20px */
+    border: 1px solid black;
+}
+
+.cart-product-box .cart-product {
+    display: flex;
+    gap: 10px;
+}

@@ -23,7 +23,7 @@ const Layout = () => {
                     </div>
                     <div className='link'>
                         <NavLink className={(({ isActive }) => isActive ? "active" : 'my-nav-link')} to={'/'}>Home</NavLink>
-                        <NavLink className={'my-nav-link'} to={'/about'}>About</NavLink>
+                        <NavLink className={'my-nav-link'} to={'/cart'}>Cart</NavLink>
                         {
                             user ?
                                 <>
