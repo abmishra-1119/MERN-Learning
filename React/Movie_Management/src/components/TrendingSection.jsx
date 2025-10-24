@@ -27,9 +27,9 @@ const TrendingSection = () => {
     const trendingData = trendType === 'day' ? trendingDay : trendingWeek;
 
     return (
-        <div className="p-12 bg-gray-900">
+        <div className="p-12 bg-gray-100 dark:bg-gray-900">
             <div className="flex justify-between items-center p-6">
-                <h2 className="text-3xl text-white font-semibold">Trending Movies</h2>
+                <h2 className="text-3xl text-gray-900 dark:text-white font-semibold">Trending Movies</h2>
 
                 <div className="flex gap-3">
                     <button

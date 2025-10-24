@@ -1,7 +1,6 @@
 import React from 'react';
 
 const UserCard = (user) => {
-    // console.log(user);
 
     return (
         <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700">

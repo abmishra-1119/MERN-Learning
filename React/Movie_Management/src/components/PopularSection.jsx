@@ -25,10 +25,10 @@ const PopularSection = () => {
     }, [fetchData]);
 
     return (
-        <div className="p-12 bg-gray-900">
+        <div className="p-12 bg-gray-200 dark:bg-gray-900">
             {/* Header Section */}
             <div className="flex justify-between items-center px-6 mb-6">
-                <h2 className="text-3xl font-semibold text-white">Popular Movies</h2>
+                <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">Popular Movies</h2>
 
                 <div className="flex gap-3">
                     <button

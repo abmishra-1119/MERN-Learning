@@ -34,10 +34,10 @@ const Movies = () => {
     };
 
     return (
-        <div className="mt-20 bg-gray-900 flex gap-6 p-6 min-h-screen">
+        <div className="mt-20 bg-gray-100 dark:bg-gray-900 flex gap-6 p-6 min-h-screen">
             <SidebarFilter setSelectedGenre={setSelectedGenre} selectedGenre={selectedGenre} setPage={setPage} />
             {isLoading ? (
-                <p className="text-white text-lg mt-10">Loading...</p>
+                <p className="text-white dark:text-gray-400 text-lg mt-10">Loading...</p>
             ) : (
                 <>
                     <div className="flex-1 flex flex-col items-center">
@@ -63,7 +63,7 @@ const Movies = () => {
                                 Previous
                             </button>
 
-                            <span className="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                            <span className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-700">
                                 {page}
                             </span>
 

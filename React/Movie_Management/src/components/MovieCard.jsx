@@ -17,7 +17,6 @@ const MovieCard = ({ id, title, name, poster_path, release_date, first_air_date,
     return (
         <Link to={linkPath} className="group">
             <div className="w-56 h-96 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 dark:bg-gray-800 overflow-hidden">
-                {/* Poster Container */}
                 <div className="relative overflow-hidden">
                     <img
                         src={
@@ -30,7 +29,6 @@ const MovieCard = ({ id, title, name, poster_path, release_date, first_air_date,
                     />
                 </div>
 
-                {/* Content */}
                 <div className="p-3">
                     <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {finalTitle}

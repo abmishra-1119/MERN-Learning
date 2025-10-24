@@ -1,167 +1,130 @@
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router';
-import { registerUser } from '../features/Auth/userSlice';
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { registerUser } from "../features/Auth/userSlice";
+import InputField from "../components/InputField";
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { message, isLoading, user } = useSelector((state) => state.users);
+
     const [form, setForm] = useState({
-        username: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: ''
+        username: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
     });
 
-    const { message, isLoading } = useSelector(state => state.users);
-    const dispatch = useDispatch();
+    if (user) navigate("/");
 
-    useEffect(() => {
-        if (user) {
-            navigate('/')
-        }
-    }, [navigate]);
-    // Register user
-    const handleRegister = useCallback(async (formData) => {
-        try {
-            const result = await dispatch(registerUser(formData));
-            if (registerUser.fulfilled.match(result)) {
-                alert('Registration successful!');
-                navigate('/');
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleRegister = useCallback(
+        async (formData) => {
+            try {
+                const result = await dispatch(registerUser(formData));
+                if (registerUser.fulfilled.match(result)) {
+                    alert("Registration successful!");
+                    navigate("/");
+                }
+            } catch (error) {
+                console.error("Registration error:", error);
             }
-        } catch (error) {
-            console.error('Registration error:', error);
-        }
-    }, [dispatch, navigate]);
+        },
+        [dispatch, navigate]
+    );
 
-    // Submit handler
     const onSubmit = (e) => {
         e.preventDefault();
         handleRegister(form);
     };
 
-    // Input handler
-    const onChange = (e) => {
-        const { name, value } = e.target;
-        setForm(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
     return (
-        <div
-            className='h-[calc(100vh-5rem)] flex justify-center items-center'
-            style={{
-                backgroundImage: `url('./loginbg.jpg')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-            }}
-        >
-            <div className='absolute opacity-50 bg-black w-full h-[calc(100vh-5rem)]'></div>
+        <div className="h-screen flex justify-center items-center bg-gray-900 relative">
+            <div
+                className="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-20"
+                style={{ backgroundImage: `url('./loginbg.jpg')` }}
+            ></div>
+
+            <div className="absolute inset-0 bg-black/60 dark:bg-black/70"></div>
 
             <form
                 onSubmit={onSubmit}
-                className="w-96 p-8 rounded-lg shadow-xl bg-gray-800 border border-gray-700 relative z-10"
+                className="relative z-10 w-full max-w-md p-8 rounded-xl shadow-xl bg-gray-800 dark:bg-gray-900 border border-gray-700 dark:border-gray-600 transition-colors"
             >
-                <h2 className="text-2xl font-bold text-white mb-6 text-center">Create Account</h2>
+                <h2 className="text-2xl font-bold text-white mb-6 text-center">
+                    Create Account
+                </h2>
 
-                <div className="mb-4">
-                    <label htmlFor="username" className="block mb-2 text-sm font-medium text-white">
-                        Username
-                    </label>
-                    <input
-                        name='username'
-                        type="text"
-                        className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter username"
-                        onChange={onChange}
-                        required
-                    />
-                </div>
+                <InputField
+                    label="Username"
+                    name="username"
+                    placeholder="Enter username"
+                    value={form.username}
+                    onChange={onChange}
+                />
 
-                <div className="mb-4">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">
-                        Email
-                    </label>
-                    <input
-                        name='email'
-                        type="email"
-                        className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="your@email.com"
-                        onChange={onChange}
-                        required
-                    />
-                </div>
+                <InputField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={form.email}
+                    onChange={onChange}
+                />
 
-                <div className="mb-4">
-                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-white">
-                        Phone
-                    </label>
-                    <input
-                        name='phone'
-                        type="tel"
-                        className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter phone number"
-                        onChange={onChange}
-                        required
-                    />
-                </div>
+                <InputField
+                    label="Phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Enter phone number"
+                    value={form.phone}
+                    onChange={onChange}
+                />
 
-                <div className="mb-4">
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-white">
-                        Password
-                    </label>
-                    <input
-                        name='password'
-                        type="password"
-                        id="password"
-                        className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="********"
-                        value={form.password}
-                        onChange={onChange}
-                        required
-                    />
-                </div>
+                <InputField
+                    label="Password"
+                    name="password"
+                    type="password"
+                    placeholder="********"
+                    value={form.password}
+                    onChange={onChange}
+                />
 
-                {/* Confirm Password */}
-                <div className="mb-6">
-                    <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-white">
-                        Confirm Password
-                    </label>
-                    <input
-                        name='confirmPassword'
-                        type="password"
-                        id="confirmPassword"
-                        className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="********"
-                        value={form.confirmPassword}
-                        onChange={onChange}
-                        required
-                    />
-                </div>
+                <InputField
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="********"
+                    value={form.confirmPassword}
+                    onChange={onChange}
+                />
 
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-2"
                 >
-                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                    {isLoading ? "Creating Account..." : "Create Account"}
                 </button>
 
-                <div className="mt-4">
-                    <p className='px-5 py-2.5 text-white text-sm text-center'>
-                        Already have an account?{' '}
-                        <Link to="/login" className='text-blue-500 hover:text-blue-400'>
-                            Login
-                        </Link>
-                    </p>
-                </div>
+                <p className="mt-4 text-center text-sm text-gray-200 dark:text-gray-300">
+                    Already have an account?{" "}
+                    <Link
+                        to="/login"
+                        className="text-blue-500 dark:text-blue-400 hover:text-blue-400 dark:hover:text-blue-300"
+                    >
+                        Login
+                    </Link>
+                </p>
 
                 {message && (
-                    <p className="text-center mt-4 text-sm text-red-400">
-                        {message}
-                    </p>
+                    <p className="text-center mt-4 text-sm text-red-400">{message}</p>
                 )}
             </form>
         </div>

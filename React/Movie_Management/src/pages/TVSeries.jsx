@@ -21,8 +21,8 @@ const TVSeries = () => {
     const prevPage = () => setPage((prev) => (prev > 1 ? prev - 1 : prev));
 
     return (
-        <div className="mt-20 bg-gray-900 min-h-screen p-8 text-white flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-8">Trending TV Series (This Week)</h1>
+        <div className="mt-20 bg-gray-100 dark:bg-gray-900 min-h-screen p-8 text-gray-900 dark:text-white flex flex-col items-center">
+            <h1 className="te text-3xl font-bold mb-8">Trending TV Series (This Week)</h1>
 
             {isLoading ? (
                 <div className="text-gray-300 text-lg">Loading TV series...</div>
@@ -46,7 +46,6 @@ const TVSeries = () => {
                 </div>
             )}
 
-            {/* Pagination Buttons */}
             <div className="flex gap-3 mt-10">
                 <button
                     onClick={prevPage}
@@ -59,7 +58,7 @@ const TVSeries = () => {
                 >
                     Previous
                 </button>
-                <span className="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                <span className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-700">
                     {page}
                 </span>
                 <button

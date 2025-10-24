@@ -18,15 +18,20 @@ const SidebarFilter = ({ setSelectedGenre, selectedGenre, setPage }) => {
     };
 
     return (
-        <div className="bg-gray-800 text-white w-64 p-4 rounded-xl shadow-lg h-full overflow-y-auto">
-            <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Filter by Genre</h2>
+        <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white w-64 p-4 rounded-xl shadow-lg h-full overflow-y-auto transition-all duration-300">
+            <h2 className="text-xl font-semibold mb-4 border-b border-gray-300 dark:border-gray-700 pb-2">
+                Filter by Genre
+            </h2>
             <ul className="space-y-2">
                 {genres.map((genre) => (
                     <li
                         key={genre.id}
-                        className={`cursor-pointer px-3 py-2 rounded-md hover:bg-gray-700 transition-all ${selectedGenre === genre.id ? "bg-blue-600" : "bg-gray-900"
-                            }`}
                         onClick={() => handleGenreClick(genre.id)}
+                        className={`cursor-pointer px-3 py-2 rounded-md transition-all duration-200 
+                        ${selectedGenre === genre.id
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-200 dark:bg-gray-900 hover:bg-gray-300 dark:hover:bg-gray-700"
+                            }`}
                     >
                         {genre.name}
                     </li>

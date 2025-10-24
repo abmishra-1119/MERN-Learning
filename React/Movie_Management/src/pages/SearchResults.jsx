@@ -19,26 +19,29 @@ const SearchPage = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-screen text-white">
+            <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
                 Searching...
             </div>
         );
     }
 
     return (
-        <div className="mt-20 bg-gray-900 text-white min-h-screen px-8 py-6">
+        <div className="mt-20 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 sm:px-8 py-6">
             <h1 className="text-3xl font-bold mb-6">
-                Search Results for: <span className="text-blue-400">{query}</span>
+                Search Results for:{" "}
+                <span className="text-blue-400">{query}</span>
             </h1>
 
-            {movies.length > 0 ? (
+            {movies && movies.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-6">
                     {movies.map((movie) => (
                         <MovieCard key={movie.id} {...movie} />
                     ))}
                 </div>
             ) : (
-                <p className="text-gray-400">No movies found.</p>
+                <p className="text-gray-400 text-center mt-10">
+                    No movies found.
+                </p>
             )}
         </div>
     );

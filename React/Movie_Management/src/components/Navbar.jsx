@@ -14,7 +14,6 @@ const Navbar = () => {
 
     const { user } = useSelector((state) => state.users);
 
-    // Handle Theme Toggle
     useEffect(() => {
         if (theme === "dark") {
             document.documentElement.classList.add("dark");
@@ -49,7 +48,6 @@ const Navbar = () => {
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 h-20 shadow-md fixed top-0 left-0 right-0 z-50">
             <div className="max-w-screen flex items-center justify-between mx-auto px-6 h-full">
-                {/* Logo */}
                 <Link
                     onClick={DropdownFunc}
                     to="/"
@@ -66,7 +64,6 @@ const Navbar = () => {
                 </Link>
 
                 <div className="flex items-center space-x-6">
-                    {/* Search Bar */}
                     <form onSubmit={handleSearch} className="flex items-center">
                         <div className="relative">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -88,7 +85,6 @@ const Navbar = () => {
                         </button>
                     </form>
 
-                    {/* Links */}
                     <ul className="flex space-x-8 rtl:space-x-reverse items-center">
                         <li>
                             <Link
@@ -118,7 +114,6 @@ const Navbar = () => {
                             </Link>
                         </li>
 
-                        {/* User Section */}
                         {user ? (
                             <div className="relative">
                                 <button
@@ -138,18 +133,6 @@ const Navbar = () => {
                                         >
                                             Profile
                                         </Link>
-                                        {/* <Link
-                                            to="/favorites"
-                                            className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        >
-                                            Favorite Movies
-                                        </Link>
-                                        <Link
-                                            to="/watch-next"
-                                            className="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        >
-                                            Watch Next
-                                        </Link> */}
                                         <button
                                             onClick={handleLogout}
                                             className="w-full text-left block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -169,7 +152,6 @@ const Navbar = () => {
                             </li>
                         )}
 
-                        {/* Theme Toggle */}
                         <li>
                             <button
                                 onClick={toggleTheme}

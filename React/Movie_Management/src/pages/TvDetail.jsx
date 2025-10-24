@@ -29,9 +29,13 @@ const TvDetail = () => {
     }, [dispatch, id, user?.id]);
 
     useEffect(() => {
-        if (favourite?.some((fav) => fav.movie.id === +id)) setIsFav(true);
-        if (watchnext?.some((next) => next.movie.id === +id)) setIsNext(true);
-    }, [favourite, watchnext, id]);
+        if (user?.id && favourite) {
+            setIsFav(favourite.some((fav) => fav.movie.id === +id));
+        }
+        if (user?.id && watchnext) {
+            setIsNext(watchnext.some((next) => next.movie.id === +id));
+        }
+    }, [favourite, watchnext, id, user?.id]);
 
     if (isLoading) return <p className="text-center mt-20 text-lg">Loading...</p>;
     if (!currentTVSeries) return <p className="text-center mt-20 text-lg">TV Series not found</p>;
@@ -50,28 +54,21 @@ const TvDetail = () => {
     } = currentTVSeries;
 
     const addToFav = () => {
-        const data = {
-            userId: user.id,
-            movie: currentTVSeries,
-        };
+        if (!user) return alert("Please login to add to favourites");
+        dispatch(addFavourite({ userId: user.id, movie: currentTVSeries }));
         setIsFav(true);
-        dispatch(addFavourite(data));
     };
 
     const addToNext = () => {
-        const data = {
-            userId: user.id,
-            movie: currentTVSeries,
-        };
+        if (!user) return alert("Please login to add to watch next");
+        dispatch(addWatchnext({ userId: user.id, movie: currentTVSeries }));
         setIsNext(true);
-        dispatch(addWatchnext(data));
     };
 
     return (
         <div className="min-h-screen mt-20 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
             <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
-                    {/* Poster */}
                     <div className="md:w-1/3 w-full">
                         <img
                             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
@@ -80,7 +77,6 @@ const TvDetail = () => {
                         />
                     </div>
 
-                    {/* Details */}
                     <div className="md:w-2/3 w-full p-6 space-y-4">
                         <h1 className="text-3xl font-bold">{name}</h1>
                         <div className="flex flex-wrap gap-4">
