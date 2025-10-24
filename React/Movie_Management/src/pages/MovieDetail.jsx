@@ -16,12 +16,12 @@ const MovieDetail = () => {
     useEffect(() => {
         dispatch(fetchMovieById(id))
         dispatch(fetchFavourite(user.id))
-        const findfav = favourite.find((fav) => fav.movie.id === +id)
+        const findfav = favourite?.find((fav) => fav.movie.id === +id)
         if (findfav) {
             setIsfav(true)
         }
         dispatch(fetchWatchnext(user.id))
-        const findnext = watchnext.find((next) => next.movie.id === +id)
+        const findnext = watchnext?.find((next) => next.movie.id === +id)
         if (findnext) {
             setIsnext(true)
         }

@@ -29,11 +29,11 @@ const Navbar = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // if (searchQuery.trim()) {
-        //     console.log("Searching for:", searchQuery);
-        //     navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-        // }
+        if (searchQuery.trim()) {
+            navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+        }
     };
+
 
     const handleLogout = () => {
         localStorage.removeItem("user");

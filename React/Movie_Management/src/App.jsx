@@ -8,6 +8,9 @@ import MovieDetail from './pages/MovieDetail'
 import Movies from './pages/Movies'
 import AuthGuard from './components/AuthGuard'
 import Profile from './pages/Profile'
+import SearchPage from './pages/SearchResults'
+import TVSeries from './pages/TVSeries'
+import TvDetail from './pages/TvDetail'
 
 function App() {
 
@@ -24,6 +27,9 @@ function App() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/movies' element={<Movies />} />
           <Route path='/movie/:id' element={<MovieDetail />} />
+          <Route path='/search' element={<SearchPage />} />
+          <Route path="/tv-shows" element={<TVSeries />} />
+          <Route path="/tv/:id" element={<TvDetail />} />
         </Routes>
       </BrowserRouter>
     </>

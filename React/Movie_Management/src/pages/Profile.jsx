@@ -36,7 +36,7 @@ const Profile = () => {
     }, []);
 
     return (
-        <div className='mt-20 p-6 bg-gray-800'>
+        <div className='mt-20 p-6 bg-gray-900'>
             <div className='mt-2 flex justify-center' >
                 <UserCard {...user} />
             </div>
@@ -76,7 +76,7 @@ const Profile = () => {
                         favourite && favourite.length > 0 ?
                             favourite.map((fav, idx) => (
                                 <SwiperSlide key={fav?.id}>
-                                    <div className="z-55 absolute top-2 right-2 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
+                                    <div className="z-55 absolute top-2 right-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
                                         <button className=' cursor-pointer' onClick={() => removeFav(fav?.id, idx)} >Remove</button>
                                     </div>
                                     <MovieCard {...fav?.movie} />
@@ -125,7 +125,7 @@ const Profile = () => {
                         watchnext && watchnext.length > 0 ?
                             watchnext.map((fav, idx) => (
                                 <SwiperSlide key={fav?.id}>
-                                    <div className="z-55 absolute top-2 right-2 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
+                                    <div className="z-55 absolute top-2 right-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
                                         <button className=' cursor-pointer' onClick={() => removeNext(fav?.id, idx)} >Remove</button>
                                     </div>
                                     <MovieCard {...fav?.movie} />
