@@ -1,68 +1,73 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import MovieCard from './MovieCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { popularMovies } from '../features/Movies/movieSlice';
-
-const data = {
-    title: "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
-    vote_average: 8.209,
-    release_date: "2020-10-16",
-    poster_path: "/h8Rb9gBr48ODIwYUttZNYeMWeUU.jpg"
-}
+import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 const PopularSection = () => {
-
-    const { popular } = useSelector(state => state.movies)
-
-    const appDispatch = useDispatch()
-
+    const { popular } = useSelector((state) => state.movies);
+    const appDispatch = useDispatch();
 
     const fetchData = useCallback(async () => {
         try {
-            await appDispatch(popularMovies())
-        }
-        catch (e) {
+            await appDispatch(popularMovies());
+        } catch (e) {
             console.error(e);
         }
-    }, [appDispatch])
+    }, [appDispatch]);
 
     useEffect(() => {
-        fetchData()
-        console.log(popular);
+        fetchData();
+    }, [fetchData]);
 
-    }, []);
     return (
-        <div className='p-12 bg-gray-900'>
-            <div className='p-6'>
-                <h2 className='text-3xl text-white'>Popular Movies</h2>
+        <div className="p-12 bg-gray-900">
+            {/* Header Section */}
+            <div className="flex justify-between items-center px-6 mb-6">
+                <h2 className="text-3xl font-semibold text-white">Popular Movies</h2>
+
+                <div className="flex gap-3">
+                    <button
+                        className="prev p-2 bg-gray-800 hover:bg-gray-700 rounded-full text-white transition-all duration-300"
+                        aria-label="Previous Slide"
+                    >
+                        <IoChevronBackOutline className="w-6 h-6" />
+                    </button>
+
+                    <button
+                        className="next p-2 bg-gray-800 hover:bg-gray-700 rounded-full text-white transition-all duration-300"
+                        aria-label="Next Slide"
+                    >
+                        <IoChevronForwardOutline className="w-6 h-6" />
+                    </button>
+                </div>
             </div>
 
-            <div className='flex gap-6'>
-                <Swiper
-                    modules={[Pagination, Navigation, Autoplay]}
-                    slidesPerView={5}
-                    // pagination={{ clickable: true }}
-                    navigation={true}
-                    autoplay={{ delay: 2500 }}
-                    loop={true}
-                >
-                    {
-                        popular.map((movie) => {
-                            return <SwiperSlide> <MovieCard {...movie} /></SwiperSlide>
-
-                        })
-                    }
-                </Swiper>
-
-            </div>
-
-        </div>
+            {/* Swiper Section */}
+            <Swiper
+                modules={[Navigation, Autoplay]}
+                navigation={{
+                    nextEl: '.next',
+                    prevEl: '.prev',
+                }}
+                slidesPerView={5}
+                spaceBetween={20}
+                autoplay={{ delay: 2500, disableOnInteraction: false }}
+                loop={true}
+                className="px-6"
+            >
+                {popular.map((movie) => (
+                    <SwiperSlide key={movie.id}>
+                        <MovieCard {...movie} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </div >
     );
-}
+};
 
 export default PopularSection;
