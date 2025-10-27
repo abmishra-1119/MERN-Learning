@@ -2,10 +2,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTVSeries } from "../features/Movies/movieSlice";
 import MovieCard from "../components/MovieCard";
+import Loading from "../components/Loading";
 
 const TVSeries = () => {
     const dispatch = useDispatch();
-    const { tvSeries, isLoading } = useSelector((state) => state.movies);
+    const { tvSeries, isLoading, totalPages } = useSelector((state) => state.movies);
     const [page, setPage] = useState(1);
 
     const fetchData = useCallback(async () => {
@@ -21,11 +22,11 @@ const TVSeries = () => {
     const prevPage = () => setPage((prev) => (prev > 1 ? prev - 1 : prev));
 
     return (
-        <div className="mt-20 bg-gray-100 dark:bg-gray-900 min-h-screen p-8 text-gray-900 dark:text-white flex flex-col items-center">
+        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen p-8 text-gray-900 dark:text-white flex flex-col items-center">
             <h1 className="te text-3xl font-bold mb-8">Trending TV Series (This Week)</h1>
 
             {isLoading ? (
-                <div className="text-gray-300 text-lg">Loading TV series...</div>
+                <Loading />
             ) : (
                 <div className="flex flex-wrap gap-6 justify-center">
                     {tvSeries.length > 0 ? (
@@ -41,12 +42,13 @@ const TVSeries = () => {
                             />
                         ))
                     ) : (
-                        <p className="text-gray-400">No TV series found.</p>
-                    )}
+                        <div className="h-screen">
+                            <p className="text-gray-400 mt-10">No movies found.</p>
+                        </div>)}
                 </div>
             )}
 
-            <div className="flex gap-3 mt-10">
+            <div className="flex m-12 items-center gap-3">
                 <button
                     onClick={prevPage}
                     disabled={page === 1}
@@ -58,12 +60,64 @@ const TVSeries = () => {
                 >
                     Previous
                 </button>
-                <span className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-700">
-                    {page}
-                </span>
+
+                {/* Dynamic page numbers */}
+                <div className="flex items-center gap-2">
+                    {/* First page */}
+                    <button
+                        onClick={() => setPage(1)}
+                        className={`px-3 py-1 rounded-md border ${page === 1
+                            ? "bg-blue-700 text-white"
+                            : "bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                            }`}
+                    >
+                        1
+                    </button>
+
+                    {/* Ellipsis before middle pages */}
+                    {page > 3 && <span className="text-gray-500">...</span>}
+
+                    {/* Middle pages */}
+                    {Array.from({ length: 3 }, (_, i) => page - 1 + i)
+                        .filter((p) => p > 1 && p < totalPages)
+                        .map((p) => (
+                            <button
+                                key={p}
+                                onClick={() => setPage(p)}
+                                className={`px-3 py-1 rounded-md border ${page === p
+                                    ? "bg-blue-700 text-white"
+                                    : "bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                    }`}
+                            >
+                                {p}
+                            </button>
+                        ))}
+
+                    {/* Ellipsis after middle pages */}
+                    {page < totalPages - 2 && <span className="text-gray-500">...</span>}
+
+                    {/* Last page */}
+                    {totalPages > 1 && (
+                        <button
+                            onClick={() => setPage(totalPages)}
+                            className={`px-3 py-1 rounded-md border ${page === totalPages
+                                ? "bg-blue-700 text-white"
+                                : "bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                }`}
+                        >
+                            {totalPages}
+                        </button>
+                    )}
+                </div>
+
                 <button
                     onClick={nextPage}
-                    className="cursor-pointer flex items-center justify-center px-4 h-10 text-base font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    disabled={page === totalPages}
+                    className={`flex items-center justify-center px-4 h-10 text-base font-medium rounded-lg border transition-colors duration-200 
+                                ${page === totalPages
+                            ? "opacity-50 cursor-not-allowed bg-gray-700 text-gray-400 border-gray-600"
+                            : "cursor-pointer bg-white border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-800 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        }`}
                 >
                     Next
                 </button>

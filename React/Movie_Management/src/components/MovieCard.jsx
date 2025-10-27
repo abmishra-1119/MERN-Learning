@@ -22,7 +22,7 @@ const MovieCard = ({ id, title, name, poster_path, release_date, first_air_date,
                         src={
                             poster_path
                                 ? `https://image.tmdb.org/t/p/w500${poster_path}`
-                                : "/placeholder-movie.jpg"
+                                : "/NotFound.png"
                         }
                         alt={finalTitle}
                         className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-300"

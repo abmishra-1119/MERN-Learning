@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { popularMovies } from '../features/Movies/movieSlice';
+import Loading from './Loading';
 
 const HeroSection = () => {
     const { popular, isLoading } = useSelector((state) => state.movies);
@@ -33,18 +34,18 @@ const HeroSection = () => {
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 4000 }}
                 loop={true}
-                className="w-full h-[650px]"
+                className="w-full h-[500px]"
             >
                 {isLoading && (
-                    <div className="flex justify-center items-center h-[650px] text-gray-800 text-xl">
-                        Loading...
+                    <div className="flex justify-center items-center h-[550px] text-gray-800 text-xl">
+                        <Loading />
                     </div>
                 )}
 
                 {!isLoading && topMovies.length > 0 ? (
                     topMovies.map((movie) => (
                         <SwiperSlide key={movie.id}>
-                            <div className="relative h-[900px] w-full">
+                            <div className="relative h-[700px] w-full">
                                 <img
                                     src={`https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path}`}
                                     alt={movie.title}

@@ -11,6 +11,9 @@ import Profile from './pages/Profile'
 import SearchPage from './pages/SearchResults'
 import TVSeries from './pages/TVSeries'
 import TvDetail from './pages/TvDetail'
+import PageNotFound from './pages/PageNotFound'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
@@ -18,6 +21,17 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"  // or "light"
+        />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/' element={<AuthGuard />}>
@@ -30,6 +44,7 @@ function App() {
           <Route path='/search' element={<SearchPage />} />
           <Route path="/tv-shows" element={<TVSeries />} />
           <Route path="/tv/:id" element={<TvDetail />} />
+          <Route path='*' element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </>

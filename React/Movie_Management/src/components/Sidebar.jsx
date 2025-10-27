@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGenres, moviesByGenre } from "../features/Movies/movieSlice";
 
-const SidebarFilter = ({ setSelectedGenre, selectedGenre, setPage }) => {
+const SidebarFilter = ({ setSelectedGenre, selectedGenre, setPage, page, handlepageChange }) => {
     const dispatch = useDispatch();
     const { genres } = useSelector((state) => state.movies);
 
@@ -13,12 +13,13 @@ const SidebarFilter = ({ setSelectedGenre, selectedGenre, setPage }) => {
     const handleGenreClick = (genreId) => {
         setSelectedGenre(genreId);
         setPage(1);
+        // handlepageChange(genreId)
         dispatch(moviesByGenre({ genreId, page: 1 }));
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
-        <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white w-64 p-4 rounded-xl shadow-lg h-full overflow-y-auto transition-all duration-300">
+        <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white w-64 p-4 rounded-xl shadow-lg h-[calc(100vh-7rem)] fixed z-55 overflow-y-auto scrollbar">
             <h2 className="text-xl font-semibold mb-4 border-b border-gray-300 dark:border-gray-700 pb-2">
                 Filter by Genre
             </h2>

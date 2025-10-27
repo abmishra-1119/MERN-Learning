@@ -10,6 +10,7 @@ const initialState = {
     isLoading: false,
     favourite: JSON.parse(localStorage.getItem("myfav")) || null,
     watchnext: JSON.parse(localStorage.getItem("mywatch")) || null,
+    lastviewed: null,
     message: ''
 }
 

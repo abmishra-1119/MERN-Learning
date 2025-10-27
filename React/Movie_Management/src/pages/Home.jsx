@@ -4,6 +4,7 @@ import PopularSection from '../components/PopularSection';
 import TrendingSection from '../components/TrendingSection';
 
 const Home = () => {
+    window.scrollTo({ top: 0 });
     return (
         <div>
             <HeroSection />
@@ -12,5 +13,4 @@ const Home = () => {
         </div>
     );
 }
-
 export default Home;

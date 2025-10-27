@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { loginUser } from "../features/Auth/userSlice";
 import InputField from "../components/InputField";
+import { toast } from "react-toastify";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -26,11 +27,11 @@ const Login = () => {
             try {
                 const res = await dispatch(loginUser(formData));
                 if (loginUser.fulfilled.match(res)) {
-                    alert("Login Successful!");
+                    toast.success("Login successful! 🎉");
                     navigate("/");
                 }
             } catch (error) {
-                console.error("Login error:", error);
+                toast.error("Login failed! Please try again.");
             }
         },
         [dispatch, navigate]

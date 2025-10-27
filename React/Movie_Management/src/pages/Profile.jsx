@@ -40,11 +40,12 @@ const Profile = () => {
     };
 
     useEffect(() => {
+        window.scrollTo({ top: 0 });
         if (user?.id) fetchData(user.id);
     }, [fetchData, user]);
 
     return (
-        <div className="mt-20 p-6 min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+        <div className=" p-6 min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
             {/* USER CARD */}
             <div className="mt-2 flex justify-center">
                 <UserCard {...user} />
@@ -87,7 +88,7 @@ const Profile = () => {
                     {favourite && favourite.length > 0 ? (
                         favourite.map((fav, idx) => (
                             <SwiperSlide key={fav?.id}>
-                                <div className="absolute top-2 right-10 z-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
+                                <div className="absolute top-2 right-2 z-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
                                     <button
                                         className="cursor-pointer"
                                         onClick={() => removeFav(fav?.id, idx)}
@@ -143,7 +144,7 @@ const Profile = () => {
                     {watchnext && watchnext.length > 0 ? (
                         watchnext.map((fav, idx) => (
                             <SwiperSlide key={fav?.id}>
-                                <div className="absolute top-2 right-10 z-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
+                                <div className="absolute top-2 right-2 z-10 bg-black/80 text-white text-xs font-bold rounded-full px-2 py-1 backdrop-blur-sm">
                                     <button
                                         className="cursor-pointer"
                                         onClick={() => removeNext(fav?.id, idx)}

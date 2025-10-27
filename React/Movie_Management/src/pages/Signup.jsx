@@ -45,7 +45,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="h-screen flex justify-center items-center bg-gray-900 relative">
+        <div className="h-screen mt-20 flex justify-center items-center bg-gray-900 relative">
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-20"
                 style={{ backgroundImage: `url('./loginbg.jpg')` }}

@@ -15,10 +15,11 @@ const initialState = {
     currentMovie: null,
     currentTVSeries: null,
     message: "",
+    totalPages: 0
 };
 
 // POPULAR MOVIES
-export const popularMovies = createAsyncThunk("movie/popular", async (_, { rejectWithValue }) => {
+export const popularMovies = createAsyncThunk("movie/popular", async(_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${base_url}movie/popular?${api_key}`);
         localStorage.setItem("popular", JSON.stringify(res.data.results));
@@ -30,7 +31,7 @@ export const popularMovies = createAsyncThunk("movie/popular", async (_, { rejec
 });
 
 // TRENDING MOVIES BY DAY
-export const dayTrendingMovies = createAsyncThunk("movie/trending/day", async (_, { rejectWithValue }) => {
+export const dayTrendingMovies = createAsyncThunk("movie/trending/day", async(_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${base_url}trending/movie/day?${api_key}`);
         localStorage.setItem("trendingDay", JSON.stringify(res.data.results));
@@ -42,7 +43,7 @@ export const dayTrendingMovies = createAsyncThunk("movie/trending/day", async (_
 });
 
 // TRENDING MOVIES BY WEEK
-export const weekTrendingMovies = createAsyncThunk("movie/trending/week", async (_, { rejectWithValue }) => {
+export const weekTrendingMovies = createAsyncThunk("movie/trending/week", async(_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${base_url}trending/movie/week?${api_key}`);
         localStorage.setItem("trendingWeek", JSON.stringify(res.data.results));
@@ -56,7 +57,7 @@ export const weekTrendingMovies = createAsyncThunk("movie/trending/week", async 
 // FETCH MOVIE BY ID
 export const fetchMovieById = createAsyncThunk(
     "movie/fetchById",
-    async (id, { rejectWithValue }) => {
+    async(id, { rejectWithValue }) => {
         try {
             const res = await axios.get(`${base_url}movie/${id}?${api_key}`);
             return res.data;
@@ -68,21 +69,37 @@ export const fetchMovieById = createAsyncThunk(
 );
 
 // DISCOVER MOVIES
-export const discoverMovies = createAsyncThunk('movie/discover', async (page, { rejectWithValue }) => {
-    try {
-        const res = await axios.get(`${base_url}discover/movie?${api_key}&language=en-US&page=${page}`);
-        // console.log(res.data);
-        return res.data;
-    } catch (error) {
-        console.error("Error fetching movies:", error.message);
-        return rejectWithValue(error.message);
+export const discoverMovies = createAsyncThunk(
+    "movie/discover",
+    async({ page = 1, filterType = "discover" }, { rejectWithValue }) => {
+        try {
+            let url = "";
+
+            if (filterType === "year") {
+                const currentYear = new Date().getFullYear();
+                url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=release_date.desc&primary_release_year=${currentYear}&page=${page}`;
+            } else if (filterType === "rating") {
+                // Sort by top-rated
+                url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=vote_average.desc&vote_count.gte=100&page=${page}`;
+            } else {
+                // Default Discover (popular)
+                url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=popularity.desc&page=${page}`;
+            }
+
+            const res = await axios.get(url);
+            return res.data;
+        } catch (error) {
+            console.error("Error fetching movies:", error.message);
+            return rejectWithValue(error.message);
+        }
     }
-})
+);
+
 
 // FETCH GENRES
 export const fetchGenres = createAsyncThunk(
     "movie/fetchGenres",
-    async (_, { rejectWithValue }) => {
+    async(_, { rejectWithValue }) => {
         try {
             const res = await axios.get(`${base_url}genre/movie/list?${api_key}`);
             return res.data.genres;
@@ -95,7 +112,7 @@ export const fetchGenres = createAsyncThunk(
 // MOVIES BY GENRE
 export const moviesByGenre = createAsyncThunk(
     "movie/byGenre",
-    async ({ genreId, page }, { rejectWithValue }) => {
+    async({ genreId, page }, { rejectWithValue }) => {
         try {
             const res = await axios.get(
                 `${base_url}discover/movie?${api_key}&with_genres=${genreId}&page=${page}`
@@ -110,7 +127,7 @@ export const moviesByGenre = createAsyncThunk(
 // SEARCH MOVIES
 export const searchMovies = createAsyncThunk(
     "movie/search",
-    async ({ query, page = 1 }, { rejectWithValue }) => {
+    async({ query, page = 1 }, { rejectWithValue }) => {
         try {
             const res = await axios.get(`${base_url}search/movie?${api_key}&query=${encodeURIComponent(query)}&page=${page}`);
             return res.data.results;
@@ -123,13 +140,13 @@ export const searchMovies = createAsyncThunk(
 // FETCH TV SERIES
 export const fetchTVSeries = createAsyncThunk(
     "movie/fetchTVSeries",
-    async (page = 1, { rejectWithValue }) => {
+    async(page = 1, { rejectWithValue }) => {
         try {
             const res = await axios.get(
                 `${base_url}trending/tv/week?${api_key}&page=${page}`
             );
             localStorage.setItem("tvSeries", JSON.stringify(res.data.results));
-            return res.data.results;
+            return res.data;
         } catch (error) {
             console.error("TV Series Fetch Error:", error.message);
             return rejectWithValue(error.message);
@@ -140,7 +157,7 @@ export const fetchTVSeries = createAsyncThunk(
 // FETCH TV SERIES BY ID
 export const fetchTVSeriesById = createAsyncThunk(
     "movie/fetchTVSeriesById",
-    async (id, { rejectWithValue }) => {
+    async(id, { rejectWithValue }) => {
         try {
             const res = await axios.get(`${base_url}tv/${id}?${api_key}`);
             return res.data;
@@ -157,7 +174,7 @@ const movieSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // POPULAR MOVIES
+        // POPULAR MOVIES
             .addCase(popularMovies.pending, (state) => {
                 state.isLoading = true;
             })
@@ -216,6 +233,11 @@ const movieSlice = createSlice({
             .addCase(discoverMovies.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.movies = action.payload.results;
+                if (action.payload.total_pages > 500) {
+                    state.totalPages = 500;
+                } else {
+                    state.totalPages = action.payload.total_pages
+                }
                 state.message = "";
             })
             .addCase(discoverMovies.rejected, (state, action) => {
@@ -267,7 +289,8 @@ const movieSlice = createSlice({
             })
             .addCase(fetchTVSeries.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.tvSeries = action.payload;
+                state.tvSeries = action.payload.results;
+                state.totalPages = action.payload.total_pages
                 state.message = "";
             })
             .addCase(fetchTVSeries.rejected, (state, action) => {

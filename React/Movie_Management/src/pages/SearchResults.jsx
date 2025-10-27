@@ -26,7 +26,7 @@ const SearchPage = () => {
     }
 
     return (
-        <div className="mt-20 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 sm:px-8 py-6">
+        <div className=" min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 sm:px-8 py-6">
             <h1 className="text-3xl font-bold mb-6">
                 Search Results for:{" "}
                 <span className="text-blue-400">{query}</span>
