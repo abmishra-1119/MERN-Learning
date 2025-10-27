@@ -10,7 +10,7 @@ import {
 import { fetchTVSeriesById } from "../features/Movies/movieSlice";
 import Loading from "../components/Loading";
 import { toast } from "react-toastify";
-
+import { FaHeart, FaPlusCircle, FaRegHeart, FaClock } from "react-icons/fa";
 
 const TvDetail = () => {
     const { id } = useParams();
@@ -41,21 +41,22 @@ const TvDetail = () => {
         }
     }, [favourite, watchnext, id, user?.id]);
 
-
-    const addToFav = () => {
+    const addToFav = async () => {
         if (!user) return toast.error("Please login to add to favourites");
-        dispatch(addFavourite({ userId: user.id, movie: currentTVSeries }));
+        await dispatch(addFavourite({ userId: user.id, movie: currentTVSeries }));
         setIsFav(true);
+        toast.success(`${currentTVSeries?.name} added to favourites`);
     };
 
-    const addToNext = () => {
+    const addToNext = async () => {
         if (!user) return toast.error("Please login to add to watch next");
-        dispatch(addWatchnext({ userId: user.id, movie: currentTVSeries }));
+        await dispatch(addWatchnext({ userId: user.id, movie: currentTVSeries }));
         setIsNext(true);
+        toast.success(`${currentTVSeries?.name} added to Watch Next`);
     };
 
     return (
-        <div className="min-h-screen  bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
+        <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
             {isLoading ? (
                 <Loading />
             ) : (
@@ -68,7 +69,6 @@ const TvDetail = () => {
                                         ? `https://image.tmdb.org/t/p/w500${currentTVSeries?.poster_path}`
                                         : "/NotFound.png"
                                 }
-                                // src={`https://image.tmdb.org/t/p/w500${currentTVSeries?.poster_path}`}
                                 alt={currentTVSeries?.name}
                                 className="w-full h-full object-cover"
                             />
@@ -76,12 +76,21 @@ const TvDetail = () => {
 
                         <div className="md:w-2/3 w-full p-6 space-y-4">
                             <h1 className="text-3xl font-bold">{currentTVSeries?.name}</h1>
+
                             <div className="flex flex-wrap gap-4">
-                                <p className="font-medium">First Air: {currentTVSeries?.first_air_date}</p>
-                                <p className="font-medium">Rating: {currentTVSeries?.vote_average}</p>
+                                <p className="font-medium">
+                                    First Air: {currentTVSeries?.first_air_date}
+                                </p>
+                                <p className="font-medium">
+                                    Rating: {currentTVSeries?.vote_average}
+                                </p>
                                 <p className="font-medium">Status: {currentTVSeries?.status}</p>
-                                <p className="font-medium">Seasons: {currentTVSeries?.number_of_seasons}</p>
-                                <p className="font-medium">Episodes: {currentTVSeries?.number_of_episodes}</p>
+                                <p className="font-medium">
+                                    Seasons: {currentTVSeries?.number_of_seasons}
+                                </p>
+                                <p className="font-medium">
+                                    Episodes: {currentTVSeries?.number_of_episodes}
+                                </p>
                             </div>
 
                             <div className="flex flex-wrap gap-2">
@@ -102,7 +111,11 @@ const TvDetail = () => {
 
                             <div>
                                 <h2 className="text-xl font-semibold mb-1">Languages</h2>
-                                <p>{currentTVSeries?.spoken_languages?.map((lang) => lang.english_name).join(", ")}</p>
+                                <p>
+                                    {currentTVSeries?.spoken_languages
+                                        ?.map((lang) => lang.english_name)
+                                        .join(", ")}
+                                </p>
                             </div>
 
                             <div className="flex items-center gap-4">
@@ -111,14 +124,16 @@ const TvDetail = () => {
                                         disabled
                                         className="flex items-center space-x-2 text-white bg-blue-700 font-medium rounded-lg text-sm px-4 py-2.5 disabled:cursor-not-allowed"
                                     >
-                                        Already Favourite
+                                        <FaHeart className="text-red-500" />
+                                        <span>Already Favourite</span>
                                     </button>
                                 ) : (
                                     <button
                                         onClick={addToFav}
                                         className="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5"
                                     >
-                                        Add to Favourite
+                                        <FaRegHeart />
+                                        <span>Add to Favourite</span>
                                     </button>
                                 )}
 
@@ -127,14 +142,16 @@ const TvDetail = () => {
                                         disabled
                                         className="flex items-center space-x-2 text-white bg-blue-700 font-medium rounded-lg text-sm px-4 py-2.5 disabled:cursor-not-allowed"
                                     >
-                                        Already Added
+                                        <FaClock />
+                                        <span>Already Added</span>
                                     </button>
                                 ) : (
                                     <button
                                         onClick={addToNext}
                                         className="flex items-center space-x-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5"
                                     >
-                                        Add to Watch Next
+                                        <FaPlusCircle />
+                                        <span>Add to Watch Next</span>
                                     </button>
                                 )}
                             </div>
@@ -142,7 +159,6 @@ const TvDetail = () => {
                     </div>
                 </div>
             )}
-
         </div>
     );
 };
