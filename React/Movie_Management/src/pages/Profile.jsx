@@ -14,6 +14,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -34,9 +35,12 @@ const Profile = () => {
 
     const removeFav = (id, idx) => {
         dispatch(removeFavourite({ id, idx }));
+        toast.info("Removed from Favourites");
     };
+
     const removeNext = (id, idx) => {
         dispatch(removeWatchnext({ id, idx }));
+        toast.info("Removed from Watch Next");
     };
 
     useEffect(() => {
@@ -45,7 +49,7 @@ const Profile = () => {
     }, [fetchData, user]);
 
     return (
-        <div className=" p-6 min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+        <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
             {/* USER CARD */}
             <div className="mt-2 flex justify-center">
                 <UserCard {...user} />

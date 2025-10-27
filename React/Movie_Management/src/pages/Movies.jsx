@@ -109,7 +109,7 @@ const Movies = () => {
                     </div>
 
                     {/* Movie List */}
-                    <div className="flex flex-wrap gap-6 items-center justify-center">
+                    <div className="flex flex-wrap gap-8 items-center justify-center">
                         {movies.length > 0 ? (
                             movies.map((movie) => <MovieCard {...movie} key={movie.id} />)
                         ) : (

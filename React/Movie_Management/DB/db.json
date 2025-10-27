@@ -493,156 +493,6 @@
       }
     },
     {
-      "id": "88d9",
-      "userId": "64bd",
-      "movie": {
-        "adult": false,
-        "backdrop_path": "/i9IEOD1Li1y89xRHKH9kiE8dt9z.jpg",
-        "created_by": [
-          {
-            "id": 11092,
-            "credit_id": "60c0cca9af6e940042dba58b",
-            "name": "Simon Kinberg",
-            "original_name": "Simon Kinberg",
-            "gender": 2,
-            "profile_path": "/uEGvyKEVEotzWNeU0g2bN6b6s9q.jpg"
-          },
-          {
-            "id": 1424719,
-            "credit_id": "60c0ccba2a210c0027951fdf",
-            "name": "David Weil",
-            "original_name": "David Weil",
-            "gender": 2,
-            "profile_path": "/dQt70XZkgvVOZnjtsfFUVipOmzW.jpg"
-          }
-        ],
-        "episode_run_time": [],
-        "first_air_date": "2021-10-21",
-        "genres": [
-          {
-            "id": 10765,
-            "name": "Sci-Fi & Fantasy"
-          },
-          {
-            "id": 18,
-            "name": "Drama"
-          }
-        ],
-        "homepage": "https://tv.apple.com/show/umc.cmc.70b7z97fv7azfzn5baqnj88p6",
-        "id": 127235,
-        "in_production": true,
-        "languages": [
-          "en"
-        ],
-        "last_air_date": "2025-10-16",
-        "last_episode_to_air": {
-          "id": 6357931,
-          "name": "The End of the Line",
-          "overview": "Trevante, Jamila, and Nikhil face the deepest level of alien horror. Aneesha takes on Infinitas. Mitsuki makes a world-altering decision.",
-          "vote_average": 1,
-          "vote_count": 3,
-          "air_date": "2025-10-23",
-          "episode_number": 10,
-          "episode_type": "finale",
-          "production_code": "",
-          "runtime": 52,
-          "season_number": 3,
-          "show_id": 127235,
-          "still_path": "/hG08dG8lOfSu61enipj5frsGXOn.jpg"
-        },
-        "name": "Invasion",
-        "next_episode_to_air": null,
-        "networks": [
-          {
-            "id": 2552,
-            "logo_path": "/bngHRFi794mnMq34gfVcm9nDxN1.png",
-            "name": "Apple TV",
-            "origin_country": ""
-          }
-        ],
-        "number_of_episodes": 30,
-        "number_of_seasons": 3,
-        "origin_country": [
-          "US"
-        ],
-        "original_language": "en",
-        "original_name": "Invasion",
-        "overview": "Earth is visited by an alien species that threatens humanity's existence. Events unfold in real time through the eyes of five ordinary people across the globe as they struggle to make sense of the chaos unraveling around them.",
-        "popularity": 58.3926,
-        "poster_path": "/xP4SIyOn7vUh0OqT4a30MHhNFMO.jpg",
-        "production_companies": [
-          {
-            "id": 28788,
-            "logo_path": "/Aqomtf9oh5dKtxBNEagkdlp3aGv.png",
-            "name": "Genre Films",
-            "origin_country": "US"
-          },
-          {
-            "id": 212638,
-            "logo_path": "/bwyT0HsfIwhy9y1zFE318M8GL5j.png",
-            "name": "Boat Rocker Studios",
-            "origin_country": "US"
-          },
-          {
-            "id": 194232,
-            "logo_path": "/oE7H93u8sy5vvW5EH3fpCp68vvB.png",
-            "name": "Apple Studios",
-            "origin_country": "US"
-          }
-        ],
-        "production_countries": [
-          {
-            "iso_3166_1": "US",
-            "name": "United States of America"
-          }
-        ],
-        "seasons": [
-          {
-            "air_date": "2021-10-21",
-            "episode_count": 10,
-            "id": 198668,
-            "name": "Season 1",
-            "overview": "",
-            "poster_path": "/7rpiHZx10Nm50AtzTUEO9eyaKdq.jpg",
-            "season_number": 1,
-            "vote_average": 6
-          },
-          {
-            "air_date": "2023-08-22",
-            "episode_count": 10,
-            "id": 347066,
-            "name": "Season 2",
-            "overview": "The second season picks up just months later with the aliens escalating their attacks in an all-out war against the humans.",
-            "poster_path": "/wWFs3pl9gWHYvDElQVB4CB809m9.jpg",
-            "season_number": 2,
-            "vote_average": 5.8
-          },
-          {
-            "air_date": "2025-08-21",
-            "episode_count": 10,
-            "id": 463645,
-            "name": "Season 3",
-            "overview": "In season three, the different perspectives of the alien invasion collide for the first time as the main characters are brought together to work as a team on a critical mission to infiltrate the alien mothership. The ultimate apex aliens have finally emerged, rapidly spreading their deadly tendrils across the planet. It will take all heroes working together, using their experience and expertise, to save the species. New relationships are formed, old relationships are challenged and even shattered, as an international cast of characters must become a team before it's too late.",
-            "poster_path": "/1PdNB3rYTcf8VXc8rcmZ0SeYxSq.jpg",
-            "season_number": 3,
-            "vote_average": 4.7
-          }
-        ],
-        "spoken_languages": [
-          {
-            "english_name": "English",
-            "iso_639_1": "en",
-            "name": "English"
-          }
-        ],
-        "status": "Returning Series",
-        "tagline": "The threat has evolved.",
-        "type": "Scripted",
-        "vote_average": 7.173,
-        "vote_count": 1077
-      }
-    },
-    {
       "id": "4376",
       "userId": "64bd",
       "movie": {
@@ -2611,6 +2461,170 @@
         "vote_average": 6.206,
         "vote_count": 51
       }
+    },
+    {
+      "id": "f07b",
+      "userId": "64bd",
+      "movie": {
+        "adult": false,
+        "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg",
+        "belongs_to_collection": {
+          "id": 925155,
+          "name": "Demon Slayer: Kimetsu no Yaiba Collection",
+          "poster_path": "/3exjjYTseefny9nYjSbkIblZZdK.jpg",
+          "backdrop_path": "/oHx043lHsysn8klll1nPvKMBHLf.jpg"
+        },
+        "budget": 20000000,
+        "genres": [
+          {
+            "id": 16,
+            "name": "Animation"
+          },
+          {
+            "id": 28,
+            "name": "Action"
+          },
+          {
+            "id": 14,
+            "name": "Fantasy"
+          },
+          {
+            "id": 53,
+            "name": "Thriller"
+          }
+        ],
+        "homepage": "https://www.demonslayer-movie.com",
+        "id": 1311031,
+        "imdb_id": "tt32820897",
+        "origin_country": [
+          "JP"
+        ],
+        "original_language": "ja",
+        "original_title": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
+        "overview": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro, Nezuko, and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins.",
+        "popularity": 281.5532,
+        "poster_path": "/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg",
+        "production_companies": [
+          {
+            "id": 5887,
+            "logo_path": "/m6FEqz8rQECnmfjEwjNhNAlmhCJ.png",
+            "name": "ufotable",
+            "origin_country": "JP"
+          },
+          {
+            "id": 2883,
+            "logo_path": "/rDYExnBV61jGQnkhVVrPN4Yl7O1.png",
+            "name": "Aniplex",
+            "origin_country": "JP"
+          },
+          {
+            "id": 2918,
+            "logo_path": "/gyEWUBWwqrm3H5T2hkERD9LxpOq.png",
+            "name": "Shueisha",
+            "origin_country": "JP"
+          }
+        ],
+        "production_countries": [
+          {
+            "iso_3166_1": "JP",
+            "name": "Japan"
+          }
+        ],
+        "release_date": "2025-07-18",
+        "revenue": 666762639,
+        "runtime": 156,
+        "spoken_languages": [
+          {
+            "english_name": "German",
+            "iso_639_1": "de",
+            "name": "Deutsch"
+          },
+          {
+            "english_name": "Japanese",
+            "iso_639_1": "ja",
+            "name": "日本語"
+          }
+        ],
+        "status": "Released",
+        "tagline": "It's time to have some fun.",
+        "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+        "video": false,
+        "vote_average": 7.801,
+        "vote_count": 488
+      }
+    },
+    {
+      "id": "98d5",
+      "userId": "64bd",
+      "movie": {
+        "adult": false,
+        "backdrop_path": "/kfXgo2rMF1A19celCwLyQ4Xwpf8.jpg",
+        "belongs_to_collection": null,
+        "budget": 0,
+        "genres": [
+          {
+            "id": 16,
+            "name": "Animation"
+          },
+          {
+            "id": 28,
+            "name": "Action"
+          },
+          {
+            "id": 10749,
+            "name": "Romance"
+          },
+          {
+            "id": 14,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Horror"
+          }
+        ],
+        "homepage": "https://chainsawman.movie",
+        "id": 1218925,
+        "imdb_id": "tt30472557",
+        "origin_country": [
+          "JP"
+        ],
+        "original_language": "ja",
+        "original_title": "チェンソーマン レゼ篇",
+        "overview": "In a brutal war between devils, hunters, and secret enemies, a mysterious girl named Reze has stepped into Denji's world, and he faces his deadliest battle yet, fueled by love in a world where survival knows no rules.",
+        "popularity": 137.499,
+        "poster_path": "/xdzLBZjCVSEsic7m7nJc4jNJZVW.jpg",
+        "production_companies": [
+          {
+            "id": 21444,
+            "logo_path": "/wSejGn3lAZdQ5muByxvzigwyDY6.png",
+            "name": "MAPPA",
+            "origin_country": "JP"
+          }
+        ],
+        "production_countries": [
+          {
+            "iso_3166_1": "JP",
+            "name": "Japan"
+          }
+        ],
+        "release_date": "2025-09-19",
+        "revenue": 51524244,
+        "runtime": 100,
+        "spoken_languages": [
+          {
+            "english_name": "Japanese",
+            "iso_639_1": "ja",
+            "name": "日本語"
+          }
+        ],
+        "status": "Released",
+        "tagline": "everyone’s after my chainsaw heart! what about denji’s heart?!?",
+        "title": "Chainsaw Man - The Movie: Reze Arc",
+        "video": false,
+        "vote_average": 8.1,
+        "vote_count": 77
+      }
     }
   ],
   "watchnext": [
@@ -2815,156 +2829,6 @@
         "type": "Miniseries",
         "vote_average": 5,
         "vote_count": 15
-      }
-    },
-    {
-      "id": "f0c5",
-      "userId": "64bd",
-      "movie": {
-        "adult": false,
-        "backdrop_path": "/i9IEOD1Li1y89xRHKH9kiE8dt9z.jpg",
-        "created_by": [
-          {
-            "id": 11092,
-            "credit_id": "60c0cca9af6e940042dba58b",
-            "name": "Simon Kinberg",
-            "original_name": "Simon Kinberg",
-            "gender": 2,
-            "profile_path": "/uEGvyKEVEotzWNeU0g2bN6b6s9q.jpg"
-          },
-          {
-            "id": 1424719,
-            "credit_id": "60c0ccba2a210c0027951fdf",
-            "name": "David Weil",
-            "original_name": "David Weil",
-            "gender": 2,
-            "profile_path": "/dQt70XZkgvVOZnjtsfFUVipOmzW.jpg"
-          }
-        ],
-        "episode_run_time": [],
-        "first_air_date": "2021-10-21",
-        "genres": [
-          {
-            "id": 10765,
-            "name": "Sci-Fi & Fantasy"
-          },
-          {
-            "id": 18,
-            "name": "Drama"
-          }
-        ],
-        "homepage": "https://tv.apple.com/show/umc.cmc.70b7z97fv7azfzn5baqnj88p6",
-        "id": 127235,
-        "in_production": true,
-        "languages": [
-          "en"
-        ],
-        "last_air_date": "2025-10-16",
-        "last_episode_to_air": {
-          "id": 6357931,
-          "name": "The End of the Line",
-          "overview": "Trevante, Jamila, and Nikhil face the deepest level of alien horror. Aneesha takes on Infinitas. Mitsuki makes a world-altering decision.",
-          "vote_average": 1,
-          "vote_count": 3,
-          "air_date": "2025-10-23",
-          "episode_number": 10,
-          "episode_type": "finale",
-          "production_code": "",
-          "runtime": 52,
-          "season_number": 3,
-          "show_id": 127235,
-          "still_path": "/hG08dG8lOfSu61enipj5frsGXOn.jpg"
-        },
-        "name": "Invasion",
-        "next_episode_to_air": null,
-        "networks": [
-          {
-            "id": 2552,
-            "logo_path": "/bngHRFi794mnMq34gfVcm9nDxN1.png",
-            "name": "Apple TV",
-            "origin_country": ""
-          }
-        ],
-        "number_of_episodes": 30,
-        "number_of_seasons": 3,
-        "origin_country": [
-          "US"
-        ],
-        "original_language": "en",
-        "original_name": "Invasion",
-        "overview": "Earth is visited by an alien species that threatens humanity's existence. Events unfold in real time through the eyes of five ordinary people across the globe as they struggle to make sense of the chaos unraveling around them.",
-        "popularity": 58.3926,
-        "poster_path": "/xP4SIyOn7vUh0OqT4a30MHhNFMO.jpg",
-        "production_companies": [
-          {
-            "id": 28788,
-            "logo_path": "/Aqomtf9oh5dKtxBNEagkdlp3aGv.png",
-            "name": "Genre Films",
-            "origin_country": "US"
-          },
-          {
-            "id": 212638,
-            "logo_path": "/bwyT0HsfIwhy9y1zFE318M8GL5j.png",
-            "name": "Boat Rocker Studios",
-            "origin_country": "US"
-          },
-          {
-            "id": 194232,
-            "logo_path": "/oE7H93u8sy5vvW5EH3fpCp68vvB.png",
-            "name": "Apple Studios",
-            "origin_country": "US"
-          }
-        ],
-        "production_countries": [
-          {
-            "iso_3166_1": "US",
-            "name": "United States of America"
-          }
-        ],
-        "seasons": [
-          {
-            "air_date": "2021-10-21",
-            "episode_count": 10,
-            "id": 198668,
-            "name": "Season 1",
-            "overview": "",
-            "poster_path": "/7rpiHZx10Nm50AtzTUEO9eyaKdq.jpg",
-            "season_number": 1,
-            "vote_average": 6
-          },
-          {
-            "air_date": "2023-08-22",
-            "episode_count": 10,
-            "id": 347066,
-            "name": "Season 2",
-            "overview": "The second season picks up just months later with the aliens escalating their attacks in an all-out war against the humans.",
-            "poster_path": "/wWFs3pl9gWHYvDElQVB4CB809m9.jpg",
-            "season_number": 2,
-            "vote_average": 5.8
-          },
-          {
-            "air_date": "2025-08-21",
-            "episode_count": 10,
-            "id": 463645,
-            "name": "Season 3",
-            "overview": "In season three, the different perspectives of the alien invasion collide for the first time as the main characters are brought together to work as a team on a critical mission to infiltrate the alien mothership. The ultimate apex aliens have finally emerged, rapidly spreading their deadly tendrils across the planet. It will take all heroes working together, using their experience and expertise, to save the species. New relationships are formed, old relationships are challenged and even shattered, as an international cast of characters must become a team before it's too late.",
-            "poster_path": "/1PdNB3rYTcf8VXc8rcmZ0SeYxSq.jpg",
-            "season_number": 3,
-            "vote_average": 4.7
-          }
-        ],
-        "spoken_languages": [
-          {
-            "english_name": "English",
-            "iso_639_1": "en",
-            "name": "English"
-          }
-        ],
-        "status": "Returning Series",
-        "tagline": "The threat has evolved.",
-        "type": "Scripted",
-        "vote_average": 7.173,
-        "vote_count": 1077
       }
     },
     {
@@ -4008,89 +3872,6 @@
         "type": "Scripted",
         "vote_average": 8.722,
         "vote_count": 5021
-      }
-    },
-    {
-      "id": "a2cb",
-      "userId": "64bd",
-      "movie": {
-        "adult": false,
-        "backdrop_path": "/kHOfxq7cMTXyLbj0UmdoGhT540O.jpg",
-        "belongs_to_collection": null,
-        "budget": 60000000,
-        "genres": [
-          {
-            "id": 878,
-            "name": "Science Fiction"
-          },
-          {
-            "id": 28,
-            "name": "Action"
-          },
-          {
-            "id": 35,
-            "name": "Comedy"
-          }
-        ],
-        "homepage": "",
-        "id": 507244,
-        "imdb_id": "tt1210027",
-        "origin_country": [
-          "US"
-        ],
-        "original_language": "en",
-        "original_title": "Afterburn",
-        "overview": "Set against the backdrop of a postapocalyptic Earth whose Eastern Hemisphere was destroyed by a massive solar flare, leaving what life remains mutated from radiation and fallout. The story revolves around a group of treasure hunters who extract such objects as the Mona Lisa, the Rosetta Stone and the Crown Jewels while facing rival hunters, mutants and pirates.",
-        "popularity": 367.7152,
-        "poster_path": "/xR0IhVBjbNU34b8erhJCgRbjXo3.jpg",
-        "production_companies": [
-          {
-            "id": 89171,
-            "logo_path": "/c3ttVfx0itQzk2vOR0053qzzd3B.png",
-            "name": "Endurance Media",
-            "origin_country": "US"
-          },
-          {
-            "id": 103331,
-            "logo_path": "/nxkmGpo1Ym74DkBzNtoMz5cl6DJ.png",
-            "name": "G-BASE",
-            "origin_country": "US"
-          },
-          {
-            "id": 333,
-            "logo_path": "/5xUJfzPZ8jWJUDzYtIeuPO4qPIa.png",
-            "name": "Original Film",
-            "origin_country": "US"
-          },
-          {
-            "id": 141391,
-            "logo_path": null,
-            "name": "CAA Media Finance",
-            "origin_country": "US"
-          }
-        ],
-        "production_countries": [
-          {
-            "iso_3166_1": "US",
-            "name": "United States of America"
-          }
-        ],
-        "release_date": "2025-08-20",
-        "revenue": 184758,
-        "runtime": 105,
-        "spoken_languages": [
-          {
-            "english_name": "English",
-            "iso_639_1": "en",
-            "name": "English"
-          }
-        ],
-        "status": "Released",
-        "tagline": "The apocalypse isn't for everybody.",
-        "title": "Afterburn",
-        "video": false,
-        "vote_average": 6.206,
-        "vote_count": 51
       }
     }
   ]

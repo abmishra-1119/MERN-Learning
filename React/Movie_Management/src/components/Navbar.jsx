@@ -65,25 +65,36 @@ const Navbar = () => {
 
                 <div className="flex items-center space-x-6">
                     <form onSubmit={handleSearch} className="flex items-center">
-                        <div className="relative focus:ring-blue-500 focus:border-blue-500">
+                        <div className="relative">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <CiSearch className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                             </div>
+
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="block w-64 p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-l-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-blue-600 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="Search movies, TV shows..."
+                                className="
+                                    block w-64 p-3 ps-10 text-sm text-gray-900 border border-gray-300 
+                                    rounded-l-lg bg-gray-50 
+                                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                    transition-all duration-150"
                             />
                         </div>
+
                         <button
                             type="submit"
-                            className="p-3 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600"
+                            className="
+      p-3 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 
+      hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700
+    "
                         >
                             <CiSearch className="w-5 h-5" />
                         </button>
                     </form>
+
 
                     <ul className="flex space-x-8 rtl:space-x-reverse items-center justify-center">
                         <li>
