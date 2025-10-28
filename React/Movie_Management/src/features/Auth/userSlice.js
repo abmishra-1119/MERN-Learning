@@ -68,6 +68,7 @@ const userSlice = createSlice({
                 state.user = action.payload
                 state.message = ''
             }).addCase(loginUser.rejected, (state, action) => {
+                state.isLoading = false
                 state.message = action.payload
             })
             //Register

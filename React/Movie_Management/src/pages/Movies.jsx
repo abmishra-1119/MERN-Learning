@@ -133,9 +133,7 @@ const Movies = () => {
                             Previous
                         </button>
 
-                        {/* Dynamic page numbers */}
                         <div className="flex items-center gap-2">
-                            {/* First page */}
                             <button
                                 onClick={() => setPage(1)}
                                 className={`px-3 py-1 rounded-md border ${page === 1
@@ -146,10 +144,8 @@ const Movies = () => {
                                 1
                             </button>
 
-                            {/* Ellipsis before middle pages */}
                             {page > 3 && <span className="text-gray-500">...</span>}
 
-                            {/* Middle pages */}
                             {Array.from({ length: 3 }, (_, i) => page - 1 + i)
                                 .filter((p) => p > 1 && p < totalPages)
                                 .map((p) => (
@@ -165,10 +161,9 @@ const Movies = () => {
                                     </button>
                                 ))}
 
-                            {/* Ellipsis after middle pages */}
                             {page < totalPages - 2 && <span className="text-gray-500">...</span>}
 
-                            {/* Last page */}
+
                             {totalPages > 1 && (
                                 <button
                                     onClick={() => setPage(totalPages)}

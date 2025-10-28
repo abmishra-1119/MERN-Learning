@@ -80,7 +80,7 @@ export const discoverMovies = createAsyncThunk(
                 url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=release_date.desc&primary_release_year=${currentYear}&page=${page}`;
             } else if (filterType === "rating") {
                 // Sort by top-rated
-                url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=vote_average.desc&vote_count.gte=100&page=${page}`;
+                url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=vote_average.desc&vote_count.gte=200&page=${page}`;
             } else {
                 // Default Discover (popular)
                 url = `${base_url}discover/movie?${api_key}&language=en-US&sort_by=popularity.desc&page=${page}`;

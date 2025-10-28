@@ -40,17 +40,20 @@ const TvDetail = () => {
             setIsNext(watchnext.some((next) => next.movie.id === +id));
         }
     }, [favourite, watchnext, id, user?.id]);
+    // console.log(currentTVSeries);
 
     const addToFav = async () => {
+        const { id, vote_average, poster_path, name, first_air_date } = currentTVSeries
         if (!user) return toast.error("Please login to add to favourites");
-        await dispatch(addFavourite({ userId: user.id, movie: currentTVSeries }));
+        await dispatch(addFavourite({ userId: user.id, movie: { id, vote_average, poster_path, name, first_air_date } }));
         setIsFav(true);
         toast.success(`${currentTVSeries?.name} added to favourites`);
     };
 
     const addToNext = async () => {
+        const { id, vote_average, poster_path, name, first_air_date } = currentTVSeries
         if (!user) return toast.error("Please login to add to watch next");
-        await dispatch(addWatchnext({ userId: user.id, movie: currentTVSeries }));
+        await dispatch(addWatchnext({ userId: user.id, movie: { id, vote_average, poster_path, name, first_air_date } }));
         setIsNext(true);
         toast.success(`${currentTVSeries?.name} added to Watch Next`);
     };

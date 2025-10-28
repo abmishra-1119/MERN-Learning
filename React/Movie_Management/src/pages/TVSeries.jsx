@@ -22,7 +22,7 @@ const TVSeries = () => {
     const prevPage = () => setPage((prev) => (prev > 1 ? prev - 1 : prev));
 
     return (
-        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen p-8 text-gray-900 dark:text-white flex flex-col items-center">
+        <div className="bg-gray-200 dark:bg-gray-900 min-h-screen py-8 px-2 text-gray-900 dark:text-white flex flex-col items-center">
             <h1 className="te text-3xl font-bold mb-8">Trending TV Series (This Week)</h1>
 
             {isLoading ? (
@@ -61,9 +61,7 @@ const TVSeries = () => {
                     Previous
                 </button>
 
-                {/* Dynamic page numbers */}
                 <div className="flex items-center gap-2">
-                    {/* First page */}
                     <button
                         onClick={() => setPage(1)}
                         className={`px-3 py-1 rounded-md border ${page === 1
@@ -74,10 +72,8 @@ const TVSeries = () => {
                         1
                     </button>
 
-                    {/* Ellipsis before middle pages */}
                     {page > 3 && <span className="text-gray-500">...</span>}
 
-                    {/* Middle pages */}
                     {Array.from({ length: 3 }, (_, i) => page - 1 + i)
                         .filter((p) => p > 1 && p < totalPages)
                         .map((p) => (
@@ -93,10 +89,8 @@ const TVSeries = () => {
                             </button>
                         ))}
 
-                    {/* Ellipsis after middle pages */}
                     {page < totalPages - 2 && <span className="text-gray-500">...</span>}
 
-                    {/* Last page */}
                     {totalPages > 1 && (
                         <button
                             onClick={() => setPage(totalPages)}

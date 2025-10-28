@@ -4,8 +4,10 @@ import { useParams } from "react-router";
 import { fetchMovieById } from "../features/Movies/movieSlice";
 import {
     addFavourite,
+    addLastViewed,
     addWatchnext,
     fetchFavourite,
+    fetchLastViewed,
     fetchWatchnext,
 } from "../features/Profile/profileSlice";
 import Loading from "../components/Loading";
@@ -26,10 +28,12 @@ const MovieDetail = () => {
         if (user?.id) {
             dispatch(fetchFavourite(user.id));
             dispatch(fetchWatchnext(user.id));
+            dispatch(fetchLastViewed(user.id))
         }
     }, [dispatch, id, user?.id]);
 
     useEffect(() => {
+
         window.scrollTo({ top: 0 });
         if (user?.id && favourite) {
             setIsFav(favourite.some((fav) => fav.movie.id === +id));
@@ -39,16 +43,25 @@ const MovieDetail = () => {
         }
     }, [favourite, watchnext, id, user?.id]);
 
+    useEffect(() => {
+        if (currentMovie && user) {
+            const { id, title, poster_path, release_date, vote_average } = currentMovie
+            dispatch(addLastViewed({ userId: user.id, movie: { id, title, poster_path, release_date, vote_average } }))
+        }
+    }, [currentMovie])
     const addToFav = async () => {
+        const { id, title, poster_path, release_date, vote_average } = currentMovie
+
         if (!user) return toast.error("Please login to add to favourites");
-        await dispatch(addFavourite({ userId: user.id, movie: currentMovie }));
+        await dispatch(addFavourite({ userId: user.id, movie: { id, title, poster_path, release_date, vote_average } }));
         setIsFav(true);
         toast.success(`${currentMovie?.title} added to favourites`);
     };
 
     const addToNext = async () => {
+        const { id, title, poster_path, release_date, vote_average } = currentMovie
         if (!user) return toast.error("Please login to add to watch next");
-        await dispatch(addWatchnext({ userId: user.id, movie: currentMovie }));
+        await dispatch(addWatchnext({ userId: user.id, movie: { id, title, poster_path, release_date, vote_average } }));
         setIsNext(true);
         toast.success(`${currentMovie?.title} added to Watch Next`);
     };
