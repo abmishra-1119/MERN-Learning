@@ -123,17 +123,6 @@
       }
     },
     {
-      "id": "71b4",
-      "userId": "64bd",
-      "movie": {
-        "id": 1305717,
-        "title": "Hunting Grounds",
-        "poster_path": "/cgZjpqRQt9sk6XMCwZ3B1NPAaoy.jpg",
-        "release_date": "2025-05-16",
-        "vote_average": 6.293
-      }
-    },
-    {
       "id": "6314",
       "userId": "64bd",
       "movie": {
@@ -142,17 +131,6 @@
         "poster_path": "/bcP7FtskwsNp1ikpMQJzDPjofP5.jpg",
         "release_date": "2025-07-11",
         "vote_average": 4.893
-      }
-    },
-    {
-      "id": "841c",
-      "userId": "64bd",
-      "movie": {
-        "id": 1311031,
-        "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
-        "poster_path": "/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg",
-        "release_date": "2025-07-18",
-        "vote_average": 7.801
       }
     },
     {
@@ -219,6 +197,39 @@
         "poster_path": "/2LqaLgk4Z226KkgPJuiOQ58wvrm.jpg",
         "release_date": "2004-11-05",
         "vote_average": 7.719
+      }
+    },
+    {
+      "id": "80d5",
+      "userId": "64bd",
+      "movie": {
+        "id": 604079,
+        "title": "The Long Walk",
+        "poster_path": "/wobVTa99eW0ht6c1rNNzLkazPtR.jpg",
+        "release_date": "2025-09-10",
+        "vote_average": 6.863
+      }
+    },
+    {
+      "id": "1dc2",
+      "userId": "64bd",
+      "movie": {
+        "id": 1305717,
+        "title": "Hunting Grounds",
+        "poster_path": "/cgZjpqRQt9sk6XMCwZ3B1NPAaoy.jpg",
+        "release_date": "2025-05-16",
+        "vote_average": 6.279
+      }
+    },
+    {
+      "id": "6aec",
+      "userId": "64bd",
+      "movie": {
+        "id": 1311031,
+        "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+        "poster_path": "/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg",
+        "release_date": "2025-07-18",
+        "vote_average": 7.804
       }
     }
   ]

@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from 'axios'
 
-const favourite_url = 'http://localhost:3000/favourite'
+const favourite_url = 'https://6901c24eb208b24affe3962e.mockapi.io/favourite'
 
-const watchnext_url = 'http://localhost:3000/watchnext'
+const watchnext_url = 'https://6901c5feb208b24affe3a51c.mockapi.io/watchnext'
 
-const lastviewed_url = 'http://localhost:3000/lastviewed'
-
+const lastviewed_url = 'https://6901c5feb208b24affe3a51c.mockapi.io/lastviewed'
 
 
 const initialState = {

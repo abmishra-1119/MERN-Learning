@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from 'axios'
 
-const base_url = 'http://localhost:3000/users'
+const base_url = 'https://6901c24eb208b24affe3962e.mockapi.io/users'
 
 const initialState = {
     isLoading: false,
