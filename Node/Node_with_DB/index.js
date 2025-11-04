@@ -2,6 +2,7 @@ import express from 'express'
 import { connection } from './config/db.js'
 import dotenv from 'dotenv'
 import userRoute from './routes/userRoute.js'
+import productRoute from './routes/productRoute.js'
 import logCheck from './middlewares/logger.js'
 
 dotenv.config()
@@ -13,6 +14,7 @@ app.use(express.json())
 app.use(logCheck)
 
 app.use('/users', userRoute)
+app.use('/products', productRoute)
 
 connection()
 app.listen(PORT, () => {

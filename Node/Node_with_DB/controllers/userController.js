@@ -41,8 +41,8 @@ export const login = async(req, res) => {
         } else {
             return res.status(404).json({ error: "Password does not match" })
         }
-    } catch (error) {
-        console.error(error);
+    } catch (e) {
+        res.status(500).json({ error: e.message })
     }
 }
 
@@ -65,7 +65,7 @@ export const getUser = async(req, res) => {
             users
         })
     } catch (e) {
-        console.error(e);
+        res.status(500).json({ error: e.message })
     }
 }
 
@@ -93,7 +93,7 @@ export const updateUser = async(req, res) => {
         const data = await User.findByIdAndUpdate(id, req.body, { new: true })
         res.status(200).json([data])
     } catch (e) {
-        console.error(e);
+        res.status(500).json({ error: e.message })
     }
 }
 
@@ -113,6 +113,6 @@ export const profile = async(req, res) => {
         const data = await User.findById(id)
         res.status(200).json(data)
     } catch (e) {
-        console.error(e);
+        res.status(500).json({ error: e.message })
     }
 }
