@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const ProductSchema = mongoose.Schema({
+    sellerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     title: {
         type: String,
         minLength: [3, 'Title will be greater than 3'],

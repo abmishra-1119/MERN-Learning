@@ -39,6 +39,26 @@ const UserSchema = mongoose.Schema({
         min: [18, "age must be greater than 18 "],
         max: [99, "Enter a valid age"]
     },
+    role: {
+        type: String,
+        enum: ['admin', 'user', 'seller'],
+        default: 'user'
+    },
+    cart: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            validate: {
+                validator: async function(v) {
+                    const product = await mongoose.model('Product').findById(v);
+                    return !!product;
+                },
+                message: "Please Enter a valid Product ID"
+            },
+
+        },
+        count: Number
+    }]
 })
 
 

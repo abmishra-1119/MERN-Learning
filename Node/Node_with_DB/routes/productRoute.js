@@ -1,11 +1,14 @@
 import express from 'express'
-import { createProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from '../controllers/productController.js'
-import { authMiddleware } from '../middlewares/authMiddleware.js'
+import { createProduct, deleteMyProduct, deleteProduct, getAllProducts, getMyProduct, getProductById, updateMyProduct, updateProduct } from '../controllers/productController.js'
+import { authMiddleware, sellerMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = express.Router()
 
-router.post('/', authMiddleware, createProduct)
+router.post('/', authMiddleware, sellerMiddleware, createProduct)
 router.get('/', getAllProducts)
+router.get('/my', authMiddleware, sellerMiddleware, getMyProduct)
+router.delete('/my/:id', authMiddleware, sellerMiddleware, deleteMyProduct)
+router.put('/my/:id', authMiddleware, sellerMiddleware, updateMyProduct)
 router.get('/:id', getProductById)
 router.put('/:id', authMiddleware, updateProduct)
 router.delete('/:id', authMiddleware, deleteProduct)

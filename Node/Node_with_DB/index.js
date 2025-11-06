@@ -3,6 +3,7 @@ import { connection } from './config/db.js'
 import dotenv from 'dotenv'
 import userRoute from './routes/userRoute.js'
 import productRoute from './routes/productRoute.js'
+import orderRoute from './routes/orderRoute.js'
 import logCheck from './middlewares/logger.js'
 
 dotenv.config()
@@ -15,6 +16,7 @@ app.use(logCheck)
 
 app.use('/users', userRoute)
 app.use('/products', productRoute)
+app.use('/orders', orderRoute)
 
 connection()
 app.listen(PORT, () => {

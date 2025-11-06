@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 export const createUser = async(req, res) => {
     try {
-        const { name, email, age, password } = req.body
+        const { name, email, age, password, role } = req.body
         if (!name || !email || !age || !password) {
             return res.status(400).json({ message: "All fields are required" })
         }
@@ -14,7 +14,7 @@ export const createUser = async(req, res) => {
         }
         // const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, 10)
-        const newUser = new User({ name, email, age, password: hashedPassword })
+        const newUser = new User({ name, email, age, password: hashedPassword, role })
         await newUser.save()
         res.status(201).json(newUser)
     } catch (e) {
@@ -75,22 +75,20 @@ export const getUserById = async(req, res) => {
         const data = await User.findById(id).select('-password')
         res.status(200).json([data])
     } catch (e) {
-        console.error(e);
+        res.status(500).json({ error: e.message })
     }
 }
 
 export const updateUser = async(req, res) => {
     try {
-        const { name, email, age } = req.body
-        if (!name || !email || !age) {
+        const { name, email, age, password } = req.body
+        if (!name || !email || !age || !password) {
             return res.status(400).json({ message: "All fields are required" })
         }
-        const find = await User.findOne({ email: email })
-        if (find) {
-            return res.status(400).json({ message: "Email is already registered" })
-        }
         const { id } = req.params
-        const data = await User.findByIdAndUpdate(id, req.body, { new: true })
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const data = await User.findByIdAndUpdate(id, { name, email, age, password: hashedPassword }, { new: true })
         res.status(200).json([data])
     } catch (e) {
         res.status(500).json({ error: e.message })
@@ -113,6 +111,57 @@ export const profile = async(req, res) => {
         const data = await User.findById(id)
         res.status(200).json(data)
     } catch (e) {
+        res.status(500).json({ error: e.message })
+    }
+}
+
+export const getCart = async(req, res) => {
+    try {
+        const { id } = req.user
+        const data = await User.findById(id)
+        res.status(200).json(data.cart)
+    } catch (error) {
+        res.status(500).json({ error: e.message })
+    }
+}
+
+export const addToCart = async(req, res) => {
+    try {
+        const cart = req.body
+        const { id } = req.user
+        const data = await User.findByIdAndUpdate(id, { $push: { cart: cart } }, { new: true })
+        res.status(200).json({ message: "Added to cart", data })
+    } catch (error) {
+        res.status(500).json({ error: e.message })
+    }
+}
+
+export const deleteFromCart = async(req, res) => {
+    try {
+        const productId = req.params.id
+        const { id } = req.user
+        const data = await User.findByIdAndUpdate(id, { $pull: { cart: { productId } } }, { new: true })
+        res.status(200).json({ message: "Remove from cart", data })
+    } catch (error) {
+        res.status(500).json({ error: e.message })
+    }
+}
+
+export const emptyCart = async(req, res) => {
+    try {
+        const { id } = req.user
+        const data = await User.findByIdAndUpdate(id, { $set: { cart: [] } }, { new: true })
+        res.status(200).json({ message: "Cart is now empty", data })
+    } catch (error) {
+        res.status(500).json({ error: e.message })
+    }
+}
+
+export const getAllSeller = async(req, res) => {
+    try {
+        const data = await User.find({ role: "seller" })
+        res.status(200).json(data)
+    } catch (error) {
         res.status(500).json({ error: e.message })
     }
 }

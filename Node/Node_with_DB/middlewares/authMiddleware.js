@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import User from "../models/User.js";
 
 export const authMiddleware = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -12,4 +13,25 @@ export const authMiddleware = (req, res, next) => {
         req.user = user;
         next();
     });
+}
+
+export const adminMiddleware = async(req, res, next) => {
+
+    const { id } = req.user
+    const user = await User.findById(id)
+
+    if (user.role === 'admin') {
+        return next()
+    }
+    return res.status(403).json('Only Admin can access')
+}
+
+export const sellerMiddleware = async(req, res, next) => {
+
+    const { id } = req.user
+    const user = await User.findById(id)
+    if (user.role === 'seller') {
+        return next()
+    }
+    return res.status(403).json('Only Seller can access')
 }
