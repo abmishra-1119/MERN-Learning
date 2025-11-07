@@ -16,7 +16,8 @@ const ProductSchema = mongoose.Schema({
         maxLength: [80, 'Enter a valid length'],
     },
     price: Number,
-    stock: Number
+    stock: Number,
+    thumbnail: String
 })
 
 export default mongoose.model('Product', ProductSchema)

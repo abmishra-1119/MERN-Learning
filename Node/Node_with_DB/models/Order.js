@@ -23,9 +23,13 @@ const OrderSchema = mongoose.Schema({
                 },
                 message: "Please Enter a valid Product ID"
             },
-
         },
-        count: Number
+        sellerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        count: Number,
+        price: Number
     }],
     discount: Number,
     totalPrice: Number,

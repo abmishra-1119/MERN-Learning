@@ -1,5 +1,5 @@
 import express from 'express'
-import { addToCart, createUser, deleteFromCart, delteUser, emptyCart, getAllSeller, getCart, getUser, getUserById, login, profile, updateUser } from '../controllers/userController.js'
+import { addToCart, createUser, deleteFromCart, delteUser, emptyCart, getAllSeller, getCart, getUser, getUserById, login, profile, sendOtp, updateUser, verifyOtpAndRegister } from '../controllers/userController.js'
 import { adminMiddleware, authMiddleware } from '../middlewares/authMiddleware.js';
 import { validateRequest } from '../middlewares/validateRoute.js';
 import { getUserSchema, loginSchema, registerSchema, updateUserSchema } from '../validations/userValidation.js';
@@ -18,5 +18,10 @@ router.put('/cart/:id', authMiddleware, deleteFromCart)
 router.get('/:id', validateRequest(getUserSchema, "params"), getUserById);
 router.put('/:id', validateRequest(updateUserSchema), updateUser);
 router.delete('/:id', delteUser);
+
+
+
+router.post('/send-otp', sendOtp);
+router.post('/verify-otp', verifyOtpAndRegister);
 
 export default router;

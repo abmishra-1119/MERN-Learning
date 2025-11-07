@@ -1,6 +1,47 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
+import { sendOtpEmail } from '../utils/mailer.js';
+import Otp from "../models/Otp.js";
+
+// let otpStore = {};
+
+export const sendOtp = async(req, res) => {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    await Otp.deleteMany({ email }); // remove previous OTPs
+
+    await Otp.create({
+        email,
+        otp,
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+    });
+
+    await sendOtpEmail(email, otp);
+    res.json({ message: 'OTP sent to email' });
+};
+
+export const verifyOtpAndRegister = async(req, res) => {
+    const { name, email, password, otp } = req.body;
+
+    const record = await Otp.findOne({ email });
+    if (!record) return res.status(400).json({ message: 'OTP expired or not found' });
+
+    if (record.otp !== otp)
+        return res.status(400).json({ message: 'Invalid OTP' });
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser)
+        return res.status(400).json({ message: 'User already exists' });
+
+    const user = new User({ name, email, password, isVerified: true });
+    await user.save();
+
+    await Otp.deleteMany({ email });
+    res.status(201).json({ message: 'User registered successfully' });
+};
+
 
 export const createUser = async(req, res) => {
     try {
