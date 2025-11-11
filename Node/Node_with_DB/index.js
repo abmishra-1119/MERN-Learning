@@ -7,6 +7,10 @@ import orderRoute from './routes/orderRoute.js';
 import logCheck from './middlewares/logger.js';
 import { requestLogger, errorLogger } from './middlewares/winstonLogger.js';
 import logger from './utils/logger.js';
+import { rateLimit } from 'express-rate-limit'
+import { swaggerDocs } from './swagger.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -19,7 +23,20 @@ app.use('/uploads', express.static('uploads'));
 
 // app.use(logCheck); // This is custom logger 
 
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    limit: 15, // max 5 requests per window per IP
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    ipv6Subnet: 56,
+})
+
+app.use(limiter)
+app.use(cookieParser())
+
 app.use(requestLogger);
+
+swaggerDocs(app)
 
 // Routes
 app.use('/users', userRoute);
@@ -32,6 +49,8 @@ app.use((req, res) => {
     logger.warn(`404 Not Found - ${req.method} ${req.originalUrl}`);
     res.status(404).json({ message: 'Route not found' });
 });
+
+app.use(errorHandler)
 
 connection();
 

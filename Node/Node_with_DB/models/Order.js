@@ -29,7 +29,8 @@ const OrderSchema = mongoose.Schema({
             ref: 'User',
         },
         count: Number,
-        price: Number
+        price: Number,
+        _id: false
     }],
     discount: Number,
     totalPrice: Number,
@@ -67,6 +68,6 @@ const OrderSchema = mongoose.Schema({
     refundMsg: {
         type: String,
     },
-}, { timestamp: true })
+}, { timestamps: true })
 
 export default mongoose.model('Order', OrderSchema)

@@ -18,6 +18,8 @@ const ProductSchema = mongoose.Schema({
     price: Number,
     stock: Number,
     thumbnail: String
-})
+}, { timestamps: true })
+
+ProductSchema.index({ title: 'text', description: 'text' })
 
 export default mongoose.model('Product', ProductSchema)

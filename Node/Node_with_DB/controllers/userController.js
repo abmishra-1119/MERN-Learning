@@ -1,208 +1,332 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken'
-import { sendOtpEmail } from '../utils/mailer.js';
+import jwt from "jsonwebtoken";
+import { sendForgotPasswordOtp, sendOtpEmail } from "../utils/mailer.js";
 import Otp from "../models/Otp.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { successResponse } from "../utils/response.js";
 
-// let otpStore = {};
-
-export const sendOtp = async(req, res) => {
+// Send OTP
+export const sendOtp = asyncHandler(async(req, res) => {
     const { email } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
 
-    await Otp.deleteMany({ email }); // remove previous OTPs
-
+    await Otp.deleteMany({ email });
     await Otp.create({
         email,
         otp,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000),
     });
 
     await sendOtpEmail(email, otp);
-    res.json({ message: 'OTP sent to email' });
-};
+    successResponse(res, 200, "OTP sent to email");
+});
 
-export const verifyOtpAndRegister = async(req, res) => {
+// Verify OTP and Register
+export const verifyOtpAndRegister = asyncHandler(async(req, res) => {
     const { name, email, password, otp } = req.body;
 
     const record = await Otp.findOne({ email });
-    if (!record) return res.status(400).json({ message: 'OTP expired or not found' });
-
-    if (record.otp !== otp)
-        return res.status(400).json({ message: 'Invalid OTP' });
+    if (!record) return res.status(400).json({ message: "OTP expired or not found" });
+    if (record.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
 
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-        return res.status(400).json({ message: 'User already exists' });
+    if (existingUser) return res.status(400).json({ message: "User already exists" });
 
     const user = new User({ name, email, password, isVerified: true });
     await user.save();
 
     await Otp.deleteMany({ email });
-    res.status(201).json({ message: 'User registered successfully' });
+    successResponse(res, 201, "User registered successfully", {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+    });
+});
+
+// Create User
+export const createUser = asyncHandler(async(req, res) => {
+    const { name, email, age, password, role } = req.body;
+
+    if (!name || !email || !age || !password) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const find = await User.findOne({ email });
+    if (find) return res.status(400).json({ message: "Email is already registered" });
+
+    const newUser = new User({ name, email, age, password, role });
+    await newUser.save();
+
+    successResponse(res, 201, "User created successfully", {
+        name: newUser.name,
+        email: newUser.email,
+        age: newUser.age,
+        role: newUser.role,
+    });
+});
+
+//  Login
+export const login = asyncHandler(async(req, res) => {
+    const { email, password } = req.body;
+    const find = await User.findOne({ email });
+    const userAgent = req.headers["user-agent"];
+
+    if (!find) return res.status(404).json({ error: "Invalid email address" });
+
+    const isValid = await bcrypt.compare(password, find.password);
+    if (!isValid) return res.status(401).json({ error: "Invalid password" });
+
+    const accessToken = jwt.sign({ id: find._id }, process.env.ACCESS_KEY, { expiresIn: "15m" });
+    const refreshToken = jwt.sign({ id: find._id }, process.env.REFRESH_KEY, { expiresIn: "7d" });
+
+    // Store refresh token + userAgent in DB
+    find.refreshTokens.push({ token: refreshToken, userAgent });
+    await find.save();
+
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    successResponse(res, 200, "Login successful", {
+        token: accessToken,
+        user: {
+            name: find.name,
+            email: find.email,
+            role: find.role,
+        },
+    });
+});
+
+// controllers/authController.js
+export const logoutUser = async(req, res) => {
+    try {
+        const { refreshToken } = req.cookies;
+        const user = await User.findOne({ "refreshTokens.token": refreshToken });
+        if (!user) return res.status(400).json({ message: "Invalid token" });
+
+        // Filter out this specific refresh token
+        user.refreshTokens = user.refreshTokens.filter(
+            (item) => item.token !== refreshToken
+        );
+        res.clearCookie('refreshToken');
+
+        await user.save();
+
+        res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+export const refreshToken = async(req, res) => {
+    try {
+        const { refreshToken } = req.cookies;
+        if (!refreshToken) return res.status(401).json({ message: "No token provided" });
+
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_KEY);
+        const user = await User.findById(decoded.id);
+
+        const storedToken = user.refreshTokens.find((t) => t.token === refreshToken);
+        if (!storedToken) return res.status(403).json({ message: "Invalid token" });
+
+        // Generate new tokens
+        const newAccessToken = jwt.sign({ id: user._id }, process.env.ACCESS_KEY, { expiresIn: "15m" });
+        const newRefreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_KEY, { expiresIn: "7d" });
+
+        // Replace old refresh token
+        user.refreshTokens = user.refreshTokens.filter(
+            (t) => t.token !== refreshToken
+        );
+        user.refreshTokens.push({
+            token: newRefreshToken,
+            userAgent: storedToken.userAgent,
+            createdAt: new Date()
+        });
+        await user.save();
+
+        // Update cookie with new refresh token
+        res.cookie('refreshToken', newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.json({ accessToken: newAccessToken });
+    } catch (error) {
+        console.error(error);
+        res.status(403).json({ message: "Invalid or expired token" });
+    }
 };
 
 
-export const createUser = async(req, res) => {
-    try {
-        const { name, email, age, password, role } = req.body
-        if (!name || !email || !age || !password) {
-            return res.status(400).json({ message: "All fields are required" })
-        }
-        const find = await User.findOne({ email: email })
-        if (find) {
-            return res.status(400).json({ message: "Email is already registered" })
-        }
-        // const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const newUser = new User({ name, email, age, password: hashedPassword, role })
-        await newUser.save()
-        res.status(201).json(newUser)
-    } catch (e) {
-        res.status(500).json({ error: e.message })
+// Get All Users (Pagination + Projection)
+export const getUser = asyncHandler(async(req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [users, totalUsers] = await Promise.all([
+        User.find({}, "name email age role createdAt")
+        .skip(skip)
+        .limit(limit),
+        User.countDocuments(),
+    ]);
+
+    successResponse(res, 200, "Users fetched successfully", {
+        page,
+        limit,
+        totalUsers,
+        totalPages: Math.ceil(totalUsers / limit),
+        users,
+    });
+});
+
+// Get User By ID
+export const getUserById = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id).select("name email age role createdAt");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    successResponse(res, 200, "User fetched successfully", user);
+});
+
+// Update User
+export const updateUser = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const { name, email, age, password } = req.body;
+
+    if (!name || !email || !age || !password)
+        return res.status(400).json({ message: "All fields are required" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const data = await User.findByIdAndUpdate(
+        id, { name, email, age, password: hashedPassword }, { new: true }
+    ).select("name email age role updatedAt");
+
+    successResponse(res, 200, "User updated successfully", data);
+});
+
+// Delete User
+export const deleteUser = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    successResponse(res, 200, "User deleted successfully");
+});
+
+// Profile
+export const profile = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const user = await User.findById(id).select("name email age role cart createdAt");
+    successResponse(res, 200, "Profile fetched successfully", user);
+});
+
+// Cart - Get
+export const getCart = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const user = await User.findById(id).select("cart");
+    successResponse(res, 200, "Cart fetched successfully", user.cart);
+});
+
+// Cart - Add
+export const addToCart = asyncHandler(async(req, res) => {
+    const { productId, count = 1 } = req.body;
+    const { id } = req.user;
+
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const existingProduct = user.cart.find(
+        (item) => item.productId.toString() === productId
+    );
+
+    if (existingProduct) {
+        existingProduct.count += count;
+    } else {
+        user.cart.push({ productId, count });
     }
-}
 
-export const login = async(req, res) => {
-    try {
-        const { email, password } = req.body
+    await user.save();
+    successResponse(res, 200, "Product added/updated in cart", user.cart);
+});
 
-        const find = await User.findOne({ email: email })
+// Cart - Delete Product
+export const deleteFromCart = asyncHandler(async(req, res) => {
+    const productId = req.params.id;
+    const { id } = req.user;
 
-        if (!find) {
-            return res.status(404).json({ error: "Invalid email address" })
-        }
-        const hashedPassword = find.password
+    const user = await User.findByIdAndUpdate(
+        id, { $pull: { cart: { productId } } }, { new: true }
+    ).select("cart");
 
-        const isvalid = await bcrypt.compare(password, hashedPassword);
+    successResponse(res, 200, "Product removed from cart", user.cart);
+});
 
-        if (isvalid) {
-            const token = jwt.sign({ id: find._id }, process.env.JWT_KEY)
-            return res.status(200).json({ message: "Login succesfully", user: find, token })
-        } else {
-            return res.status(404).json({ error: "Password does not match" })
-        }
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
-}
+// Cart - Empty Cart
+export const emptyCart = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const user = await User.findByIdAndUpdate(
+        id, { $set: { cart: [] } }, { new: true }
+    ).select("cart");
 
+    successResponse(res, 200, "Cart emptied", user.cart);
+});
 
-export const getUser = async(req, res) => {
-    try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+// Cart - Update Quantity
+export const updateCart = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const { productId, count } = req.body;
 
-        const users = await User.find().skip(skip).limit(limit).select('-password');
+    if (!productId || !count)
+        return res.status(400).json({ message: "productId and count are required" });
 
-        const totalUsers = await User.countDocuments();
+    const user = await User.findOneAndUpdate({ _id: id, "cart.productId": productId }, { $set: { "cart.$.count": count } }, { new: true }).select("cart");
 
-        res.status(200).json({
-            page,
-            limit,
-            totalUsers,
-            totalPages: Math.ceil(totalUsers / limit),
-            users
-        })
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    successResponse(res, 200, "Cart updated successfully", user.cart);
+});
 
-export const getUserById = async(req, res) => {
-    try {
-        const { id } = req.params
-        const data = await User.findById(id).select('-password')
-        res.status(200).json([data])
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
-}
+// Get All Sellers
+export const getAllSeller = asyncHandler(async(req, res) => {
+    const sellers = await User.find({ role: "seller" }).select("name email role createdAt");
+    successResponse(res, 200, "All sellers fetched", sellers);
+});
 
-export const updateUser = async(req, res) => {
-    try {
-        const { name, email, age, password } = req.body
-        if (!name || !email || !age || !password) {
-            return res.status(400).json({ message: "All fields are required" })
-        }
-        const { id } = req.params
-        const hashedPassword = await bcrypt.hash(password, 10)
+// Forgot Password (Send OTP)
+export const forgotPassword = asyncHandler(async(req, res) => {
+    const { email } = req.body;
 
-        const data = await User.findByIdAndUpdate(id, { name, email, age, password: hashedPassword }, { new: true })
-        res.status(200).json([data])
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Invalid email address" });
 
-export const delteUser = async(req, res) => {
-    try {
-        const { id } = req.params
-        await User.findByIdAndDelete(id)
-        res.status(204).json({ message: "User deleted Succesfully" })
-    } catch (e) {
-        console.error(e);
-    }
-}
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    await Otp.deleteMany({ email });
+    await Otp.create({
+        email,
+        otp,
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    });
 
-export const profile = async(req, res) => {
-    try {
-        const { id } = req.user
-        const data = await User.findById(id)
-        res.status(200).json(data)
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    await sendForgotPasswordOtp(email, otp);
+    successResponse(res, 200, "OTP sent for password reset");
+});
 
-export const getCart = async(req, res) => {
-    try {
-        const { id } = req.user
-        const data = await User.findById(id)
-        res.status(200).json(data.cart)
-    } catch (error) {
-        res.status(500).json({ error: e.message })
-    }
-}
+// Reset Password
+export const resetPassword = asyncHandler(async(req, res) => {
+    const { email, password, otp } = req.body;
 
-export const addToCart = async(req, res) => {
-    try {
-        const cart = req.body
-        const { id } = req.user
-        const data = await User.findByIdAndUpdate(id, { $push: { cart: cart } }, { new: true })
-        res.status(200).json({ message: "Added to cart", data })
-    } catch (error) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    const record = await Otp.findOne({ email });
+    if (!record) return res.status(400).json({ message: "OTP expired or not found" });
+    if (record.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
 
-export const deleteFromCart = async(req, res) => {
-    try {
-        const productId = req.params.id
-        const { id } = req.user
-        const data = await User.findByIdAndUpdate(id, { $pull: { cart: { productId } } }, { new: true })
-        res.status(200).json({ message: "Remove from cart", data })
-    } catch (error) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findOneAndUpdate({ email }, { password: hashedPassword });
+    await Otp.deleteMany({ email });
 
-export const emptyCart = async(req, res) => {
-    try {
-        const { id } = req.user
-        const data = await User.findByIdAndUpdate(id, { $set: { cart: [] } }, { new: true })
-        res.status(200).json({ message: "Cart is now empty", data })
-    } catch (error) {
-        res.status(500).json({ error: e.message })
-    }
-}
-
-export const getAllSeller = async(req, res) => {
-    try {
-        const data = await User.find({ role: "seller" })
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(500).json({ error: e.message })
-    }
-}
+    successResponse(res, 200, "Password reset successfully");
+});

@@ -1,108 +1,156 @@
 import Product from "../models/Product.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { successResponse } from "../utils/response.js";
 
-export const createProduct = async(req, res) => {
-    try {
-        const { id } = req.user;
-        const { title, description, price, stock } = req.body;
+export const createProduct = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const { title, description, price, stock } = req.body;
+    const image = req.file;
 
-        if (!title || !description || !price || !stock) {
-            return res.status(404).json("All field required")
-        }
-
-        const newProduct = new Product({ sellerId: id, ...req.body })
-        await newProduct.save()
-
-        res.status(201).json(newProduct)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    if (!title || !description || !price || !stock || !image) {
+        res.status(400);
+        throw new Error("All fields are required");
     }
 
-}
+    const newProduct = new Product({
+        sellerId: id,
+        ...req.body,
+        thumbnail: image.path,
+    });
 
-export const getAllProducts = async(req, res) => {
-    try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+    await newProduct.save();
 
-        const products = await Product.find().skip(skip).limit(limit)
+    return successResponse(res, 201, "Product created successfully", newProduct);
+});
 
-        const totalProducts = await Product.countDocuments()
+export const getAllProducts = asyncHandler(async(req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-        res.status(200).json({
-            page,
-            limit,
-            totalProducts,
-            totalPages: Math.ceil(totalProducts / limit),
-            products
-        })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    const products = await Product.find().select("-__v -createdAt -updatedAt").skip(skip).limit(limit)
+
+    const totalProducts = await Product.countDocuments()
+
+    return successResponse(res, 200, "Products fetched successfully", {
+        page,
+        limit,
+        totalProducts,
+        totalPages: Math.ceil(totalProducts / limit),
+        products,
+    });
+});
+
+
+export const getProductById = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const product = await Product.findById(id).select("-__v -createdAt -updatedAt");
+
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
     }
-}
 
-export const getProductById = async(req, res) => {
-    try {
-        const { id } = req.params
-        const product = await Product.findById(id)
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
+    return successResponse(res, 200, "Product fetched successfully", product);
+});
 
-export const updateProduct = async(req, res) => {
-    try {
-        const update = req.body;
-        const { id } = req.params
-        const product = await Product.findByIdAndUpdate(id, update, { new: true })
-        if (!product) throw new Error(`Enter a valid id: ${id}`)
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
+export const updateProduct = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const update = req.body;
 
-export const deleteProduct = async(req, res) => {
-    try {
-        const { id } = req.params
-        await Product.findByIdAndDelete(id)
-        res.status(200).json({ message: "Product Deleted Succesfully" })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
+    const product = await Product.findByIdAndUpdate(id, update, { new: true });
 
-export const getMyProduct = async(req, res) => {
-    try {
-        const { id } = req.user
-        const products = await Product.find({ sellerId: id })
-        res.status(200).json(products)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    if (!product) {
+        res.status(404);
+        throw new Error(`No product found with ID: ${id}`);
     }
-}
 
-export const deleteMyProduct = async(req, res) => {
-    try {
-        const userId = req.user.id
-        const { id } = req.params
-        await Product.findOneAndDelete({ _id: id, sellerId: userId })
-        res.status(200).json({ message: "Product Deleted Succesfully" })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
+    return successResponse(res, 200, "Product updated successfully", product);
+});
 
-export const updateMyProduct = async(req, res) => {
-    try {
-        const userId = req.user.id
-        const update = req.body;
-        const { id } = req.params
-        const product = await Product.findOneAndUpdate({ _id: id, sellerId: userId }, update, { new: true })
-        if (!product) throw new Error(`Enter a valid id: ${id}`)
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+export const deleteProduct = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+        res.status(404);
+        throw new Error(`No product found with ID: ${id}`);
     }
-}
+
+    return successResponse(res, 200, "Product deleted successfully");
+});
+
+export const getMyProduct = asyncHandler(async(req, res) => {
+    const { id } = req.user;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find({ sellerId: id }).select("-__v -createdAt -updatedAt").skip(skip).limit(limit);
+
+    const totalProducts = await Product.countDocuments({ sellerId: id })
+
+    return successResponse(res, 200, "My products fetched successfully", {
+        page,
+        limit,
+        totalProducts,
+        totalPages: Math.ceil(totalProducts / limit),
+        products,
+    });
+});
+
+
+export const deleteMyProduct = asyncHandler(async(req, res) => {
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const product = await Product.findOneAndDelete({ _id: id, sellerId: userId });
+
+    if (!product) {
+        res.status(404);
+        throw new Error("No product found or unauthorized access");
+    }
+
+    return successResponse(res, 200, "Product deleted successfully");
+});
+
+export const updateMyProduct = asyncHandler(async(req, res) => {
+    const userId = req.user.id;
+    const { id } = req.params;
+    const update = req.body;
+
+    const product = await Product.findOneAndUpdate({ _id: id, sellerId: userId },
+        update, { new: true }
+    );
+
+    if (!product) {
+        res.status(404);
+        throw new Error("No product found or unauthorized access");
+    }
+
+    return successResponse(res, 200, "Product updated successfully", product);
+});
+
+export const searchProduct = asyncHandler(async(req, res) => {
+    const { query } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find({ $text: { $search: query } }).select("-__v -createdAt -updatedAt").skip(skip).limit(limit);
+
+    const totalProducts = await Product.countDocuments({ $text: { $search: query } })
+
+    if (products.length === 0) {
+        res.status(404);
+        throw new Error("No products found for this search query");
+    }
+
+    return successResponse(res, 200, "Search results", {
+        page,
+        limit,
+        totalProducts,
+        totalPages: Math.ceil(totalProducts / limit),
+        products,
+    });
+});

@@ -5,6 +5,7 @@ const UserSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
+        index: true,
         minLength: [3, 'Name will be greater than 3'],
         maxLength: [30, 'Enter a valid length'],
         validate: {
@@ -18,6 +19,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        index: true,
         validate: {
             validator: function(value) {
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
@@ -25,9 +27,15 @@ const UserSchema = mongoose.Schema({
             message: 'Enter a valid Email'
         }
     },
+    phone: {
+        type: String,
+        // required: true,
+        unique: true,
+        index: true
+    },
     password: {
         type: String,
-        require: true
+        require: true,
     },
     age: {
         type: Number,
@@ -43,12 +51,14 @@ const UserSchema = mongoose.Schema({
     role: {
         type: String,
         enum: ['admin', 'user', 'seller'],
-        default: 'user'
+        default: 'user',
+        index: true
     },
     cart: [{
         productId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
+            index: true,
             validate: {
                 validator: async function(v) {
                     const product = await mongoose.model('Product').findById(v);
@@ -56,16 +66,38 @@ const UserSchema = mongoose.Schema({
                 },
                 message: "Please Enter a valid Product ID"
             },
-
         },
-        count: Number
+        count: Number,
+        _id: false
+    }],
+    avatar: {
+        url: String,
+        public_url: String
+    },
+    refreshTokens: [{
+        token: {
+            type: String,
+            index: true
+        },
+        userAgent: String,
+        createdAt: { type: String, default: Date.now },
+        _id: false
     }]
-})
+}, { timestamps: true })
 
 UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
 });
+
+
+UserSchema.index({ email: 1, name: -1 });
+UserSchema.index({ role: 1, email: 1 });
+UserSchema.index({ role: 1, name: 1 });
+UserSchema.index({ role: 1, createdAt: -1 });
+UserSchema.index({ 'cart.productId': 1 });
+UserSchema.index({ 'refreshTokens.createdAt': 1 });
+
 
 export default mongoose.model('User', UserSchema)

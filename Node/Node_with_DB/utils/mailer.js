@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-
-const OTP_EMAIL_TEMPLATE = (otp) => {
+// Refactored template to accept dynamic title and instructions for reuse
+const OTP_EMAIL_TEMPLATE = (otp, title, instruction) => {
     const appName = "Auth App";
     const accentColor = "#4F46E5";
 
@@ -22,7 +22,7 @@ const OTP_EMAIL_TEMPLATE = (otp) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your One-Time Password</title>
+    <title>${title}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; background-color: #f4f4f4;">
 
@@ -37,10 +37,10 @@ const OTP_EMAIL_TEMPLATE = (otp) => {
         <!-- Main Content Area -->
         <tr>
             <td align="center" style="padding: 20px 40px;">
-                <h2 style="color: #333333; font-size: 20px; font-weight: 600; margin-bottom: 25px;">Verify Your Identity</h2>
+                <h2 style="color: #333333; font-size: 20px; font-weight: 600; margin-bottom: 25px;">${title}</h2>
                 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-                    Use the following One-Time Password (OTP) to complete your login or requested action.
+                    ${instruction}
                 </p>
 
                 <!-- OTP Display Box -->
@@ -80,10 +80,26 @@ const OTP_EMAIL_TEMPLATE = (otp) => {
 };
 
 export const sendOtpEmail = async(email, otp) => {
+    const title = "Verify Your Identity";
+    const instruction = "Use the following One-Time Password (OTP) to complete your login or requested action.";
+
     await transporter.sendMail({
         from: `"Auth App" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Your One-Time Verification Code",
-        html: OTP_EMAIL_TEMPLATE(otp)
+        html: OTP_EMAIL_TEMPLATE(otp, title, instruction)
+    });
+};
+
+
+export const sendForgotPasswordOtp = async(email, otp) => {
+    const title = "Password Reset Verification";
+    const instruction = "You requested a password reset. Use the following One-Time Password (OTP) to verify your identity and set a new password.";
+
+    await transporter.sendMail({
+        from: `"Auth App" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Password Reset Code (Valid for 5 minutes)",
+        html: OTP_EMAIL_TEMPLATE(otp, title, instruction)
     });
 };
