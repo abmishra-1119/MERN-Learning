@@ -13,7 +13,6 @@ export const registerSchema = Joi.object({
     name: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).max(100).required(),
-    age: Joi.number().min(18).max(99).required(),
     role: Joi.string()
 });
 
@@ -26,7 +25,6 @@ export const updateUserSchema = Joi.object({
     name: Joi.string().min(3).max(30),
     email: Joi.string().email(),
     password: Joi.string().min(6),
-    age: Joi.number().min(18).max(99)
 });
 
 export const getUserSchema = Joi.object({

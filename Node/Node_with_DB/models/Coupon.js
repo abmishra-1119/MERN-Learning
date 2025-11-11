@@ -1,13 +1,30 @@
 import mongoose from "mongoose";
 
-const couponSchema = mongoose.Schema({
+const couponSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        trim: true,
     },
     discount: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100,
     },
+    expiryDate: {
+        type: Date,
+        required: false,
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+}, { timestamps: true });
 
-})
+// Indexing for faster search
+couponSchema.index({ name: 1 });
+couponSchema.index({ discount: 1 });
+
+export default mongoose.model("Coupon", couponSchema);

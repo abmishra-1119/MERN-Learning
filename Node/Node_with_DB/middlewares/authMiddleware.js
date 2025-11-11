@@ -7,7 +7,7 @@ export const authMiddleware = (req, res, next) => {
 
     if (token == null) return res.sendStatus(401);
 
-    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_KEY, (err, user) => {
         if (err) return res.sendStatus(403);
 
         req.user = user;
@@ -15,7 +15,7 @@ export const authMiddleware = (req, res, next) => {
     });
 }
 
-export const adminMiddleware = async(req, res, next) => {
+export const adminMiddleware = async (req, res, next) => {
 
     const { id } = req.user
     const user = await User.findById(id)
@@ -26,7 +26,7 @@ export const adminMiddleware = async(req, res, next) => {
     return res.status(403).json('Only Admin can access')
 }
 
-export const sellerMiddleware = async(req, res, next) => {
+export const sellerMiddleware = async (req, res, next) => {
 
     const { id } = req.user
     const user = await User.findById(id)

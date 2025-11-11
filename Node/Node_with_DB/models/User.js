@@ -9,7 +9,7 @@ const UserSchema = mongoose.Schema({
         minLength: [3, 'Name will be greater than 3'],
         maxLength: [30, 'Enter a valid length'],
         validate: {
-            validator: function(value) {
+            validator: function (value) {
                 return /^[a-zA-Z]+$/.test(value)
             },
             message: 'Name must be Alphabetic'
@@ -21,7 +21,7 @@ const UserSchema = mongoose.Schema({
         unique: true,
         index: true,
         validate: {
-            validator: function(value) {
+            validator: function (value) {
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
             },
             message: 'Enter a valid Email'
@@ -35,12 +35,12 @@ const UserSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     age: {
         type: Number,
         validate: {
-            validator: function(value) {
+            validator: function (value) {
                 return /^[0-9]/.test(value)
             },
             message: 'Enter a valid age'
@@ -60,7 +60,7 @@ const UserSchema = mongoose.Schema({
             ref: 'Product',
             index: true,
             validate: {
-                validator: async function(v) {
+                validator: async function (v) {
                     const product = await mongoose.model('Product').findById(v);
                     return !!product;
                 },
@@ -72,7 +72,7 @@ const UserSchema = mongoose.Schema({
     }],
     avatar: {
         url: String,
-        public_url: String
+        public_id: String
     },
     refreshTokens: [{
         token: {
@@ -82,10 +82,22 @@ const UserSchema = mongoose.Schema({
         userAgent: String,
         createdAt: { type: String, default: Date.now },
         _id: false
-    }]
+    }],
+    addresses: [{
+        fullName: String,
+        street: String,
+        city: String,
+        state: String,
+        country: String,
+        zipCode: String,
+        phone: String,
+        isDefault: { type: Boolean, default: false },
+        _id: false
+    }],
+
 }, { timestamps: true })
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
@@ -96,8 +108,6 @@ UserSchema.index({ email: 1, name: -1 });
 UserSchema.index({ role: 1, email: 1 });
 UserSchema.index({ role: 1, name: 1 });
 UserSchema.index({ role: 1, createdAt: -1 });
-UserSchema.index({ 'cart.productId': 1 });
 UserSchema.index({ 'refreshTokens.createdAt': 1 });
-
 
 export default mongoose.model('User', UserSchema)

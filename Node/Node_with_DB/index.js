@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
 import orderRoute from './routes/orderRoute.js';
+import couponRoute from './routes/couponRoutes.js';
 import logCheck from './middlewares/logger.js';
 import { requestLogger, errorLogger } from './middlewares/winstonLogger.js';
 import logger from './utils/logger.js';
@@ -11,6 +12,7 @@ import { rateLimit } from 'express-rate-limit'
 import { swaggerDocs } from './swagger.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
+import { cloudinaryConfig } from './config/cloudinary.js';
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -42,6 +44,7 @@ swaggerDocs(app)
 app.use('/users', userRoute);
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
+app.use('/coupons', couponRoute);
 
 app.use(errorLogger);
 
@@ -53,6 +56,7 @@ app.use((req, res) => {
 app.use(errorHandler)
 
 connection();
+cloudinaryConfig();
 
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);

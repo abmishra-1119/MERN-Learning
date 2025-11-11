@@ -1,25 +1,89 @@
 import mongoose from "mongoose";
 
-const ProductSchema = mongoose.Schema({
-    sellerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+const ratingSchema = new mongoose.Schema(
+    {
+        star: {
+            type: Number,
+            min: 1,
+            max: 5,
+            required: true,
+        },
+        comment: {
+            type: String,
+            trim: true,
+        },
+        postedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
     },
-    title: {
-        type: String,
-        minLength: [3, 'Title will be greater than 3'],
-        maxLength: [30, 'Enter a valid length'],
-    },
-    description: {
-        type: String,
-        minLength: [5, 'Description will be greater than 3'],
-        maxLength: [80, 'Enter a valid length'],
-    },
-    price: Number,
-    stock: Number,
-    thumbnail: String
-}, { timestamps: true })
+    { timestamps: true }
+);
 
-ProductSchema.index({ title: 'text', description: 'text' })
+const ProductSchema = new mongoose.Schema(
+    {
+        sellerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true,
+        },
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+            minLength: [3, "Title must be at least 3 characters"],
+            maxLength: [100, "Title too long"],
+            index: true,
+        },
+        description: {
+            type: String,
+            required: true,
+            trim: true,
+            minLength: [5, "Description must be at least 5 characters"],
+            maxLength: [500, "Description too long"],
+            index: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+            min: [0, "Price must be positive"],
+        },
+        stock: {
+            type: Number,
+            default: 0,
+        },
+        brand: {
+            type: String,
+            trim: true,
+            index: true,
+        },
+        category: {
+            type: String,
+            trim: true,
+            index: true,
+        },
+        images: [
+            {
+                url: String,
+                asset_id: String,
+                public_id: String,
+            },
+        ],
+        ratings: [ratingSchema],
+        totalRating: {
+            type: Number,
+            default: 0,
+        },
+        thumbnail: String,
+    },
+    { timestamps: true }
+);
 
-export default mongoose.model('Product', ProductSchema)
+// Indexes for faster searching
+ProductSchema.index({ title: "text", description: "text", brand: 1, category: 1 });
+ProductSchema.index({ price: 1 });
+ProductSchema.index({ sellerId: 1 });
+
+export default mongoose.model("Product", ProductSchema);

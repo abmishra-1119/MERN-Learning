@@ -1,40 +1,67 @@
 import mongoose from "mongoose";
 
-const OrderSchema = mongoose.Schema({
+const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
         validate: {
-            validator: async function(v) {
+            validator: async function (v) {
                 const user = await mongoose.model('User').findById(v);
                 return !!user;
             },
-            message: "Please Enter a valid User ID"
+            message: "Please enter a valid User ID"
         }
     },
     products: [{
         productId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
+            required: true,
             validate: {
-                validator: async function(v) {
+                validator: async function (v) {
                     const product = await mongoose.model('Product').findById(v);
                     return !!product;
                 },
-                message: "Please Enter a valid Product ID"
+                message: "Please enter a valid Product ID"
             },
         },
         sellerId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            required: true,
         },
-        count: Number,
-        price: Number,
+        count: {
+            type: Number,
+            required: true,
+            min: 1
+        },
+        price: {
+            type: Number,
+            required: true,
+            min: 0
+        },
         _id: false
     }],
-    discount: Number,
-    totalPrice: Number,
-    finalPrice: Number,
+    coupon: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Coupon',
+    },
+    discount: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    totalPrice: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    finalPrice: {
+        type: Number,
+        required: true,
+        min: 0
+    },
     orderDate: {
         type: Date,
         default: Date.now
@@ -45,12 +72,12 @@ const OrderSchema = mongoose.Schema({
         default: 'COD'
     },
     address: {
-        house: String,
-        street: String,
-        landmark: String,
-        pincode: Number,
-        city: String,
-        state: String,
+        house: { type: String, required: true },
+        street: { type: String },
+        landmark: { type: String },
+        pincode: { type: Number, required: true },
+        city: { type: String, required: true },
+        state: { type: String, required: true },
         country: { type: String, default: 'India' },
     },
     status: {
@@ -60,14 +87,15 @@ const OrderSchema = mongoose.Schema({
     },
     refundProcess: {
         type: String,
-        enum: ['processing', 'initiated', 'cancelled', 'Done'],
+        enum: ['processing', 'initiated', 'cancelled', 'done'],
     },
-    refundTime: {
-        type: Date
-    },
-    refundMsg: {
-        type: String,
-    },
-}, { timestamps: true })
+    refundTime: Date,
+    refundMsg: String,
+}, { timestamps: true });
 
-export default mongoose.model('Order', OrderSchema)
+// Indexing for faster queries
+orderSchema.index({ user: 1, orderDate: -1 });
+orderSchema.index({ status: 1 });
+orderSchema.index({ 'products.productId': 1 });
+
+export default mongoose.model('Order', orderSchema);

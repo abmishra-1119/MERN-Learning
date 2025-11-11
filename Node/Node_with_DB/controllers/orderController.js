@@ -1,23 +1,18 @@
-// controllers/orderController.js
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
+import Coupon from '../models/Coupon.js';
 
-/**
- * POST /api/orders
- * Creates a new order with stock updates
- */
-export const createOrder = async(req, res) => {
+// Create new order with stock validation and coupon discount
+export const createOrder = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { products = [], discount = 0, paymentMethod, address } = req.body;
+        const { products = [], couponCode, paymentMethod, address } = req.body;
 
-        // Validation
         if (!userId) throw new Error('Unauthorized');
         if (!Array.isArray(products) || products.length === 0) {
             throw new Error('Products array is required');
         }
 
-        // Fetch all products in one query
         const productIds = products.map(p => p.productId);
         const dbProducts = await Product.find({ _id: { $in: productIds } })
             .select('_id title price stock sellerId')
@@ -29,7 +24,6 @@ export const createOrder = async(req, res) => {
 
         const productMap = new Map(dbProducts.map(p => [p._id.toString(), p]));
 
-        // Validate stock and calculate totals
         let totalPrice = 0;
         const enrichedProducts = [];
 
@@ -42,55 +36,71 @@ export const createOrder = async(req, res) => {
 
             totalPrice += product.price * item.count;
 
-            // console.log(product);
-
             enrichedProducts.push({
                 productId: item.productId,
-                sellerId: product.sellerId, // Denormalized for fast seller queries
+                sellerId: product.sellerId,
                 count: item.count,
-                price: product.price // Snapshot price at order time
+                price: product.price,
             });
         }
 
-        const finalPrice = Math.max(0, totalPrice - (discount || 0));
+        let discount = 0;
+        let coupon = null;
 
-        // Update stock for each product
+        if (couponCode) {
+            coupon = await Coupon.findOne({ name: couponCode, isActive: true });
+
+            if (!coupon) {
+                throw new Error('Invalid or inactive coupon');
+            }
+
+            if (coupon.expiryDate && new Date() > coupon.expiryDate) {
+                throw new Error('Coupon has expired');
+            }
+
+            discount = Math.min(totalPrice * (coupon.discount / 100), totalPrice);
+        }
+
+        const finalPrice = Math.max(0, totalPrice - discount);
+
         for (const item of enrichedProducts) {
             await Product.findByIdAndUpdate(
-                item.productId, { $inc: { stock: -item.count } }
+                item.productId,
+                { $inc: { stock: -item.count } }
             );
         }
 
-        // Create order
         const newOrder = await Order.create({
             user: userId,
             products: enrichedProducts,
-            discount: discount || 0,
+            coupon: coupon ? coupon._id : null,
+            discount,
             totalPrice,
             finalPrice,
             paymentMethod: paymentMethod || 'COD',
-            address
+            address,
         });
 
-        res.status(201).json(newOrder);
+        res.status(201).json({
+            message: 'Order created successfully',
+            order: newOrder,
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-/**
- * GET /api/orders
- * Get all orders (admin only)
- */
-export const getOrder = async(req, res) => {
+// Get all orders with pagination (admin only)
+export const getOrder = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = Math.min(parseInt(req.query.limit) || 20, 100);
         const skip = (page - 1) * limit;
 
         const orders = await Order.find()
-            .select('user products orderDate status totalPrice finalPrice paymentMethod')
+            .select('user products orderDate status totalPrice finalPrice paymentMethod discount')
             .populate('user', 'name email')
+            .populate('coupon', 'name discount')
             .sort({ orderDate: -1 })
             .skip(skip)
             .limit(limit)
@@ -104,26 +114,24 @@ export const getOrder = async(req, res) => {
                 page,
                 limit,
                 total,
-                pages: Math.ceil(total / limit)
-            }
+                pages: Math.ceil(total / limit),
+            },
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-/**
- * GET /api/orders/me
- * Get current user's orders
- */
-export const getMyOrder = async(req, res) => {
+// Get orders for logged-in user
+export const getMyOrder = async (req, res) => {
     try {
         const userId = req.user.id;
         if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
         const orders = await Order.find({ user: userId })
-            .select('products orderDate status totalPrice finalPrice paymentMethod address')
-            .populate('products.productId', 'name price images')
+            .select('products orderDate status totalPrice finalPrice paymentMethod address discount')
+            .populate('products.productId', 'title price thumbnail')
+            .populate('coupon', 'name discount')
             .sort({ orderDate: -1 })
             .lean();
 
@@ -133,12 +141,8 @@ export const getMyOrder = async(req, res) => {
     }
 };
 
-/**
- * GET /api/orders/seller
- * Get orders for products belonging to the logged-in seller
- * Uses denormalized sellerId for fast queries
- */
-export const getOrdersBySeller = async(req, res) => {
+// Get orders for seller's products
+export const getOrdersBySeller = async (req, res) => {
     try {
         const sellerId = req.user.id;
         if (!sellerId) return res.status(401).json({ message: 'Unauthorized' });
@@ -147,11 +151,10 @@ export const getOrdersBySeller = async(req, res) => {
         const limit = Math.min(parseInt(req.query.limit) || 20, 100);
         const skip = (page - 1) * limit;
 
-        // Fast query using denormalized sellerId - no join needed!
         const orders = await Order.find({ 'products.sellerId': sellerId })
-            .select('user products orderDate status totalPrice finalPrice')
+            .select('user products orderDate status totalPrice finalPrice discount')
             .populate('user', 'name email phone')
-            .populate('products.productId', 'name price images')
+            .populate('products.productId', 'title price thumbnail')
             .sort({ orderDate: -1 })
             .skip(skip)
             .limit(limit)
@@ -165,19 +168,16 @@ export const getOrdersBySeller = async(req, res) => {
                 page,
                 limit,
                 total,
-                pages: Math.ceil(total / limit)
-            }
+                pages: Math.ceil(total / limit),
+            },
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-/**
- * PATCH /api/orders/:id/status
- * Update order status (admin/seller only)
- */
-export const updateOrderStatus = async(req, res) => {
+// Update order status (admin/seller)
+export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status, refundProcess, refundMsg } = req.body;
@@ -187,12 +187,10 @@ export const updateOrderStatus = async(req, res) => {
         if (refundProcess) updateData.refundProcess = refundProcess;
         if (refundMsg) updateData.refundMsg = refundMsg;
 
-        const order = await Order.findByIdAndUpdate(
-                id,
-                updateData, { new: true, runValidators: true }
-            )
-            .select('status refundProcess refundTime refundMsg orderDate')
-            .lean();
+        const order = await Order.findByIdAndUpdate(id, updateData, {
+            new: true,
+            runValidators: true,
+        }).select('status refundProcess refundMsg refundTime');
 
         if (!order) return res.status(404).json({ message: 'Order not found' });
 
@@ -202,11 +200,8 @@ export const updateOrderStatus = async(req, res) => {
     }
 };
 
-/**
- * DELETE /api/orders/:id
- * Delete an order (admin only)
- */
-export const deleteOrder = async(req, res) => {
+// Delete order (admin only)
+export const deleteOrder = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await Order.findByIdAndDelete(id);
@@ -219,48 +214,32 @@ export const deleteOrder = async(req, res) => {
     }
 };
 
-/**
- * PATCH /api/orders/:id/cancel
- * Cancel order and restore stock
- */
-export const cancelOrder = async(req, res) => {
+// Cancel order and restore product stock
+export const cancelOrder = async (req, res) => {
     try {
         const userId = req.user.id;
-        const orderId = req.params.id;
+        const { id: orderId } = req.params;
 
         if (!userId) throw new Error('Unauthorized');
 
-        // Find order and verify ownership
         const order = await Order.findOne({ _id: orderId, user: userId });
-
         if (!order) throw new Error('Order not found or unauthorized');
         if (order.status !== 'pending') {
             throw new Error(`Cannot cancel order with status: ${order.status}`);
         }
 
-        // Prepare update
         const updateData = { status: 'cancelled' };
 
-        // Handle refund for non-COD payments
         if (order.paymentMethod !== 'COD') {
-            Object.assign(updateData, {
-                refundProcess: 'processing',
-                refundTime: new Date(),
-                refundMsg: 'Refund will be initiated in 7 working days'
-            });
+            updateData.refundProcess = 'processing';
+            updateData.refundTime = new Date();
+            updateData.refundMsg = 'Refund will be initiated in 7 working days';
         }
 
-        // Update order status
-        const updatedOrder = await Order.findByIdAndUpdate(
-            orderId,
-            updateData, { new: true }
-        );
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, updateData, { new: true });
 
-        // Restore stock for each product
         for (const item of order.products) {
-            await Product.findByIdAndUpdate(
-                item.productId, { $inc: { stock: item.count } }
-            );
+            await Product.findByIdAndUpdate(item.productId, { $inc: { stock: item.count } });
         }
 
         res.status(200).json(updatedOrder);
@@ -269,11 +248,8 @@ export const cancelOrder = async(req, res) => {
     }
 };
 
-/**
- * PATCH /api/orders/:id/refund
- * Update refund status (admin only)
- */
-export const updateRefund = async(req, res) => {
+// Update refund status (admin only)
+export const updateRefund = async (req, res) => {
     try {
         const { id } = req.params;
         const { refundProcess, refundMsg, status } = req.body;
@@ -283,12 +259,10 @@ export const updateRefund = async(req, res) => {
         if (refundMsg) updateData.refundMsg = refundMsg;
         if (status) updateData.status = status;
 
-        const order = await Order.findByIdAndUpdate(
-                id,
-                updateData, { new: true, runValidators: true }
-            )
-            .select('status refundProcess refundTime refundMsg')
-            .lean();
+        const order = await Order.findByIdAndUpdate(id, updateData, {
+            new: true,
+            runValidators: true,
+        }).select('status refundProcess refundMsg refundTime');
 
         if (!order) return res.status(404).json({ message: 'Order not found' });
 

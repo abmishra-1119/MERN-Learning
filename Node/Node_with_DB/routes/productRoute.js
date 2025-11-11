@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+    addRating,
     createProduct,
     deleteMyProduct,
     deleteProduct,
@@ -11,7 +12,7 @@ import {
     updateProduct
 } from '../controllers/productController.js'
 import { adminMiddleware, authMiddleware, sellerMiddleware } from '../middlewares/authMiddleware.js'
-import upload from '../middlewares/upload.js'
+import { upload } from '../middlewares/multer.js'
 
 const router = express.Router()
 
@@ -19,7 +20,7 @@ const router = express.Router()
  * @swagger
  * tags:
  *   name: Products
- *   description: Product management and operations
+ *   description: Product management endpoints
  */
 
 /**
@@ -36,56 +37,135 @@ const router = express.Router()
  *       properties:
  *         _id:
  *           type: string
- *           description: The auto-generated id of the product
+ *           description: Product ID
  *         sellerId:
  *           type: string
- *           description: Reference to the seller (User)
+ *           description: Seller user ID
  *         title:
  *           type: string
- *           description: Product title (3–30 chars)
+ *           description: Product title
  *         description:
  *           type: string
- *           description: Product description (5–80 chars)
+ *           description: Product description
  *         price:
  *           type: number
  *           description: Product price
  *         stock:
  *           type: number
- *           description: Available stock
+ *           description: Available stock quantity
+ *         brand:
+ *           type: string
+ *           description: Product brand
+ *         category:
+ *           type: string
+ *           description: Product category
+ *         images:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               url:
+ *                 type: string
+ *               public_id:
+ *                 type: string
  *         thumbnail:
  *           type: string
- *           description: Product image URL
- *         createdAt:
+ *           description: Main product image URL
+ *         ratings:
+ *           type: array
+ *           items:
+ *             type: object
+ *         totalRating:
+ *           type: number
+ *           description: Average rating
+ *     Rating:
+ *       type: object
+ *       required:
+ *         - star
+ *       properties:
+ *         star:
+ *           type: number
+ *           minimum: 1
+ *           maximum: 5
+ *         comment:
  *           type: string
- *           format: date-time
- *         updatedAt:
+ *         postedBy:
  *           type: string
- *           format: date-time
- *       example:
- *         _id: 64a8e2b2e35fca82dfb72d1b
- *         sellerId: 64a8dfe2c25b9a8e9f3d70b1
- *         title: "Wireless Headphones"
- *         description: "Noise-cancelling Bluetooth headphones"
- *         price: 99.99
- *         stock: 15
- *         thumbnail: "uploads/image123.jpg"
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
  * @swagger
  * /products:
  *   get:
- *     summary: Get all products
+ *     summary: Get paginated products with filtering
  *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Products per page
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by category
+ *       - in: query
+ *         name: brand
+ *         schema:
+ *           type: string
+ *         description: Filter by brand
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: Field to sort by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: desc
+ *         description: Sort order
  *     responses:
  *       200:
- *         description: List of all products
+ *         description: Products retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalProducts:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Product'
  */
 router.get('/', getAllProducts)
 
@@ -93,7 +173,7 @@ router.get('/', getAllProducts)
  * @swagger
  * /products/search:
  *   get:
- *     summary: Search products by title or description
+ *     summary: Search products by text
  *     tags: [Products]
  *     parameters:
  *       - in: query
@@ -101,16 +181,46 @@ router.get('/', getAllProducts)
  *         schema:
  *           type: string
  *         required: true
- *         description: Search query text
+ *         description: Search query
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
  *     responses:
  *       200:
- *         description: Matching products list
+ *         description: Search results
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalProducts:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: No products found
  */
 router.get('/search', searchProduct)
 
@@ -118,19 +228,48 @@ router.get('/search', searchProduct)
  * @swagger
  * /products/my:
  *   get:
- *     summary: Get products created by the logged-in seller
+ *     summary: Get current seller's products
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
  *     responses:
  *       200:
- *         description: List of seller's products
+ *         description: Seller products retrieved
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalProducts:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Product'
  */
 router.get('/my', authMiddleware, sellerMiddleware, getMyProduct)
 
@@ -138,7 +277,7 @@ router.get('/my', authMiddleware, sellerMiddleware, getMyProduct)
  * @swagger
  * /products/my/{id}:
  *   delete:
- *     summary: Delete a product created by the logged-in seller
+ *     summary: Delete seller's own product
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
@@ -146,12 +285,13 @@ router.get('/my', authMiddleware, sellerMiddleware, getMyProduct)
  *       - in: path
  *         name: id
  *         required: true
- *         description: Product ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
  *         description: Product deleted successfully
+ *       404:
+ *         description: Product not found or unauthorized
  */
 router.delete('/my/:id', authMiddleware, sellerMiddleware, deleteMyProduct)
 
@@ -159,69 +299,7 @@ router.delete('/my/:id', authMiddleware, sellerMiddleware, deleteMyProduct)
  * @swagger
  * /products/my/{id}:
  *   put:
- *     summary: Update a product created by the logged-in seller
- *     tags: [Products]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Product ID
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *               stock:
- *                 type: number
- *               image:
- *                 type: string
- *                 format: binary
- *     responses:
- *       200:
- *         description: Product updated successfully
- */
-router.put('/my/:id', authMiddleware, sellerMiddleware, updateMyProduct)
-
-/**
- * @swagger
- * /products/{id}:
- *   get:
- *     summary: Get a single product by ID
- *     tags: [Products]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Product ID
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Product details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Product'
- */
-router.get('/:id', getProductById)
-
-/**
- * @swagger
- * /products/{id}:
- *   put:
- *     summary: Update a product by ID (Admin)
+ *     summary: Update seller's own product
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
@@ -236,18 +314,110 @@ router.get('/:id', getProductById)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: number
+ *               brand:
+ *                 type: string
+ *               category:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Product updated successfully
+ *       404:
+ *         description: Product not found or unauthorized
  */
-router.put('/:id', authMiddleware, adminMiddleware, updateProduct)
+router.put('/my/:id', authMiddleware, sellerMiddleware, updateMyProduct)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ */
+router.get('/:id', getProductById)
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Update product (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: number
+ *               brand:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *       404:
+ *         description: Product not found
+ */
+router.put('/:id', authMiddleware, adminMiddleware, upload.array("images", 5), updateProduct)
 
 /**
  * @swagger
  * /products/{id}:
  *   delete:
- *     summary: Delete a product by ID (Admin)
+ *     summary: Delete product (Admin only)
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
@@ -260,17 +430,19 @@ router.put('/:id', authMiddleware, adminMiddleware, updateProduct)
  *     responses:
  *       200:
  *         description: Product deleted successfully
+ *       404:
+ *         description: Product not found
  */
-router.delete('/:id', authMiddleware, deleteProduct)
+router.delete('/:id', authMiddleware, adminMiddleware, deleteProduct)
 
 /**
  * @swagger
  * /products:
  *   post:
- *     summary: Create a new product (Seller only)
+ *     summary: Create new product (Seller only)
  *     tags: [Products]
  *     security:
- *       - bearerAuth: []       
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -282,7 +454,7 @@ router.delete('/:id', authMiddleware, deleteProduct)
  *               - description
  *               - price
  *               - stock
- *               - image
+ *               - images
  *             properties:
  *               title:
  *                 type: string
@@ -292,17 +464,69 @@ router.delete('/:id', authMiddleware, deleteProduct)
  *                 type: number
  *               stock:
  *                 type: number
- *               image:
+ *               brand:
  *                 type: string
- *                 format: binary
+ *               category:
+ *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
  *         description: Product created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Missing required fields
  */
-router.post('/', upload.single('image'), authMiddleware, sellerMiddleware, createProduct)
+router.post('/', authMiddleware, sellerMiddleware, upload.array("images", 5), createProduct)
+
+/**
+ * @swagger
+ * /products/{id}/rate:
+ *   post:
+ *     summary: Add or update product rating
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - star
+ *             properties:
+ *               star:
+ *                 type: number
+ *                 minimum: 1
+ *                 maximum: 5
+ *               comment:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Rating added/updated successfully
+ *       404:
+ *         description: Product not found
+ */
+router.post("/:id/rate", authMiddleware, addRating);
 
 export default router
