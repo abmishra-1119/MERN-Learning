@@ -9,7 +9,7 @@ import { cloudinaryDeleteImg, cloudinaryUploadImg } from "../config/cloudinary.j
 import fs from 'fs'
 
 // Send OTP for email verification
-export const sendOtp = asyncHandler(async (req, res) => {
+export const sendOtp = asyncHandler(async(req, res) => {
     const { email } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
 
@@ -25,7 +25,7 @@ export const sendOtp = asyncHandler(async (req, res) => {
 });
 
 // Verify OTP and complete registration
-export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
+export const verifyOtpAndRegister = asyncHandler(async(req, res) => {
     const { name, email, password, otp } = req.body;
 
     const record = await Otp.findOne({ email });
@@ -47,7 +47,7 @@ export const verifyOtpAndRegister = asyncHandler(async (req, res) => {
 });
 
 // Create new user (admin only)
-export const createUser = asyncHandler(async (req, res) => {
+export const createUser = asyncHandler(async(req, res) => {
     const { name, email, password, role } = req.body;
 
     if (!name || !email || !password)
@@ -68,7 +68,7 @@ export const createUser = asyncHandler(async (req, res) => {
 });
 
 // User login with JWT tokens
-export const login = asyncHandler(async (req, res) => {
+export const login = asyncHandler(async(req, res) => {
     const { email, password } = req.body;
     const find = await User.findOne({ email });
     const userAgent = req.headers["user-agent"];
@@ -98,7 +98,7 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 // Logout user and clear tokens
-export const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async(req, res) => {
     const { refreshToken } = req.cookies;
     const user = await User.findOne({ "refreshTokens.token": refreshToken });
     if (!user) return res.status(400).json({ message: "Invalid token" });
@@ -111,7 +111,7 @@ export const logoutUser = asyncHandler(async (req, res) => {
 });
 
 // Refresh access token using refresh token
-export const refreshToken = asyncHandler(async (req, res) => {
+export const refreshToken = asyncHandler(async(req, res) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) return res.status(401).json({ message: "No token provided" });
 
@@ -145,7 +145,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
 });
 
 // Get paginated users list
-export const getUser = asyncHandler(async (req, res) => {
+export const getUser = asyncHandler(async(req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -165,7 +165,7 @@ export const getUser = asyncHandler(async (req, res) => {
 });
 
 // Get user by ID
-export const getUserById = asyncHandler(async (req, res) => {
+export const getUserById = asyncHandler(async(req, res) => {
     const { id } = req.params;
     const user = await User.findById(id).select("name email age role createdAt");
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -174,7 +174,7 @@ export const getUserById = asyncHandler(async (req, res) => {
 });
 
 // Update user details
-export const updateUser = asyncHandler(async (req, res) => {
+export const updateUser = asyncHandler(async(req, res) => {
     const { id } = req.params;
 
     const updated = await User.findByIdAndUpdate(id, req.body, { new: true }).select(
@@ -186,28 +186,28 @@ export const updateUser = asyncHandler(async (req, res) => {
 });
 
 // Delete user
-export const deleteUser = asyncHandler(async (req, res) => {
+export const deleteUser = asyncHandler(async(req, res) => {
     const { id } = req.params;
     await User.findByIdAndDelete(id);
     successResponse(res, 200, "User deleted successfully");
 });
 
 // Get current user profile
-export const profile = asyncHandler(async (req, res) => {
+export const profile = asyncHandler(async(req, res) => {
     const { id } = req.user;
-    const user = await User.findById(id).select("name email age role cart createdAt");
+    const user = await User.findById(id).select("name email age role cart");
     successResponse(res, 200, "Profile fetched successfully", user);
 });
 
 // Get user cart
-export const getCart = asyncHandler(async (req, res) => {
+export const getCart = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const user = await User.findById(id).select("cart");
     successResponse(res, 200, "Cart fetched successfully", user.cart);
 });
 
 // Add product to cart
-export const addToCart = asyncHandler(async (req, res) => {
+export const addToCart = asyncHandler(async(req, res) => {
     const { productId, count = 1 } = req.body;
     const { id } = req.user;
 
@@ -223,39 +223,33 @@ export const addToCart = asyncHandler(async (req, res) => {
 });
 
 // Remove product from cart
-export const deleteFromCart = asyncHandler(async (req, res) => {
+export const deleteFromCart = asyncHandler(async(req, res) => {
     const productId = req.params.id;
     const { id } = req.user;
 
     const user = await User.findByIdAndUpdate(
-        id,
-        { $pull: { cart: { productId } } },
-        { new: true }
+        id, { $pull: { cart: { productId } } }, { new: true }
     ).select("cart");
 
     successResponse(res, 200, "Product removed from cart", user.cart);
 });
 
 // Empty user cart
-export const emptyCart = asyncHandler(async (req, res) => {
+export const emptyCart = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const user = await User.findByIdAndUpdate(id, { cart: [] }, { new: true }).select("cart");
     successResponse(res, 200, "Cart emptied", user.cart);
 });
 
 // Update cart item quantity
-export const updateCart = asyncHandler(async (req, res) => {
+export const updateCart = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const { productId, count } = req.body;
 
     if (!productId || !count)
         return res.status(400).json({ message: "productId and count are required" });
 
-    const user = await User.findOneAndUpdate(
-        { _id: id, "cart.productId": productId },
-        { $set: { "cart.$.count": count } },
-        { new: true }
-    ).select("cart");
+    const user = await User.findOneAndUpdate({ _id: id, "cart.productId": productId }, { $set: { "cart.$.count": count } }, { new: true }).select("cart");
 
     if (!user) return res.status(404).json({ message: "User not found or product not in cart" });
 
@@ -263,13 +257,13 @@ export const updateCart = asyncHandler(async (req, res) => {
 });
 
 // Get all sellers
-export const getAllSeller = asyncHandler(async (req, res) => {
+export const getAllSeller = asyncHandler(async(req, res) => {
     const sellers = await User.find({ role: "seller" }).select("name email role createdAt");
     successResponse(res, 200, "All sellers fetched", sellers);
 });
 
 // Send forgot password OTP
-export const forgotPassword = asyncHandler(async (req, res) => {
+export const forgotPassword = asyncHandler(async(req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "Invalid email address" });
@@ -287,7 +281,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // Reset password with OTP verification
-export const resetPassword = asyncHandler(async (req, res) => {
+export const resetPassword = asyncHandler(async(req, res) => {
     const { email, password, otp } = req.body;
     const record = await Otp.findOne({ email });
     if (!record) return res.status(400).json({ message: "OTP expired or not found" });
@@ -301,7 +295,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
 });
 
 // Change password with old password verification
-export const changePassword = asyncHandler(async (req, res) => {
+export const changePassword = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const { oldPassword, newPassword } = req.body;
 
@@ -318,28 +312,28 @@ export const changePassword = asyncHandler(async (req, res) => {
 });
 
 // Upload user avatar to Cloudinary
-export const uploadAvatar = asyncHandler(async (req, res) => {
-    const { id } = req.user
+export const uploadAvatar = asyncHandler(async(req, res) => {
+    const { id } = req.user;
 
     if (!req.file) {
-        return res.status(400).json({ message: 'No image file uploaded' })
+        return res.status(400).json({ message: 'No image file uploaded' });
     }
 
-    const user = await User.findById(id)
+    const user = await User.findById(id);
     if (!user) {
-        fs.unlinkSync(req.file.path)
-        return res.status(404).json({ message: 'User not found' })
+        return res.status(404).json({ message: 'User not found' });
     }
 
+    // Delete old avatar from Cloudinary
     if (user.avatar && user.avatar.public_id) {
-        await cloudinaryDeleteImg(user.avatar.public_id)
+        await cloudinaryDeleteImg(user.avatar.public_id);
     }
 
-    const uploaded = await cloudinaryUploadImg(req.file.path, 'avatars')
-    fs.unlinkSync(req.file.path)
+    // Upload new avatar using buffer
+    const uploaded = await cloudinaryUploadImg(req.file.buffer, 'avatars');
 
-    user.avatar = uploaded
-    await user.save()
+    user.avatar = uploaded;
+    await user.save();
 
-    successResponse(res, 200, 'Avatar uploaded successfully', uploaded)
-})
+    successResponse(res, 200, 'Avatar uploaded successfully', uploaded);
+});

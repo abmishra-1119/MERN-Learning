@@ -4,12 +4,14 @@ import { successResponse } from "../utils/response.js";
 import { cloudinaryUploadImg, cloudinaryDeleteImg } from "../config/cloudinary.js";
 
 // Create product with multiple images
-export const createProduct = asyncHandler(async (req, res) => {
+export const createProduct = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const { title, description, price, stock, brand, category } = req.body;
     const files = req.files;
 
-    if (!title || !description || !price || !stock || !files?.length) {
+    console.log(files);
+
+    if (!title || !description || !price || !stock || !files.length) {
         res.status(400);
         throw new Error("All fields are required");
     }
@@ -17,6 +19,9 @@ export const createProduct = asyncHandler(async (req, res) => {
     const uploadResults = await Promise.all(
         files.map((file) => cloudinaryUploadImg(file.buffer))
     );
+
+    // console.log(uploadResults);
+
 
     const newProduct = await Product.create({
         sellerId: id,
@@ -27,14 +32,14 @@ export const createProduct = asyncHandler(async (req, res) => {
         brand,
         category,
         images: uploadResults,
-        thumbnail: uploadResults[0]?.url || "",
+        thumbnail: uploadResults[0].url || "",
     });
 
     return successResponse(res, 201, "Product created successfully", newProduct);
 });
 
 // Get all products with filtering and pagination
-export const getAllProducts = asyncHandler(async (req, res) => {
+export const getAllProducts = asyncHandler(async(req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -46,14 +51,20 @@ export const getAllProducts = asyncHandler(async (req, res) => {
     if (brand) filter.brand = brand;
 
     const sortOption = {};
-    if (sortBy) sortOption[sortBy] = order === "asc" ? 1 : -1;
+    if (sortBy) {
+        if (sortBy === "rating") {
+            sortOption["totalRating"] = order === "asc" ? 1 : -1;
+        } else {
+            sortOption[sortBy] = order === "asc" ? 1 : -1;
+        }
+    }
 
     const products = await Product.find(filter)
         .select("-__v -updatedAt")
         .skip(skip)
         .limit(limit)
         .sort(sortOption)
-        .hint({ category: 1, brand: 1 });
+        // .hint({ category: 1, brand: 1 });
 
     const totalProducts = await Product.countDocuments(filter);
 
@@ -67,7 +78,7 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 // Search products using text index
-export const searchProduct = asyncHandler(async (req, res) => {
+export const searchProduct = asyncHandler(async(req, res) => {
     const { query } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -77,7 +88,6 @@ export const searchProduct = asyncHandler(async (req, res) => {
         .select("-__v -createdAt -updatedAt")
         .skip(skip)
         .limit(limit)
-        .hint({ title: "text", description: "text" });
 
     const totalProducts = await Product.countDocuments({ $text: { $search: query } });
 
@@ -96,7 +106,7 @@ export const searchProduct = asyncHandler(async (req, res) => {
 });
 
 // Get single product by ID
-export const getProductById = asyncHandler(async (req, res) => {
+export const getProductById = asyncHandler(async(req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id)
         .populate("sellerId", "name email")
@@ -111,7 +121,7 @@ export const getProductById = asyncHandler(async (req, res) => {
 });
 
 // Update product (admin/seller)
-export const updateProduct = asyncHandler(async (req, res) => {
+export const updateProduct = asyncHandler(async(req, res) => {
     const { id } = req.params;
     const update = req.body;
     const files = req.files;
@@ -122,7 +132,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
         throw new Error("Product not found");
     }
 
-    if (files?.length) {
+    if (files.length) {
         await Promise.all(
             product.images.map((img) => cloudinaryDeleteImg(img.public_id))
         );
@@ -130,7 +140,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
             files.map((file) => cloudinaryUploadImg(file.buffer))
         );
         update.images = uploadResults;
-        update.thumbnail = uploadResults[0]?.url;
+        update.thumbnail = uploadResults[0].url;
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(id, update, {
@@ -141,7 +151,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 });
 
 // Delete product
-export const deleteProduct = asyncHandler(async (req, res) => {
+export const deleteProduct = asyncHandler(async(req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
 
@@ -157,7 +167,7 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 // Get seller's products
-export const getMyProduct = asyncHandler(async (req, res) => {
+export const getMyProduct = asyncHandler(async(req, res) => {
     const { id } = req.user;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -181,7 +191,7 @@ export const getMyProduct = asyncHandler(async (req, res) => {
 });
 
 // Delete seller's product
-export const deleteMyProduct = asyncHandler(async (req, res) => {
+export const deleteMyProduct = asyncHandler(async(req, res) => {
     const userId = req.user.id;
     const { id } = req.params;
     const product = await Product.findOneAndDelete({ _id: id, sellerId: userId });
@@ -193,7 +203,7 @@ export const deleteMyProduct = asyncHandler(async (req, res) => {
 });
 
 // Update seller's product
-export const updateMyProduct = asyncHandler(async (req, res) => {
+export const updateMyProduct = asyncHandler(async(req, res) => {
     const userId = req.user.id;
     const { id } = req.params;
     const update = req.body;
@@ -206,7 +216,7 @@ export const updateMyProduct = asyncHandler(async (req, res) => {
 });
 
 // Add or update product rating
-export const addRating = asyncHandler(async (req, res) => {
+export const addRating = asyncHandler(async(req, res) => {
     const userId = req.user.id;
     const { star, comment } = req.body;
     const { id } = req.params;
@@ -234,4 +244,10 @@ export const addRating = asyncHandler(async (req, res) => {
     await product.save();
 
     return successResponse(res, 200, "Rating updated successfully", product);
+});
+
+// Get all categories
+export const getAllCategories = asyncHandler(async(req, res) => {
+    const categories = await Product.distinct('category');
+    return successResponse(res, 200, "Fetched all categories successfully", categories);
 });

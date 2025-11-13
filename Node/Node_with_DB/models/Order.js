@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
         validate: {
-            validator: async function (v) {
+            validator: async function(v) {
                 const user = await mongoose.model('User').findById(v);
                 return !!user;
             },
@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema({
             ref: 'Product',
             required: true,
             validate: {
-                validator: async function (v) {
+                validator: async function(v) {
                     const product = await mongoose.model('Product').findById(v);
                     return !!product;
                 },
@@ -82,7 +82,7 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'cancelled', 'delivered', 'refund', 'refunded'],
+        enum: ['pending', 'shipped', 'cancelled', 'delivered', 'refund', 'refunded'],
         default: 'pending'
     },
     refundProcess: {

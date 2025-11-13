@@ -3,7 +3,7 @@ import Product from '../models/Product.js';
 import Coupon from '../models/Coupon.js';
 
 // Create new order with stock validation and coupon discount
-export const createOrder = async (req, res) => {
+export const createOrder = async(req, res) => {
     try {
         const userId = req.user.id;
         const { products = [], couponCode, paymentMethod, address } = req.body;
@@ -65,8 +65,7 @@ export const createOrder = async (req, res) => {
 
         for (const item of enrichedProducts) {
             await Product.findByIdAndUpdate(
-                item.productId,
-                { $inc: { stock: -item.count } }
+                item.productId, { $inc: { stock: -item.count, sold: +item.count } }
             );
         }
 
@@ -91,7 +90,7 @@ export const createOrder = async (req, res) => {
 };
 
 // Get all orders with pagination (admin only)
-export const getOrder = async (req, res) => {
+export const getOrder = async(req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = Math.min(parseInt(req.query.limit) || 20, 100);
@@ -123,7 +122,7 @@ export const getOrder = async (req, res) => {
 };
 
 // Get orders for logged-in user
-export const getMyOrder = async (req, res) => {
+export const getMyOrder = async(req, res) => {
     try {
         const userId = req.user.id;
         if (!userId) return res.status(401).json({ message: 'Unauthorized' });
@@ -142,7 +141,7 @@ export const getMyOrder = async (req, res) => {
 };
 
 // Get orders for seller's products
-export const getOrdersBySeller = async (req, res) => {
+export const getOrdersBySeller = async(req, res) => {
     try {
         const sellerId = req.user.id;
         if (!sellerId) return res.status(401).json({ message: 'Unauthorized' });
@@ -177,7 +176,7 @@ export const getOrdersBySeller = async (req, res) => {
 };
 
 // Update order status (admin/seller)
-export const updateOrderStatus = async (req, res) => {
+export const updateOrderStatus = async(req, res) => {
     try {
         const { id } = req.params;
         const { status, refundProcess, refundMsg } = req.body;
@@ -201,7 +200,7 @@ export const updateOrderStatus = async (req, res) => {
 };
 
 // Delete order (admin only)
-export const deleteOrder = async (req, res) => {
+export const deleteOrder = async(req, res) => {
     try {
         const { id } = req.params;
         const result = await Order.findByIdAndDelete(id);
@@ -215,7 +214,7 @@ export const deleteOrder = async (req, res) => {
 };
 
 // Cancel order and restore product stock
-export const cancelOrder = async (req, res) => {
+export const cancelOrder = async(req, res) => {
     try {
         const userId = req.user.id;
         const { id: orderId } = req.params;
@@ -239,7 +238,7 @@ export const cancelOrder = async (req, res) => {
         const updatedOrder = await Order.findByIdAndUpdate(orderId, updateData, { new: true });
 
         for (const item of order.products) {
-            await Product.findByIdAndUpdate(item.productId, { $inc: { stock: item.count } });
+            await Product.findByIdAndUpdate(item.productId, { $inc: { stock: item.count, sold: -item.count } });
         }
 
         res.status(200).json(updatedOrder);
@@ -249,7 +248,7 @@ export const cancelOrder = async (req, res) => {
 };
 
 // Update refund status (admin only)
-export const updateRefund = async (req, res) => {
+export const updateRefund = async(req, res) => {
     try {
         const { id } = req.params;
         const { refundProcess, refundMsg, status } = req.body;

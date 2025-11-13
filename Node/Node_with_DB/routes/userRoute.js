@@ -193,9 +193,6 @@ const router = express.Router()
  *                 type: string
  *                 enum: [admin, user, seller]
  *                 example: "user"
- *               age:
- *                 type: number
- *                 example: 25
  *     responses:
  *       201:
  *         description: User created successfully
@@ -215,8 +212,6 @@ const router = express.Router()
  *                       type: string
  *                     email:
  *                       type: string
- *                     age:
- *                       type: number
  *                     role:
  *                       type: string
  *       400:

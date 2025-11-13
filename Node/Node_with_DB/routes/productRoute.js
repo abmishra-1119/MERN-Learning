@@ -4,6 +4,7 @@ import {
     createProduct,
     deleteMyProduct,
     deleteProduct,
+    getAllCategories,
     getAllProducts,
     getMyProduct,
     getProductById,
@@ -15,6 +16,8 @@ import { adminMiddleware, authMiddleware, sellerMiddleware } from '../middleware
 import { upload } from '../middlewares/multer.js'
 
 const router = express.Router()
+
+router.get('/category', getAllCategories)
 
 /**
  * @swagger

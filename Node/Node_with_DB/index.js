@@ -5,6 +5,7 @@ import userRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
 import orderRoute from './routes/orderRoute.js';
 import couponRoute from './routes/couponRoutes.js';
+import analyticsRoute from './routes/analyticsRoute.js';
 import logCheck from './middlewares/logger.js';
 import { requestLogger, errorLogger } from './middlewares/winstonLogger.js';
 import logger from './utils/logger.js';
@@ -45,6 +46,7 @@ app.use('/users', userRoute);
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
 app.use('/coupons', couponRoute);
+app.use('/analytics', analyticsRoute);
 
 app.use(errorLogger);
 

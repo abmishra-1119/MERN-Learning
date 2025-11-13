@@ -96,7 +96,7 @@ const router = express.Router()
 
 /**
  * @swagger
- * /api/coupons:
+ * /coupons:
  *   post:
  *     summary: Create new coupon (Admin only)
  *     tags: [Coupons]
@@ -140,7 +140,7 @@ router.post('/', authMiddleware, adminMiddleware, createCoupon)
 
 /**
  * @swagger
- * /api/coupons:
+ * /coupons:
  *   get:
  *     summary: Get all coupons with pagination
  *     tags: [Coupons]
@@ -178,7 +178,7 @@ router.get('/', authMiddleware, adminMiddleware, getAllCoupons)
 
 /**
  * @swagger
- * /api/coupons/active:
+ * /coupons/active:
  *   get:
  *     summary: Get active coupons
  *     tags: [Coupons]
@@ -207,7 +207,7 @@ router.get('/active', getActiveCoupons)
 
 /**
  * @swagger
- * /api/coupons/validate:
+ * /coupons/validate:
  *   post:
  *     summary: Validate coupon
  *     tags: [Coupons]
@@ -253,7 +253,7 @@ router.post('/validate', validateCoupon)
 
 /**
  * @swagger
- * /api/coupons/{id}:
+ * /coupons/{id}:
  *   get:
  *     summary: Get coupon by ID
  *     tags: [Coupons]
@@ -282,7 +282,7 @@ router.get('/:id', authMiddleware, adminMiddleware, getCouponById)
 
 /**
  * @swagger
- * /api/coupons/name/{name}:
+ * /coupons/name/{name}:
  *   get:
  *     summary: Get coupon by name
  *     tags: [Coupons]
@@ -309,7 +309,7 @@ router.get('/name/:name', getCouponByName)
 
 /**
  * @swagger
- * /api/coupons/{id}:
+ * /coupons/{id}:
  *   put:
  *     summary: Update coupon (Admin only)
  *     tags: [Coupons]
@@ -360,7 +360,7 @@ router.put('/:id', authMiddleware, adminMiddleware, updateCoupon)
 
 /**
  * @swagger
- * /api/coupons/{id}/toggle:
+ * /coupons/{id}/toggle:
  *   patch:
  *     summary: Toggle coupon active status (Admin only)
  *     tags: [Coupons]
@@ -389,7 +389,7 @@ router.patch('/:id/toggle', authMiddleware, adminMiddleware, toggleCouponStatus)
 
 /**
  * @swagger
- * /api/coupons/{id}:
+ * /coupons/{id}:
  *   delete:
  *     summary: Delete coupon (Admin only)
  *     tags: [Coupons]

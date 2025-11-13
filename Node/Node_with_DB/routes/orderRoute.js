@@ -164,7 +164,7 @@ const router = express.Router()
 
 /**
  * @swagger
- * /api/orders:
+ * /orders:
  *   post:
  *     summary: Create new order
  *     tags: [Orders]
@@ -211,7 +211,7 @@ router.post('/', authMiddleware, createOrder)
 
 /**
  * @swagger
- * /api/orders:
+ * /orders:
  *   get:
  *     summary: Get all orders (Admin only)
  *     tags: [Orders]
@@ -247,7 +247,7 @@ router.get('/', authMiddleware, adminMiddleware, getOrder)
 
 /**
  * @swagger
- * /api/orders/my:
+ * /orders/my:
  *   get:
  *     summary: Get current user's orders
  *     tags: [Orders]
@@ -269,7 +269,7 @@ router.get('/my', authMiddleware, getMyOrder)
 
 /**
  * @swagger
- * /api/orders/seller:
+ * /orders/seller:
  *   get:
  *     summary: Get seller's orders
  *     tags: [Orders]
@@ -305,7 +305,7 @@ router.get('/seller', authMiddleware, sellerMiddleware, getOrdersBySeller)
 
 /**
  * @swagger
- * /api/orders/status/{id}:
+ * /orders/status/{id}:
  *   patch:
  *     summary: Update order status (Seller/Admin)
  *     tags: [Orders]
@@ -352,7 +352,7 @@ router.patch('/status/:id', authMiddleware, sellerMiddleware, updateOrderStatus)
 
 /**
  * @swagger
- * /api/orders/cancel/{id}:
+ * /orders/cancel/{id}:
  *   patch:
  *     summary: Cancel order (User)
  *     tags: [Orders]
@@ -383,7 +383,7 @@ router.patch('/cancel/:id', authMiddleware, cancelOrder)
 
 /**
  * @swagger
- * /api/orders/refund/{id}:
+ * /orders/refund/{id}:
  *   patch:
  *     summary: Update refund status (Seller/Admin)
  *     tags: [Orders]
@@ -430,7 +430,7 @@ router.patch('/refund/:id', authMiddleware, sellerMiddleware, updateRefund)
 
 /**
  * @swagger
- * /api/orders/{id}:
+ * /orders/{id}:
  *   delete:
  *     summary: Delete order (Admin only)
  *     tags: [Orders]
